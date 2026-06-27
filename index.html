@@ -130,21 +130,44 @@
     let isShowingAnswer = false; let configMode = 'write'; let configTarget = 'ua'; let editingModuleOriginalName = '';
 
     const BOOK_TITLES = {
-        "1": "Unit 1: People and communities",
-        "2": "Unit 2: Housing and home environment",
-        "3": "Unit 3: School and education",
-        "4": "Unit 4: Work and career",
-        "5": "Unit 5: Family and social life",
-        "6": "Unit 6: Food and nutrition",
-        "7": "Unit 7: Shopping and services",
-        "8": "Unit 8: Travelling and tourism",
-        "10": "Unit 10: Sport and fitness",
-        "11": "Unit 11: Health and medical care",
-        "12": "Unit 12: Science and technology",
-        "13": "Unit 13: Nature and environment",
-        "14": "Unit 14: Society and law",
-        "15": "Unit 15: Global English / Culture"
+        "1": "Unit 1: People and communities", "2": "Unit 2: Housing and home environment",
+        "3": "Unit 3: School and education", "4": "Unit 4: Work and career",
+        "5": "Unit 5: Family and social life", "6": "Unit 6: Food and nutrition",
+        "7": "Unit 7: Shopping and services", "8": "Unit 8: Travelling and tourism",
+        "10": "Unit 10: Sport and fitness", "11": "Unit 11: Health and medical care",
+        "12": "Unit 12: Science and technology", "13": "Unit 13: Nature and environment",
+        "14": "Unit 14: Society and law", "15": "Unit 15: Global English / Culture"
     };
+
+    // АВТОЗАВАНТАЖЕННЯ З ПАПКИ MODULES
+    async function loadAllModules() {
+        const files = [
+            "Unit 1.txt", "Unit 2.txt", "Unit 3.txt", "Unit 4.txt", "Unit 5.txt",
+            "Unit 6.txt", "Unit 7.txt", "Unit 8.txt", "Unit 10.txt", "Unit 11.txt",
+            "Unit 12.txt", "Unit 13.txt", "Unit 14.txt", "Unit 15.txt"
+        ];
+        
+        for (let f of files) {
+            try {
+                let res = await fetch('modules/' + f);
+                let text = await res.text();
+                let lines = text.split('\n');
+                let words = {};
+                lines.forEach(l => { 
+                    let p = l.split('\t'); 
+                    if(p.length < 2) p = l.split(' - '); 
+                    if(p.length >= 2) words[p[0].trim()] = p[1].trim(); 
+                });
+                let num = f.match(/\d+/)[0];
+                if (BOOK_TITLES[num]) {
+                    SAVED_USER_DATA[BOOK_TITLES[num]] = words;
+                }
+            } catch(e) { console.warn("Файл не знайдено: " + f); }
+        }
+        localStorage.setItem('my_quiz_modules', JSON.stringify(SAVED_USER_DATA));
+        ALL_DATA = Object.assign({}, DEFAULT_MODULES, SAVED_USER_DATA);
+        renderMenu();
+    }
 
     function switchScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -165,16 +188,13 @@
         el.style.height = el.scrollHeight + 'px';
     }
 
-    // УЛЬТРА-СМАРТ ІМПОРТЕР: Йому байдуже на назву файлу, він дивиться на цифри всередині імені!
     function handleBulkImport(input) {
         const files = input.files;
         if (files.length === 0) return;
-
         let loadedCount = 0;
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const reader = new FileReader();
-            
             let unitNumber = file.name.match(/\d+/)?.[0];
             let moduleName = (unitNumber && BOOK_TITLES[unitNumber]) ? BOOK_TITLES[unitNumber] : file.name.replace('.txt', '').replace(/_/g, ' ');
 
@@ -182,30 +202,22 @@
                 const text = e.target.result;
                 const lines = text.split('\n');
                 const parsedWords = {};
-
                 lines.forEach(line => {
                     let parts = line.split('\t');
                     if (parts.length < 2) parts = line.split(' - ');
-                    if (parts.length < 2) parts = line.split('-');
-
                     if (parts.length >= 2) {
                         const en = parts[0].trim().replace(/\s+/g, ' ');
                         const ua = parts[1].trim();
-                        if (en && ua && !en.startsWith('[source')) {
-                            parsedWords[en] = ua;
-                        }
+                        if (en && ua && !en.startsWith('[source')) parsedWords[en] = ua;
                     }
                 });
-
                 if (Object.keys(parsedWords).length > 0) {
                     ALL_DATA[moduleName] = parsedWords;
                     SAVED_USER_DATA[moduleName] = parsedWords;
                 }
-
                 loadedCount++;
                 if (loadedCount === files.length) {
                     localStorage.setItem('my_quiz_modules', JSON.stringify(SAVED_USER_DATA));
-                    alert(`🚀 Автоімпорт завершено! Синхронізовано модулів: ${loadedCount}. Назви вирівняно за книжкою.`);
                     renderMenu();
                 }
             };
@@ -413,47 +425,6 @@
         MEMORY_STATS[statKey].score = isCorrect ? Math.max(0, MEMORY_STATS[statKey].score - 1) : MEMORY_STATS[statKey].score + 2;
         MEMORY_STATS[statKey].history.push(isCorrect); if (MEMORY_STATS[statKey].history.length > 5) MEMORY_STATS[statKey].history.shift();
         localStorage.setItem('my_quiz_mem_stats', JSON.stringify(MEMORY_STATS));
-    }
-
-    async function loadAllModules() {
-        const files = [
-            "Unit 1.txt", "Unit 2.txt", "Unit 3.txt", "Unit 4.txt", "Unit 5.txt",
-            "Unit 6.txt", "Unit 7.txt", "Unit 8.txt", "Unit 10.txt", "Unit 11.txt",
-            "Unit 12.txt", "Unit 13.txt", "Unit 14.txt", "Unit 15.txt"
-        ];
-        
-        const BOOK_TITLES = {
-            "1": "Unit 1: People and communities", "2": "Unit 2: Housing and home environment",
-            "3": "Unit 3: School and education", "4": "Unit 4: Work and career",
-            "5": "Unit 5: Family and social life", "6": "Unit 6: Food and nutrition",
-            "7": "Unit 7: Shopping and services", "8": "Unit 8: Travelling and tourism",
-            "10": "Unit 10: Sport and fitness", "11": "Unit 11: Health and medical care",
-            "12": "Unit 12: Science and technology", "13": "Unit 13: Nature and environment",
-            "14": "Unit 14: Society and law", "15": "Unit 15: Global English / Culture"
-        };
-
-        // Завантажуємо лише якщо база порожня, щоб не перезаписувати твій прогрес кожного разу
-        if (Object.keys(SAVED_USER_DATA).length === 0) {
-            for (let f of files) {
-                try {
-                    let res = await fetch('modules/' + f);
-                    let text = await res.text();
-                    let lines = text.split('\n');
-                    let words = {};
-                    lines.forEach(l => { 
-                        let p = l.split('\t'); 
-                        if(p.length < 2) p = l.split(' - '); 
-                        if(p.length >= 2) words[p[0].trim()] = p[1].trim(); 
-                    });
-                    let unitNum = f.match(/\d+/)[0];
-                    if (BOOK_TITLES[unitNum]) {
-                        SAVED_USER_DATA[BOOK_TITLES[unitNum]] = words;
-                    }
-                } catch(e) { console.warn("Файл " + f + " не знайдено в папці modules/"); }
-            }
-            localStorage.setItem('my_quiz_modules', JSON.stringify(SAVED_USER_DATA));
-            ALL_DATA = Object.assign({}, DEFAULT_MODULES, SAVED_USER_DATA);
-        }
     }
 
     window.onload = async function() { 
