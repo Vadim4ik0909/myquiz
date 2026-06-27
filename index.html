@@ -21,24 +21,20 @@
         .screen.active { display: block; }
         
         h1, h2 { margin-bottom: 20px; color: var(--accent); }
-        p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; }
+        p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
         
-        /* Списки та меню */
         .module-list { margin: 20px 0; text-align: left; }
         .module-item { background: #313244; padding: 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
         .module-item:hover { background: #45475a; }
-        .delete-btn { background: var(--red); color: #11111b; padding: 5px 10px; font-size: 12px; border-radius: 4px; border: none; }
+        .delete-btn { background: var(--red); color: #11111b; padding: 5px 10px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; cursor: pointer; }
         
-        /* Форми введення */
         input[type="text"], textarea { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: 2px solid #313244; background: #313244; color: var(--text); margin-bottom: 15px; outline: none; }
         input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
         textarea { height: 150px; resize: vertical; font-family: monospace; }
         
-        /* Кнопки */
         button.main-btn { width: 100%; padding: 14px; font-size: 16px; font-weight: bold; background: var(--accent); color: #11111b; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
         button.secondary-btn { background: transparent; color: var(--subtext); border: 2px solid #313244; width: 100%; padding: 12px; font-size: 14px; border-radius: 8px; cursor: pointer; margin-top: 10px; }
         
-        /* Тест */
         .word { font-size: 28px; font-weight: bold; color: var(--accent); margin-bottom: 20px; }
         .result { font-size: 16px; font-weight: bold; margin-top: 20px; min-height: 24px; }
         .success { color: var(--green); }
@@ -48,7 +44,6 @@
 <body>
 
 <div class="card">
-    <!-- ЕКРАН 1: ГОЛОВНЕ МЕНЮ -->
     <div id="menu-screen" class="screen active">
         <h2>Твої модулі знань</h2>
         <p>Обери юніт для ультра-тренування на 120%</p>
@@ -56,17 +51,15 @@
         <button class="main-btn" onclick="switchScreen('create-screen')">+ Додати новий модуль</button>
     </div>
 
-    <!-- ЕКРАН 2: СТВОРЕННЯ МОДУЛЯ -->
     <div id="create-screen" class="screen">
         <h2>Новий модуль</h2>
         <input type="text" id="new-module-name" placeholder="Назва (напр. Unit 1: People)">
-        <p style="text-align:left;">Встав слова. Формат: англійські_форми [табуляція або дефіс] переклад. Кожна пара з нового рядка. Можна копіювати текст прямо з експорту Квізлет.</p>
+        <p style="text-align:left;">Встав слова. Формат: англійські_форми [дефіс або табуляція] переклад. Кожна пара з нового рядка. Можна копіювати текст прямо з експорту Квізлет.</p>
         <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;awake awoke awoken - прокидатися"></textarea>
         <button class="main-btn" onclick="saveNewModule()">Зберегти модуль</button>
         <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
     </div>
 
-    <!-- ЕКРАН 3: ТЕСТУВАННЯ -->
     <div id="quiz-screen" class="screen">
         <div class="progress" id="quiz-progress" style="color:var(--subtext); margin-bottom:10px;"></div>
         <div class="word" id="target-word">...</div>
@@ -78,9 +71,8 @@
 </div>
 
 <script>
-    // Стартовий базовий модуль, якщо пам'ять пуста
     const DEFAULT_MODULES = {
-        "Таблиця неправильних дієслів (Демо)": {
+        "Неправильні дієслова (Демо)": {
             "arise arose arisen": "виникати, з'являтися",
             "awake awoke awoken": "прокидатися",
             "be was were been": "бути"
@@ -127,7 +119,6 @@
         const parsedWords = {};
 
         lines.forEach(line => {
-            // Розбиваємо або по табуляції, або по знаку дефісу/тире
             let parts = line.split('\t');
             if (parts.length < 2) parts = line.split(' - ');
             if (parts.length < 2) parts = line.split('-');
@@ -168,7 +159,7 @@
             alert('В цьому модулі немає слів!');
             return;
         }
-        questions.sort(() => Math.random() - 0.5); // Рандомний мікс
+        questions.sort(() => Math.random() - 0.5);
         currentIndex = 0;
         score = 0;
         switchScreen('quiz-screen');
@@ -230,7 +221,6 @@
         if (e.key === 'Enter') handleQuizSubmit();
     });
 
-    // Старт
     renderMenu();
 </script>
 
