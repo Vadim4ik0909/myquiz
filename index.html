@@ -24,9 +24,14 @@
         p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
         
         .module-list { margin: 20px 0; text-align: left; }
-        .module-item { background: #313244; padding: 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .module-item { background: #313244; padding: 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .module-item:hover { background: #45475a; }
         .delete-btn { background: var(--red); color: #11111b; padding: 5px 10px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; cursor: pointer; }
+        
+        /* Опції */
+        .options-group { background: #313244; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left; }
+        .option-row { display: flex; align-items: center; margin-bottom: 15px; cursor: pointer; font-size: 16px; }
+        .option-row input { margin-right: 12px; width: 18px; height: 18px; cursor: pointer; }
         
         input[type="text"], textarea { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: 2px solid #313244; background: #313244; color: var(--text); margin-bottom: 15px; outline: none; }
         input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
@@ -35,8 +40,13 @@
         button.main-btn { width: 100%; padding: 14px; font-size: 16px; font-weight: bold; background: var(--accent); color: #11111b; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
         button.secondary-btn { background: transparent; color: var(--subtext); border: 2px solid #313244; width: 100%; padding: 12px; font-size: 14px; border-radius: 8px; cursor: pointer; margin-top: 10px; }
         
-        .word { font-size: 28px; font-weight: bold; color: var(--accent); margin-bottom: 20px; }
-        .result { font-size: 16px; font-weight: bold; margin-top: 20px; min-height: 24px; }
+        /* Варіанти відповідей (Заучування) */
+        .choices-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 20px 0; }
+        button.choice-btn { background: #313244; color: var(--text); border: 2px solid #45475a; padding: 14px; font-size: 16px; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s; }
+        button.choice-btn:hover { background: #45475a; border-color: var(--accent); }
+        
+        .word { font-size: 26px; font-weight: bold; color: var(--accent); margin-bottom: 25px; line-height: 1.3; }
+        .result { font-size: 18px; font-weight: bold; margin-top: 20px; min-height: 26px; }
         .success { color: var(--green); }
         .error { color: var(--red); }
     </style>
@@ -46,31 +56,48 @@
 <div class="card">
     <div id="menu-screen" class="screen active">
         <h2>Твої модулі знань</h2>
-        <p>Обери юніт для ультра-тренування на 120%</p>
+        <p>Обери юніт або неправильні дієслова для старту</p>
         <div class="module-list" id="modules-container"></div>
         <button class="main-btn" onclick="switchScreen('create-screen')">+ Додати новий модуль</button>
     </div>
 
+    <div id="setup-screen" class="screen">
+        <h2 id="setup-title">Налаштування тренування</h2>
+        <div class="options-group">
+            <div style="font-weight: bold; margin-bottom: 10px; color: var(--accent);">1. Оберіть режим:</div>
+            <label class="option-row"><input type="radio" name="quiz-mode" value="write" checked> 📝 Тест (Впиши відповідь вручну)</label>
+            <label class="option-row"><input type="radio" name="quiz-mode" value="choice"> 🕹️ Заучування (Вибір з 4 варіантів)</label>
+            
+            <div style="font-weight: bold; margin-top: 20px; margin-bottom: 10px; color: var(--accent);">2. Що показувати як запитання:</div>
+            <label class="option-row"><input type="radio" name="quiz-lang" value="ua" checked> 🇺🇦 Українське слово (Вгадуй англійську)</label>
+            <label class="option-row"><input type="radio" name="quiz-lang" value="en"> 🇬🇧 Англійське слово (Вгадуй переклад)</label>
+        </div>
+        <button class="main-btn" onclick="generateQuiz()">Почати тренування 🔥</button>
+        <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
+    </div>
+
     <div id="create-screen" class="screen">
         <h2>Новий модуль</h2>
-        <input type="text" id="new-module-name" placeholder="Назва (напр. Unit 4: Одяг)">
-        <p style="text-align:left;">
-            <strong>Розумний імпорт:</strong> Програма сама зрозуміє формат слів!<br>
-            • Звичайні слова: <code>age - вік</code> або <code>car автомобіль</code><br>
-            • Дієслова (3 форми): <code>arise arose arisen - виникати</code>
-        </p>
-        <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;age - вік&#10;beautiful - красивий"></textarea>
+        <input type="text" id="new-module-name" placeholder="Назва (напр. Unit 1: People)">
+        <p style="text-align:left;">Встав слова. Формат: англійська [дефіс] укр_переклад. Кожен рядок з нової лінії.<br>Наприклад:<br><code>car - машина</code><br><code>arise arose arisen - виникати</code></p>
+        <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;car - машина"></textarea>
         <button class="main-btn" onclick="saveNewModule()">Зберегти модуль</button>
         <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
     </div>
 
     <div id="quiz-screen" class="screen">
-        <div class="progress" id="quiz-progress" style="color:var(--subtext); margin-bottom:10px;"></div>
+        <div id="quiz-progress" style="color:var(--subtext); margin-bottom:15px; font-size:14px;"></div>
         <div class="word" id="target-word">...</div>
-        <input type="text" id="user-input" placeholder="Введи правильну відповідь" autocomplete="off" autocapitalize="none">
+        
+        <div id="write-block">
+            <input type="text" id="user-input" placeholder="Введіть правильний переклад" autocomplete="off" autocapitalize="none">
+        </div>
+        
+        <div id="choice-block" class="choices-grid"></div>
+        
         <button class="main-btn" id="action-btn" onclick="handleQuizSubmit()">Перевірити</button>
         <div class="result" id="result-msg"></div>
-        <button class="secondary-btn" onclick="switchScreen('menu-screen')">Перервати тест</button>
+        <button class="secondary-btn" onclick="switchScreen('menu-screen')">Перервати</button>
     </div>
 </div>
 
@@ -78,20 +105,22 @@
     const DEFAULT_MODULES = {
         "Демо: Неправильні дієслова": {
             "arise arose arisen": "виникати, з'являтися",
-            "awake awoke awoken": "прокидатися"
-        },
-        "Демо: Звичайні слова": {
-            "age": "вік",
-            "environment": "навколишнє середовище"
+            "awake awoke awoken": "прокидатися",
+            "be was were been": "бути",
+            "begin began begun": "починати"
         }
     };
 
     let ALL_DATA = JSON.parse(localStorage.getItem('my_quiz_modules')) || DEFAULT_MODULES;
-    let currentModuleKey = '';
+    let selectedModule = '';
     let questions = [];
     let currentIndex = 0;
     let score = 0;
     let isShowingAnswer = false;
+    
+    // Параметри поточної гри
+    let configMode = 'write'; // write або choice
+    let configTarget = 'ua'; // яка мова на екрані (запитання)
 
     function switchScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -106,74 +135,41 @@
             const item = document.createElement('div');
             item.className = 'module-item';
             item.innerHTML = `
-                <span onclick="startQuiz('${name}')">📂 <strong>${name}</strong> (${Object.keys(ALL_DATA[name]).length} слів)</span>
+                <span onclick="openSetup('${name}')">📂 <strong>${name}</strong> (${Object.keys(ALL_DATA[name]).length} слів)</span>
                 <button class="delete-btn" onclick="deleteModule('${name}', event)">Видалити</button>
             `;
             container.appendChild(item);
         });
     }
 
+    function openSetup(name) {
+        selectedModule = name;
+        document.getElementById('setup-title').innerText = `Тренажер: ${name}`;
+        switchScreen('setup-screen');
+    }
+
     function saveNewModule() {
         const name = document.getElementById('new-module-name').value.trim();
         const text = document.getElementById('new-module-words').value.trim();
-        
-        if (!name || !text) {
-            alert('Заповни назву і додай слова!');
-            return;
-        }
+        if (!name || !text) return alert('Заповни поля!');
 
         const lines = text.split('\n');
         const parsedWords = {};
 
         lines.forEach(line => {
-            let cleanedLine = line.trim();
-            if (!cleanedLine) return;
+            let parts = line.split(' - ');
+            if (parts.length < 2) parts = line.split('-');
+            if (parts.length < 2) parts = line.split('\t');
 
-            let en = "";
-            let ua = "";
-
-            // 1. Пробуємо розбити по дефісах або тире
-            if (cleanedLine.includes(' - ')) {
-                let parts = cleanedLine.split(' - ');
-                en = parts[0].trim();
-                ua = parts[1].trim();
-            } else if (cleanedLine.includes('-')) {
-                let parts = cleanedLine.split('-');
-                en = parts[0].trim();
-                ua = parts[1].trim();
-            } else if (cleanedLine.includes('\t')) {
-                // 2. Пробуємо розбити по знаку табуляції (копіювання з Quizlet)
-                let parts = cleanedLine.split('\t');
-                en = parts[0].trim();
-                ua = parts[1].trim();
-            } else {
-                // 3. Якщо розділювача немає, парсимо розумним пробілом (для звичайних слів "пробіл переклад")
-                // Шукаємо перший кириличний символ (українську літеру), щоб зрозуміти, де починається переклад
-                let match = cleanedLine.match(/[а-яієґыуэояёа-яА-ЯІЄҐ]/);
-                if (match) {
-                    let index = match.index;
-                    en = cleanedLine.substring(0, index).trim();
-                    ua = cleanedLine.substring(index).trim();
-                }
-            }
-
-            // Очищаємо подвійні пробіли всередині англійської частини (щоб 3 форми дієслова зливалися гарно)
-            if (en && ua) {
-                en = en.replace(/\s+/g, ' ');
-                parsedWords[en] = ua;
+            if (parts.length >= 2) {
+                const en = parts[0].trim().replace(/\s+/g, ' ');
+                const ua = parts[1].trim();
+                if (en && ua) parsedWords[en] = ua;
             }
         });
 
-        if (Object.keys(parsedWords).length === 0) {
-            alert('Не вдалося розпізнати формат. Переконайся, що англійська частина йде першою, а переклад другою.');
-            return;
-        }
-
         ALL_DATA[name] = parsedWords;
         localStorage.setItem('my_quiz_modules', JSON.stringify(ALL_DATA));
-        
-        document.getElementById('new-module-name').value = '';
-        document.getElementById('new-module-words').value = '';
         switchScreen('menu-screen');
     }
 
@@ -186,13 +182,25 @@
         }
     }
 
-    function startQuiz(name) {
-        currentModuleKey = name;
-        questions = Object.entries(ALL_DATA[name]);
-        if(questions.length === 0) {
-            alert('В цьому модулі немає слів!');
+    function generateQuiz() {
+        configMode = document.querySelector('input[name="quiz-mode"]:checked').value;
+        configTarget = document.querySelector('input[name="quiz-lang"]:checked').value;
+        
+        const originalPairs = Object.entries(ALL_DATA[selectedModule]);
+        if (originalPairs.length < 4 && configMode === 'choice') {
+            alert('Для заучування з 4 варіантами у модулі має бути хоча б 4 слова!');
             return;
         }
+
+        questions = originalPairs.map(pair => {
+            return {
+                en: pair[0],
+                ua: pair[1],
+                question: configTarget === 'ua' ? pair[1] : pair[0],
+                answer: configTarget === 'ua' ? pair[0] : pair[1]
+            };
+        });
+
         questions.sort(() => Math.random() - 0.5);
         currentIndex = 0;
         score = 0;
@@ -204,65 +212,124 @@
         const inputEl = document.getElementById('user-input');
         const msgEl = document.getElementById('result-msg');
         const btnEl = document.getElementById('action-btn');
+        const writeBlock = document.getElementById('write-block');
+        const choiceBlock = document.getElementById('choice-block');
         
-        if (currentIndex < questions.length) {
-            document.getElementById('quiz-progress').innerText = `Модуль: ${currentModuleKey} | Картка: ${currentIndex + 1} з ${questions.length}`;
-            document.getElementById('target-word').innerText = questions[currentIndex][1];
-            inputEl.value = '';
-            inputEl.disabled = false;
-            msgEl.innerText = '';
-            btnEl.innerText = 'Перевірити';
-            isShowingAnswer = false;
-            
-            // Підказка в плейсхолдері в залежності від типу картки
-            let correctAns = questions[currentIndex][0];
-            let spaceCount = (correctAns.match(/\s/g) || []).length;
-            if (spaceCount >= 2) {
-                inputEl.placeholder = "Введи 3 форми через пробіл";
-            } else {
-                inputEl.placeholder = "Введи слово англійською";
-            }
+        isShowingAnswer = false;
+        msgEl.innerText = '';
+        btnEl.innerText = 'Перевірити';
+        btnEl.style.display = configMode === 'write' ? 'block' : 'none';
 
-            setTimeout(() => inputEl.focus(), 50);
+        if (currentIndex < questions.length) {
+            const currentObj = questions[currentIndex];
+            document.getElementById('quiz-progress').innerText = `Картка ${currentIndex + 1} з ${questions.length} | Рахунок: ${score}`;
+            document.getElementById('target-word').innerText = currentObj.question;
+
+            if (configMode === 'write') {
+                writeBlock.style.display = 'block';
+                choiceBlock.style.display = 'none';
+                inputEl.value = '';
+                inputEl.disabled = false;
+                setTimeout(() => inputEl.focus(), 50);
+            } else {
+                writeBlock.style.display = 'none';
+                choiceBlock.style.display = 'grid';
+                generateChoices(currentObj);
+            }
         } else {
             const percent = Math.round((score / questions.length) * 100);
             document.getElementById('quiz-screen').innerHTML = `
-                <div class="word" style="color: var(--green)">Фініш! 🔥</div>
-                <div style="font-size:18px; margin-bottom:20px;">Результат: ${score} з ${questions.length}<br>Точність: ${percent}%</div>
-                <button class="main-btn" onclick="location.reload()">До меню модулів</button>
+                <div class="word" style="color: var(--green)">Тест завершено! 🔥</div>
+                <div style="font-size:20px; margin-bottom:25px;">Результат: ${score} з ${questions.length}<br>Точність: ${percent}%</div>
+                <button class="main-btn" onclick="location.reload()">До головного меню</button>
             `;
         }
     }
 
-    function handleQuizSubmit() {
-        const inputEl = document.getElementById('user-input');
+    function generateChoices(currentObj) {
+        const choiceBlock = document.getElementById('choice-block');
+        choiceBlock.innerHTML = '';
+
+        // Збираємо унікальні варіанти обманок
+        let pool = questions.map(q => q.answer).filter(ans => ans !== currentObj.answer);
+        pool.sort(() => Math.random() - 0.5);
+        
+        let finalChoices = [currentObj.answer, pool[0], pool[1], pool[2]].filter(Boolean);
+        finalChoices.sort(() => Math.random() - 0.5); // перемішуємо самі кнопки
+
+        finalChoices.forEach(choice => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = choice;
+            btn.onclick = () => selectChoice(btn, choice, currentObj.answer);
+            choiceBlock.appendChild(btn);
+        });
+    }
+
+    function selectChoice(clickedBtn, selectedAnswer, correctAnswer) {
+        if (isShowingAnswer) return;
+        isShowingAnswer = true;
+        
         const msgEl = document.getElementById('result-msg');
         const btnEl = document.getElementById('action-btn');
+        btnEl.style.display = 'block';
+        btnEl.innerText = 'Далі';
 
-        if (!isShowingAnswer) {
-            const userAns = inputEl.value.trim().toLowerCase().replace(/\s+/g, ' ');
-            const correctAns = questions[currentIndex][0].toLowerCase();
-
-            inputEl.disabled = true;
-            isShowingAnswer = true;
-
-            if (userAns === correctAns) {
-                score++;
-                msgEl.className = 'result success';
-                msgEl.innerText = '🔥 Точно в ціль! +1 до дофаміну!';
-            } else {
-                msgEl.className = 'result error';
-                msgEl.innerText = `❌ Схибив! Правильно: ${questions[currentIndex][0]}`;
+        // Розмальовуємо кнопки
+        document.querySelectorAll('.choice-btn').forEach(btn => {
+            if (btn.innerText === correctAnswer) {
+                btn.style.background = 'var(--green)';
+                btn.style.color = '#11111b';
             }
-            btnEl.innerText = 'Далі';
+        });
+
+        if (selectedAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+            score++;
+            msgEl.className = 'result success';
+            msgEl.innerText = '🔥 Правильно! Вперед до дофаміну!';
         } else {
+            clickedBtn.style.background = 'var(--red)';
+            clickedBtn.style.color = '#11111b';
+            msgEl.className = 'result error';
+            msgEl.innerText = `❌ Схибив! Правильна відповідь виділена зеленим.`;
+        }
+    }
+
+    function handleQuizSubmit() {
+        if (configMode === 'write') {
+            const inputEl = document.getElementById('user-input');
+            const msgEl = document.getElementById('result-msg');
+            const btnEl = document.getElementById('action-btn');
+
+            if (!isShowingAnswer) {
+                const userAns = inputEl.value.trim().toLowerCase().replace(/\s+/g, ' ');
+                const correctAns = questions[currentIndex][0] ? questions[currentIndex].answer.toLowerCase() : '';
+
+                inputEl.disabled = true;
+                isShowingAnswer = true;
+
+                if (userAns === correctAns) {
+                    score++;
+                    msgEl.className = 'result success';
+                    msgEl.innerText = '🔥 Точно в ціль!';
+                } else {
+                    msgEl.className = 'result error';
+                    msgEl.innerText = `❌ Правильно: ${questions[currentIndex].answer}`;
+                }
+                btnEl.innerText = 'Далі';
+            } else {
+                currentIndex++;
+                showQuestion();
+            }
+        } else {
+            // Для режиму кнопок кнопка "Далі" просто перемикає картку
             currentIndex++;
             showQuestion();
         }
     }
 
     document.getElementById('user-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') handleQuizSubmit();
+        if (e.key === 'Enter' && configMode === 'write') handleQuizSubmit();
     });
 
     renderMenu();
