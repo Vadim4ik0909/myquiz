@@ -20,7 +20,7 @@
         .screen { display: none; text-align: center; }
         .screen.active { display: block; }
         
-        h1, h2 { margin-bottom: 20px; color: var(--accent); }
+        h2 { margin-bottom: 20px; color: var(--accent); }
         p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
         
         .module-list { margin: 20px 0; text-align: left; }
@@ -28,7 +28,6 @@
         .module-item:hover { background: #45475a; }
         .delete-btn { background: var(--red); color: #11111b; padding: 5px 10px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; cursor: pointer; }
         
-        /* Опції */
         .options-group { background: #313244; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left; }
         .option-row { display: flex; align-items: center; margin-bottom: 15px; cursor: pointer; font-size: 16px; }
         .option-row input { margin-right: 12px; width: 18px; height: 18px; cursor: pointer; }
@@ -40,7 +39,6 @@
         button.main-btn { width: 100%; padding: 14px; font-size: 16px; font-weight: bold; background: var(--accent); color: #11111b; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
         button.secondary-btn { background: transparent; color: var(--subtext); border: 2px solid #313244; width: 100%; padding: 12px; font-size: 14px; border-radius: 8px; cursor: pointer; margin-top: 10px; }
         
-        /* Варіанти відповідей (Заучування) */
         .choices-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 20px 0; }
         button.choice-btn { background: #313244; color: var(--text); border: 2px solid #45475a; padding: 14px; font-size: 16px; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s; }
         button.choice-btn:hover { background: #45475a; border-color: var(--accent); }
@@ -54,6 +52,7 @@
 <body>
 
 <div class="card">
+    <!-- ЕКРАН 1: ГОЛОВНЕ МЕНЮ -->
     <div id="menu-screen" class="screen active">
         <h2>Твої модулі знань</h2>
         <p>Обери юніт або неправильні дієслова для старту</p>
@@ -61,6 +60,7 @@
         <button class="main-btn" onclick="switchScreen('create-screen')">+ Додати новий модуль</button>
     </div>
 
+    <!-- ЕКРАН 2: НАЛАШТУВАННЯ ТЕСТУ -->
     <div id="setup-screen" class="screen">
         <h2 id="setup-title">Налаштування тренування</h2>
         <div class="options-group">
@@ -76,15 +76,17 @@
         <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
     </div>
 
+    <!-- ЕКРАН 3: СТВОРЕННЯ МОДУЛЯ -->
     <div id="create-screen" class="screen">
         <h2>Новий модуль</h2>
         <input type="text" id="new-module-name" placeholder="Назва (напр. Unit 1: People)">
         <p style="text-align:left;">Встав слова. Формат: англійська [дефіс] укр_переклад. Кожен рядок з нової лінії.<br>Наприклад:<br><code>car - машина</code><br><code>arise arose arisen - виникати</code></p>
-        <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;car - машина"></textarea>
+        <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;car - machine"></textarea>
         <button class="main-btn" onclick="saveNewModule()">Зберегти модуль</button>
         <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
     </div>
 
+    <!-- ЕКРАН 4: САМ ТЕСТ -->
     <div id="quiz-screen" class="screen">
         <div id="quiz-progress" style="color:var(--subtext); margin-bottom:15px; font-size:14px;"></div>
         <div class="word" id="target-word">...</div>
@@ -106,8 +108,7 @@
         "Демо: Неправильні дієслова": {
             "arise arose arisen": "виникати, з'являтися",
             "awake awoke awoken": "прокидатися",
-            "be was were been": "бути",
-            "begin began begun": "починати"
+            "be was were been": "бути"
         }
     };
 
@@ -117,15 +118,22 @@
     let currentIndex = 0;
     let score = 0;
     let isShowingAnswer = false;
-    
-    // Параметри поточної гри
-    let configMode = 'write'; // write або choice
-    let configTarget = 'ua'; // яка мова на екрані (запитання)
+    let configMode = 'write';
+    let configTarget = 'ua';
 
     function switchScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
-        if(screenId === 'menu-screen') renderMenu();
+        
+        if (screenId === 'menu-screen') {
+            renderMenu();
+        }
+        
+        // ФІКС БАГУ: Очищення полів при кожному відкритті екрану створення нового модуля
+        if (screenId === 'create-screen') {
+            document.getElementById('new-module-name').value = '';
+            document.getElementById('new-module-words').value = '';
+        }
     }
 
     function renderMenu() {
@@ -250,12 +258,11 @@
         const choiceBlock = document.getElementById('choice-block');
         choiceBlock.innerHTML = '';
 
-        // Збираємо унікальні варіанти обманок
         let pool = questions.map(q => q.answer).filter(ans => ans !== currentObj.answer);
         pool.sort(() => Math.random() - 0.5);
         
         let finalChoices = [currentObj.answer, pool[0], pool[1], pool[2]].filter(Boolean);
-        finalChoices.sort(() => Math.random() - 0.5); // перемішуємо самі кнопки
+        finalChoices.sort(() => Math.random() - 0.5);
 
         finalChoices.forEach(choice => {
             const btn = document.createElement('button');
@@ -275,7 +282,6 @@
         btnEl.style.display = 'block';
         btnEl.innerText = 'Далі';
 
-        // Розмальовуємо кнопки
         document.querySelectorAll('.choice-btn').forEach(btn => {
             if (btn.innerText === correctAnswer) {
                 btn.style.background = 'var(--green)';
@@ -303,7 +309,7 @@
 
             if (!isShowingAnswer) {
                 const userAns = inputEl.value.trim().toLowerCase().replace(/\s+/g, ' ');
-                const correctAns = questions[currentIndex][0] ? questions[currentIndex].answer.toLowerCase() : '';
+                const correctAns = questions[currentIndex].answer.toLowerCase();
 
                 inputEl.disabled = true;
                 isShowingAnswer = true;
@@ -322,7 +328,6 @@
                 showQuestion();
             }
         } else {
-            // Для режиму кнопок кнопка "Далі" просто перемикає картку
             currentIndex++;
             showQuestion();
         }
