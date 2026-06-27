@@ -415,7 +415,51 @@
         localStorage.setItem('my_quiz_mem_stats', JSON.stringify(MEMORY_STATS));
     }
 
-    window.onload = function() { switchScreen('menu-screen'); };
+    async function loadAllModules() {
+        const files = [
+            "Unit 1.txt", "Unit 2.txt", "Unit 3.txt", "Unit 4.txt", "Unit 5.txt",
+            "Unit 6.txt", "Unit 7.txt", "Unit 8.txt", "Unit 10.txt", "Unit 11.txt",
+            "Unit 12.txt", "Unit 13.txt", "Unit 14.txt", "Unit 15.txt"
+        ];
+        
+        const BOOK_TITLES = {
+            "1": "Unit 1: People and communities", "2": "Unit 2: Housing and home environment",
+            "3": "Unit 3: School and education", "4": "Unit 4: Work and career",
+            "5": "Unit 5: Family and social life", "6": "Unit 6: Food and nutrition",
+            "7": "Unit 7: Shopping and services", "8": "Unit 8: Travelling and tourism",
+            "10": "Unit 10: Sport and fitness", "11": "Unit 11: Health and medical care",
+            "12": "Unit 12: Science and technology", "13": "Unit 13: Nature and environment",
+            "14": "Unit 14: Society and law", "15": "Unit 15: Global English / Culture"
+        };
+
+        // Завантажуємо лише якщо база порожня, щоб не перезаписувати твій прогрес кожного разу
+        if (Object.keys(SAVED_USER_DATA).length === 0) {
+            for (let f of files) {
+                try {
+                    let res = await fetch('modules/' + f);
+                    let text = await res.text();
+                    let lines = text.split('\n');
+                    let words = {};
+                    lines.forEach(l => { 
+                        let p = l.split('\t'); 
+                        if(p.length < 2) p = l.split(' - '); 
+                        if(p.length >= 2) words[p[0].trim()] = p[1].trim(); 
+                    });
+                    let unitNum = f.match(/\d+/)[0];
+                    if (BOOK_TITLES[unitNum]) {
+                        SAVED_USER_DATA[BOOK_TITLES[unitNum]] = words;
+                    }
+                } catch(e) { console.warn("Файл " + f + " не знайдено в папці modules/"); }
+            }
+            localStorage.setItem('my_quiz_modules', JSON.stringify(SAVED_USER_DATA));
+            ALL_DATA = Object.assign({}, DEFAULT_MODULES, SAVED_USER_DATA);
+        }
+    }
+
+    window.onload = async function() { 
+        await loadAllModules();
+        switchScreen('menu-screen'); 
+    };
 </script>
 </body>
 </html>
