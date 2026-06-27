@@ -1,0 +1,230 @@
+bakery products	хлібобулочні вироби
+cereals	злаки / крупи
+dairy products	молочні продукти
+drinks	напої
+beverages	напої
+eggs	яйця
+fish	риба
+fruit	фрукти
+meat	м'ясо
+pasta	макаронні вироби
+pulses	бобові
+rice	рис
+seafood	морепродукти
+shellfish	молюски
+snacks	перекус
+nibbles	перекус (вдома до пива/коктейлів)
+sweets	солодощі
+vegetables	овочі
+apple	яблуко
+apricot	абрикос
+banana	банан
+blackcurrant	чорна смородина
+cherry	вишня
+grapefruit	грейпфрут
+grapes	виноград
+kiwi	ківі
+lemon	лимон
+lime	лайм
+mandarin	мандарин
+nectarine	нектарин
+orange	апельсин
+peach	персик
+pear	груша
+pineapple	ананас
+plum	слива
+raspberry	малина
+strawberry	полуниця
+butter	вершкове масло
+cheese	сир (твердий)
+cottage cheese	домашній сир (кисломолочний)
+cream	вершки
+milk	молоко
+yoghurt	йогурт
+roll	булка
+white bread	білий хліб
+brown bread	чорний хліб
+wholemeal bread	цільнозерновий хліб
+beef	яловичина
+chicken	курка
+fillet	філе
+ham	шинка
+pork chop	свиняча відбивна
+pork	свинина
+poultry	птиця (м'ясо птиці)
+sausage	ковбаса / сосиска
+rare steak	стейк з кров'ю
+medium steak	стейк середнього смаження
+well-done steak	добре просмажений стейк
+veal	телятина
+crab	краб
+lobster	лобстер
+mussel	мідії
+octopus	восьминіг
+oyster	устриці
+shrimp	креветка
+prawn	велика креветка
+squid	кальмар
+biscuits	печиво
+cake	торт / тістечко
+chocolate	шоколад
+sweet	цукерка
+instant coffee	розчинна кава
+white coffee	кава з молоком
+black coffee	чорна кава
+strong coffee	міцна кава
+weak coffee	неміцна кава
+fruit juice	фруктовий сік
+soft drink	безалкогольний напій
+sparkling water	газована мінеральна вода
+fizzy water	газована вода
+still water	негазована мінеральна вода
+black tea	чорний чай
+fruit tea	фруктовий чай
+lemon tea	чай з лимоном
+asparagus	спаржа
+beetroot	буряк
+broccoli	броколі
+Brussels sprouts	bрюссельська капуста
+cabbage	капуста
+carrot	морква
+cauliflower	цвітна капуста
+celery	селера
+cucumber	огірок
+garlic	часник
+green bean	зелена квасоля
+mushroom	гриб
+onion	цибуля (ріпчаста)
+spring onion	зелена цибуля
+leek	цибуля-порей
+lettuce	листя салату
+parsley	петрушка
+green pepper	зелений перець
+red pepper	червоний перець
+potato	картопля
+radish	редис
+tomato	томат / помідор
+turnip	ріпа
+add	додавати
+beat the eggs	розбивати (збивати) яйця
+blend	змішувати (блендером)
+bring soup to the boil	доводити суп до кипіння
+chop	рубати / дрібно нарізати
+combine with sth	поєднувати з чимось
+cut into cubes	нарізати кубиками
+grate	терти на тертці
+melt	розтоплювати
+mince meat	робити фарш (рубати м'ясо)
+mix	перемішувати
+peel	чистити (шкірку)
+pour	наливати
+preheat the oven to 220 degrees	розігріти піч до 220 градусів
+scramble eggs	робити яєчню (бовтанку)
+slice	нарізати скибками
+stir	помішувати (ложкою)
+bake	пекти (в духовці)
+boil	варити (у воді)
+cook	готувати їжу
+fry	смажити (на пательні)
+grill	готувати на грилі
+heat up	підігрівати
+roast	запікати / смажити (м'ясо в духовці)
+season with salt and pepper to taste	приправити сіллю та перцем за смаком
+sprinkle	посипати
+steam	готувати на пару
+bitter	гіркий
+salty	солоний
+sour	кислий
+spicy	гострий (пряний)
+sweet	солодкий
+breakfast	сніданок
+dinner	обід / головний прийом їжі
+lunch	ланч / обід
+packed lunch	сухий пайок / готовий обід з собою
+supper	вечеря (пізня)
+café	кав'ярня
+coffee house	кав'ярня
+cafeteria	кафетерій / їдальня самообслуговування
+cocktail bar	коктейль-бар
+fast food restaurant	ресторан швидкого харчування
+ice cream parlour	кафе-морозиво
+school canteen	шкільна їдальня
+appetite	апетит
+balanced diet	збалансоване харчування
+be on a diet	бути на дієті
+go on a diet	сідати на дієту
+stick to a diet	дотримуватись дієти
+bon appetit	смачного
+burn fat	спалювати жир
+burn calories	спалювати калорії
+carbohydrates	вуглеводи
+chef	шеф-кухар
+cookery book	кулінарна книга
+cut down on sth	зменшити споживання чогось
+cutlery	столове приладдя (ножі, виделки)
+dessert	десерт
+diet pill	пігулки для схуднення
+diet rich in vitamins	харчування, збагачене вітамінами
+dish	страва
+eating disorder	розлад харчової поведінки
+fatty food	жирна їжа
+fattening food	їжа, від якої гладшають
+delicious food	дуже смачна їжа
+excellent food	чудова їжа
+exotic food	екзотична їжа
+tasty food	смачна їжа
+convenient food	напівфабрикати
+genetically-modified food	ГМО їжа
+fresh food	свіжа їжа
+takeaway food	їжа з собою
+healthy food	здорова їжа
+unhealthy food	нездорова їжа
+frozen vegetables	заморожені овочі
+gain weight	набирати вагу
+put on weight	набирати вагу
+lose weight	втрачати вагу
+go bad	псуватися (про їжу)
+go off	прокисати / псуватися
+be off	бути зіпсованим
+go out for a meal	йти їсти в заклад (ресторан / кафе)
+have a sweet tooth	бути ласуном
+Help yourself	Пригощайся
+helping	порція
+herbs and spices	трави та спеції
+ingredients	інгредієнти
+junk food	нездорова їжа (фастфуд)
+leave a tip	залишати чайові
+low calorie food	низькокалорійна їжа
+high calorie food	висококалорійна їжа
+main course	основна страва
+fish course	страва з риби
+nutritional value	енергетична (поживна) цінність
+pay the bill	оплачувати рахунок
+proper nutrition	правильне харчування
+proteins	білки
+raw	сирий
+recipe	рецепт
+reserve a table at a restaurant	резервувати столик в ресторані
+book a table at a restaurant	забронювати столик в ресторані
+restaurant	ресторан
+second helping	друга (додаткова) порція
+serve	подавати їжу / обслуговувати
+skip breakfast	не снідати (пропускати сніданок)
+smoked	копчений
+stale	черствий (про хліб)
+Ukrainian cuisine	українська кухня
+Greek cuisine	грецька кухня
+vegetarian	вегетаріанець / вегетаріанська їжа
+We're having a barbecue tomorrow.	Будемо завтра робити барбекю.
+What would you recommend?	Що ви порадите спробувати?
+a bag of sugar	пакет цукру
+a bar of chocolate	плитка шоколаду
+a bottle of water	пляшка води
+a can of tuna	бляшанка тунця
+a carton of milk	картонна коробка молока
+a cup of tea	чашка чаю
+a glass of juice	склянка соку
+a jar of jam	банка варення
+a loaf of bread	буханець хліба
+a packet of biscuits	пачка печива
+a piece of meat	шматок м'яса

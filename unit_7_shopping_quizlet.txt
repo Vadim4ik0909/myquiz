@@ -1,0 +1,162 @@
+baker's	пекарня
+bookshop	книгарня
+butcher's	м'ясний магазин
+chemist's	аптека
+clothes shop	магазин одягу
+corner shop	магазин на розі (біля дому)
+local shop	місцевий магазин
+busy shop	популярний магазин (із великим потоком людей)
+well-stocked shop	магазин із великим вибором товарів
+expensive shop	дорогий магазин
+exclusive shop	ексклюзивний магазин
+duty-free shop	магазин безмитної торгівлі
+department store	універмаг
+DIY shop	будівельний магазин (зроби сам)
+dry cleaner's	хімчистка
+electrical shop	магазин електротоварів
+florist's	квітковий магазин
+furniture shop	магазин меблів
+garage	автомайстерня / гараж
+gift shop	сувенірний магазин
+greengrocer's	магазин овочів та фруктів
+grocer's	продовольчий магазин (бакалія)
+hairdresser's	перукарня
+laundry	пральня
+market square	ринок / ринкова площа
+marketplace	ринок
+music shop	магазин музичних інструментів
+newsagent's	газетний кіоск
+optician's	оптика
+outdoor market	відкритий ринок
+pet shop	зоомагазин
+photographer's	фотоательє / фотостудія
+post office	пошта
+public services	громадські послуги
+second-hand shop	магазин, де можна придбати вживані речі
+service shop	майстерня з ремонту товарів
+shoe shop	магазин взуття
+shopping centre	торговий центр
+shopping mall	торговий центр
+sports shop	магазин спортивних товарів
+stall	стійка / ятка / прилавок
+stationery store	магазин канцелярських товарів
+supermarket	супермаркет
+toy shop	магазин іграшок
+transport service	транспортні послуги
+audio equipment	аудіотехніка
+video equipment	відеотехніка
+beauty products	косметичні засоби
+electrical appliances	електроприлади
+groceries	продукти харчування (бакалія)
+household appliances	товари для дому / побутова техніка
+domestic appliances	побутова техніка
+jewellery	ювелірні прикраси
+hardware	прилади / інструменти / комп'ютерне залізо
+paper goods	паперові вироби
+stationery	канцелярські товари
+toiletries	товари особистої гігієни
+buy wholesale	купувати гуртом
+sell wholesale	продавати гуртом
+afford	дозволити собі придбати щось
+available	у наявності
+bargain	вигідна покупка
+borrow	позичати у когось
+buy cheaply	купувати дешево
+buy at a high price	купувати дорого
+buy on credit	купувати в кредит
+buy online	купувати в Інтернеті
+buy sth on special offer	купувати щось за спеціальною пропозицією
+cash card	платіжна (дебетова) картка
+cash desk	каса
+cash register	каса
+cash machine	банкомат
+cashpoint	банкомат
+charge card	платіжна картка
+debit card	дебетова картка
+checkout	каса (зона розрахунку в супермаркеті)
+cost	вартість / коштувати
+counter	стійка / прилавок
+customer	покупець / клієнт
+decrease prices	знижувати ціни
+dirt cheap	дуже дешево (за копійки)
+discount	знижка
+exchange sth for sth else	обмінювати щось на щось інше
+fitting room	примірочна
+free of charge	безкоштовно
+get a refund on	отримати повернення коштів за щось
+He charged the dinner bill to VISA	Він оплатив вечерю карткою VISA.
+I bought this dress in the sales.	Я придбала цю сукню на розрозпродажі.
+I have no change, I'm afraid.	На жаль, я не маю здачі.
+label	етикетка / бирка
+lend	позичати комусь
+Many shops hold sales in January or August.	Багато магазинів влаштовують розпродажі в січні чи серпні.
+means of payment	спосіб оплати
+forms of payment	форми оплати
+on sale	на розпродажі / у продажу
+pay by credit card	платіть кредитною карткою
+pay by cheque	платити чеком
+pay in cash	платити готівкою
+price	ціна
+put up prices	піднімати ціни
+increase prices	збільшувати ціни
+queue	черга
+receipt	чек (про оплату)
+reduction	зниження цін
+run out of	закінчуватися / забракнути
+sale items	товари з розпродажу
+sale	розпродаж
+shop assistant	продавець-консультант
+shop owner	власник магазину
+shopaholic	шопоголік
+shopper	покупець
+shopping bag	торба / сумка для покупок
+shopping list	список покупок
+sold out	розпродано
+spend money on	витрачати гроші на
+This washing powder was on special offer last week.	Цей пральний порошок був за спеціальною ціною минулого тижня.
+trolley	візок (для покупок)
+What size are you?	Який у вас розмір?
+advertise	рекламувати
+advertisement	реклама / оголошення
+advert	реклама
+ad	реклама
+advertising agency	рекламна агенція
+advertising campaign	рекламна кампанія
+billboard	білборд / рекламний щит
+commercial break	рекламна пауза
+TV commercials are the most effective form of advertising.	Реклама по телебаченню - найефективніший спосіб рекламування.
+radio commercial	реклама на радіо
+TV commercial	реклама по телебаченню
+complain about	скаржитись на щось
+faulty product	бракований (дефектний) товар
+good advertisement for sth	хороша реклама чогось
+bad advertisement for sth	погана реклама чогось
+make a complaint	залишити скаргу / подати скаргу
+place an advertisement	розмістити рекламу
+promotion	просування товару / акція
+quality	якість
+spot	місце (для реклами) / рекламний ролик
+This magazine is mainly made up of advertising.	В цьому журналі переважно реклама.
+closed for deliveries	зачинено у зв'язку з прибуттям товару
+chain of shops	мережа магазинів
+cheap place to shop	місце, в якому можна придбати дешеві товари
+department	відділ (в універмазі)
+discount price	ціна зі знижкою
+do one's shopping	ходити за покупками
+do the shopping	ходити за покупками
+shop around	порівнювати ціни в магазинах / шукати товар
+shop (v)	ходити по магазинах
+fair	ярмарок
+flea market	блошиний ринок
+get a discount on	отримати знижку на
+go into town	їздити до міста (за покупками)
+good purchase	вигідна покупка
+bad purchase	невигідна покупка
+interest on sth	відсоток (комісія) на щось
+on display	на вітрині / виставлено на показ
+run a shop	керувати магазином
+supermarket sections	відділи в супермаркеті
+supply goods to shops	постачати товари в магазини
+a wide range of products	великий вибір товарів
+a wide range of services	великий вибір послуг
+window-shopping	розглядання вітрин (без покупок)

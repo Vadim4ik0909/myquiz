@@ -1,0 +1,236 @@
+adolescence	юність
+adulthood	зрілість / повноліття
+babyhood	раннє дитинство
+be in one's teens	бути у віці від 13 до 19 років
+be middle-aged	бути середнього віку
+childhood	дитинство
+in babyhood	в дитинстві
+during babyhood	в дитинстві
+old age	похилий вік
+retirement	вихід на пенсію
+the teenage years	підлітковий вік
+youth	молодь
+baby	дитина (немовля)
+little brother	молодший брат
+big brother	старший брат
+little sister	молодша сестра
+big sister	старша сестра
+brother	брат
+children	діти
+kids	діти
+couple	пара
+cousin	двоюрідний брат / двоюрідна сестра
+daughter-in-law	невістка
+son-in-law	зять
+distant relatives	далекі родичі
+extended family	велика родина (з дядьками, тітками тощо)
+father	батько
+dad	тато
+daddy	татусь
+godparents	хрещені батьки
+granddaughter	онучка
+grandson	онук
+grandmother	бабуся
+grandfather	дідусь
+grandparents	бабуся та дідусь
+grandchildren	онуки
+great-grandparents	прабабуся та прадід
+half-sister	зведена сестра (по одному з батьків)
+half-brother	зведений брат (по одному з батьків)
+husband	чоловік (у шлюбі)
+wife	дружина
+immediate family	найближчі родичі (батьки, діти, рідні брати/сестри)
+in-laws	рідня зі сторони чоловіка чи дружини
+mother	мати
+mum	мама
+mummy	матуся
+mother-in-law	теща / свекруха
+father-in-law	тесть / свекор
+nephew	племінник
+niece	племінниця
+only child	єдина дитина в сімʼї
+parents	батьки
+relatives	родичі
+siblings	рідні брати та сестри
+sister	сестра
+sister-in-law	зовиця / своячка / невістка
+brother-in-law	дівер / шурин / зять
+son	син
+daughter	дочка
+twins	близнюки
+identical twins	ідентичні близнюки
+stepbrother	зведений брат (діти від попередніх шлюбів)
+stepsister	зведена сестра (діти від попередніх шлюбів)
+stepdaughter	падчерка
+stepson	пасинок
+stepmother	мачуха
+stepfather	вітчим
+uncle	дядько
+aunt	тітка
+anniversary party	святкування ювілею (вечірка)
+birthday party	святкування дня нового народження (вечірка)
+celebrate birthday	святкувати день народження
+celebrate anniversary	святкувати ювілей / річницю
+celebrate Christmas	святкувати Різдво
+celebrate Easter	святкувати Великдень
+christening party	хрестини
+Christmas	Різдво
+Christmas Eve	Святвечір
+Easter	Великдень
+family gathering	родинні збори
+family reunion	воззʼєднання сімʼї
+fancy dress party	костюмована вечірка
+funeral ceremony	похорон
+graduation	випускний бал / випускний
+Halloween	свято Гелловін
+name day	іменини
+name day party	святкування іменин
+national holiday	національне свято
+New Year's Day	Новий Рік (1 січня)
+New Year's Eve	Переддень Нового Року (31 грудня)
+Thanksgiving	День Подяки
+wedding anniversary	річниця шлюбу
+wedding ceremony	одруження (офіційна церемонія)
+wedding reception	весілля (банкет / святкування)
+adopted child	прийомна дитина
+adult	доросла людина
+be pregnant	бути вагітною
+belong to a family	належати до сім'ї
+bride	наречена (на весіллі)
+bridegroom	наречений (на весіллі)
+child abuse	жорстоке поводження з дитиною
+children's home	притулок для сиріт
+orphanage	притулок для сиріт
+cohabit with sb	жити разом з кимось (без шлюбу)
+cohabitant	співмешканець
+common-law marriage	цивільний шлюб
+expect a baby	бути при надії (чекати на дитину)
+family tree	сімейне дерево
+fiancé	наречений (після заручин)
+fiancée	наречена (після заручин)
+foster family	прийомна сімʼя
+loving family	любляча сімʼя
+single-parent family	неповна сімʼя
+broken family	неповна (розпадна) сімʼя
+foster home	сімейний притулок
+generation gap	розрив поколінь
+get divorced	розлучитися
+get engaged	заручитися
+get married	одружитися
+marry sb	одружитися з кимось
+get married in a registry office	зареєструвати шлюб у РАЦСі
+head of the family	голова сім'ї
+breadwinner of the family	годувальник родини
+honeymoon	медовий місяць
+It runs in the family.	Це сімейна риса (передається у спадок).
+Like father, like son.	Який батько, такий і син.
+marriage	шлюб
+my childhood home	дім мого дитинства
+neglected child	занедбане дитя
+newly-married couple	молодята
+orphan	сирота
+quarrel with sb	сваритися з кимось
+argue with sb	сваритися / сперечатися з кимось
+have an argument with sb	мати суперечку з кимось
+registry office wedding	офіційна реєстрація шлюбу
+resemble sb	бути схожим на когось
+retirement pension	пенсія за віком
+be retired	йти у відставку / бути на пенсії
+start a family	створити родину
+striking resemblance	виняткова схожість
+take after	бути схожим на когось (із родичів)
+take in a foster child	взяти дитину на виховання
+teenager	підліток
+toddler	дитина віком від 1 до 3 років
+We are a family of four.	Наша сім'я складається з чотирьох осіб.
+well-brought up child	добре вихована дитина
+spoilt child	розбещена дитина
+wife-to-be	майбутня дружина
+husband-to-be	майбутній чоловік
+do homework	виконувати домашнє завдання
+do the housework	займатися хатніми справами
+do the shopping	йти за покупками
+do the ironing	прасувати
+do the cooking	готувати їжу
+do the washing-up	мити посуд
+get dressed	вдягатись
+go to bed	лягати спати
+go to sleep	засинати
+go to work	йти на роботу
+go to school	йти в школу
+have a bath	приймати ванну
+have a shower	приймати душ
+have a rest	відпочивати
+have a nap	задрімати
+have a snack	перекусити
+have breakfast	снідати
+have lunch	обідати
+have dinner	вечеряти
+have supper	вечеряти (пізно)
+leave home at 7	виходити з дому о 7 годині
+It takes me 10 minutes to walk to school.	Дорога до школи пішки займає в мене 10 хвилин.
+make the bed	заправляти ліжко
+My dad gives me a lift to school.	Мій тато підвозить мене до школи.
+play computer games	грати в компʼютерні ігри
+prepare meals	готувати їжу
+make meals	готувати їжу
+set the table	накривати на стіл
+lay the table	накривати на стіл
+share housework	розділяти хатні обов'язки
+stay up late	пізно лягати спати (не спати допізна)
+take the dog for a walk	гуляти з собакою
+tidy up	прибирати
+clean up	прибирати
+wake up	прокидатись
+get up	вставати з ліжка
+watch TV	дивитись телевізор
+chat on the Internet	спілкуватись в інтернеті
+do crosswords	розв'язувати кросворди
+do gymnastics	займатися гімнастикою
+do aerobics	займатися аеробікою
+do judo	займатися дзюдо
+go camping	ходити в походи (з наметами)
+go for a walk	йти на прогулянку
+go in for sports	займатися спортом
+go in for mountaineering	займатися альпінізмом
+go in for photography	займатися фотографією
+go in for painting	займатися живописом
+go rollerblading	кататися на роликах
+go skating	кататися на ковзанах
+go skiing	кататися на лижах
+go swimming	займатися плаванням
+go dancing	ходити на танці
+go bowling	грати в боулінг
+go fishing	ходити на риболовлю
+go to a party	ходити на вечірку
+go to a concert	ходити на концерт
+go to the cinema	ходить в кінотеатр
+go to the theatre	ходити в театр
+go to a club	ходити в клуб
+go to the gym	відвідувати спортзал
+horse riding	їздити верхи
+meet friends	зустрічатись з друзями
+play a musical instrument	грати на музичних інструментах
+play cards	грати в карти
+play board games	грати в настільні ігри
+play chess	грати в шахи
+play in a band	грати в музичній групі
+play the guitar	грати на гітарі
+play tennis	грати в теніс
+practise yoga	займатися йогою
+practise tai chi	займатися тай-ці
+change lifestyle	змінювати спосіб життя
+consumerist lifestyle	споживчий спосіб життя
+unhealthy lifestyle	нездоровий спосіб життя
+modern lifestyle	сучасний спосіб життя
+sedentary lifestyle	сидячий спосіб життя
+comfortable lifestyle	комфортний спосіб життя
+She leads a very active life.	Вона веде активний спосіб життя.
+break up with	розлучитись / розірвати стосунки з кимось
+bring up	виховувати когось
+fall out with	посваритись з кимось
+get on with	добре ладнати з кимось
+grow up	ставати дорослим (рости)
+hear from	отримати звістку від когось
+let down	підводити когось
+make up with	помиритися з кимось
