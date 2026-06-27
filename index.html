@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADHD Ультра-Тренажер 120%</title>
+    <title>ADHD Квіз-Платформа 120%</title>
     <style>
         :root {
             --bg: #1e1e2e;
@@ -15,15 +15,31 @@
             --red: #f38ba8;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .quiz-container { background: var(--surface); width: 100%; max-width: 500px; padding: 30px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); text-align: center; }
-        .progress { font-size: 14px; color: var(--subtext); margin-bottom: 10px; }
-        .title { font-size: 16px; color: var(--subtext); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: var(--surface); width: 100%; max-width: 550px; padding: 30px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .screen { display: none; text-align: center; }
+        .screen.active { display: block; }
+        
+        h1, h2 { margin-bottom: 20px; color: var(--accent); }
+        p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; }
+        
+        /* Списки та меню */
+        .module-list { margin: 20px 0; text-align: left; }
+        .module-item { background: #313244; padding: 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .module-item:hover { background: #45475a; }
+        .delete-btn { background: var(--red); color: #11111b; padding: 5px 10px; font-size: 12px; border-radius: 4px; border: none; }
+        
+        /* Форми введення */
+        input[type="text"], textarea { width: 100%; padding: 14px; font-size: 16px; border-radius: 8px; border: 2px solid #313244; background: #313244; color: var(--text); margin-bottom: 15px; outline: none; }
+        input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
+        textarea { height: 150px; resize: vertical; font-family: monospace; }
+        
+        /* Кнопки */
+        button.main-btn { width: 100%; padding: 14px; font-size: 16px; font-weight: bold; background: var(--accent); color: #11111b; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        button.secondary-btn { background: transparent; color: var(--subtext); border: 2px solid #313244; width: 100%; padding: 12px; font-size: 14px; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        
+        /* Тест */
         .word { font-size: 28px; font-weight: bold; color: var(--accent); margin-bottom: 20px; }
-        input[type="text"] { width: 100%; padding: 14px; font-size: 18px; border-radius: 8px; border: 2px solid #313244; background: #313244; color: var(--text); text-align: center; margin-bottom: 20px; outline: none; transition: border 0.2s; }
-        input[type="text"]:focus { border-color: var(--accent); }
-        button { width: 100%; padding: 14px; font-size: 16px; font-weight: bold; background: var(--accent); color: #11111b; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
-        button:active { opacity: 0.8; }
         .result { font-size: 16px; font-weight: bold; margin-top: 20px; min-height: 24px; }
         .success { color: var(--green); }
         .error { color: var(--red); }
@@ -31,66 +47,163 @@
 </head>
 <body>
 
-<div class="quiz-container" id="quiz-box">
-    <div class="progress" id="progress">Картка: 1 з 10</div>
-    <div class="title">Як перекласти англійською:</div>
-    <div class="word" id="target-word">Завантаження...</div>
-    <input type="text" id="user-input" placeholder="Введи 3 форми через пробіл" autocomplete="off" autocapitalize="none">
-    <button id="action-btn" onclick="handleSubmit()">Перевірити</button>
-    <div class="result" id="result-msg"></div>
+<div class="card">
+    <!-- ЕКРАН 1: ГОЛОВНЕ МЕНЮ -->
+    <div id="menu-screen" class="screen active">
+        <h2>Твої модулі знань</h2>
+        <p>Обери юніт для ультра-тренування на 120%</p>
+        <div class="module-list" id="modules-container"></div>
+        <button class="main-btn" onclick="switchScreen('create-screen')">+ Додати новий модуль</button>
+    </div>
+
+    <!-- ЕКРАН 2: СТВОРЕННЯ МОДУЛЯ -->
+    <div id="create-screen" class="screen">
+        <h2>Новий модуль</h2>
+        <input type="text" id="new-module-name" placeholder="Назва (напр. Unit 1: People)">
+        <p style="text-align:left;">Встав слова. Формат: англійські_форми [табуляція або дефіс] переклад. Кожна пара з нового рядка. Можна копіювати текст прямо з експорту Квізлет.</p>
+        <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;awake awoke awoken - прокидатися"></textarea>
+        <button class="main-btn" onclick="saveNewModule()">Зберегти модуль</button>
+        <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
+    </div>
+
+    <!-- ЕКРАН 3: ТЕСТУВАННЯ -->
+    <div id="quiz-screen" class="screen">
+        <div class="progress" id="quiz-progress" style="color:var(--subtext); margin-bottom:10px;"></div>
+        <div class="word" id="target-word">...</div>
+        <input type="text" id="user-input" placeholder="Введи форми через пробіл" autocomplete="off" autocapitalize="none">
+        <button class="main-btn" id="action-btn" onclick="handleQuizSubmit()">Перевірити</button>
+        <div class="result" id="result-msg"></div>
+        <button class="secondary-btn" onclick="switchScreen('menu-screen')">Перервати тест</button>
+    </div>
 </div>
 
 <script>
-    // Твоя база слів
-    const WORDS_BASE = {
-        "arise arose arisen": "виникати, з'являтися",
-        "awake awoke awoken": "прокидатися",
-        "be was were been": "бути",
-        "bear bore borne": "носити, переносити",
-        "beat beat beaten": "бити, калатати",
-        "become became become": "ставати, робитися",
-        "befall befell befallen": "траплятися",
-        "begin began begun": "починати, починатися",
-        "behold beheld beheld": "бачити, помічати",
-        "bend bent bent": "згинати, гнути"
+    // Стартовий базовий модуль, якщо пам'ять пуста
+    const DEFAULT_MODULES = {
+        "Таблиця неправильних дієслів (Демо)": {
+            "arise arose arisen": "виникати, з'являтися",
+            "awake awoke awoken": "прокидатися",
+            "be was were been": "бути"
+        }
     };
 
-    let questions = Object.entries(WORDS_BASE);
-    // Перемішування масиву (ADHD-рандом)
-    questions.sort(() => Math.random() - 0.5);
-
+    let ALL_DATA = JSON.parse(localStorage.getItem('my_quiz_modules')) || DEFAULT_MODULES;
+    let currentModuleKey = '';
+    let questions = [];
     let currentIndex = 0;
     let score = 0;
     let isShowingAnswer = false;
 
-    const progressEl = document.getElementById('progress');
-    const wordEl = document.getElementById('target-word');
-    const inputEl = document.getElementById('user-input');
-    const btnEl = document.getElementById('action-btn');
-    const msgEl = document.getElementById('result-msg');
+    function switchScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        if(screenId === 'menu-screen') renderMenu();
+    }
+
+    function renderMenu() {
+        const container = document.getElementById('modules-container');
+        container.innerHTML = '';
+        Object.keys(ALL_DATA).forEach(name => {
+            const item = document.createElement('div');
+            item.className = 'module-item';
+            item.innerHTML = `
+                <span onclick="startQuiz('${name}')">📂 <strong>${name}</strong> (${Object.keys(ALL_DATA[name]).length} слів)</span>
+                <button class="delete-btn" onclick="deleteModule('${name}', event)">Видалити</button>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    function saveNewModule() {
+        const name = document.getElementById('new-module-name').value.trim();
+        const text = document.getElementById('new-module-words').value.trim();
+        
+        if (!name || !text) {
+            alert('Заповни назву і додай хоча б кілька слів!');
+            return;
+        }
+
+        const lines = text.split('\n');
+        const parsedWords = {};
+
+        lines.forEach(line => {
+            // Розбиваємо або по табуляції, або по знаку дефісу/тире
+            let parts = line.split('\t');
+            if (parts.length < 2) parts = line.split(' - ');
+            if (parts.length < 2) parts = line.split('-');
+
+            if (parts.length >= 2) {
+                const en = parts[0].trim();
+                const ua = parts[1].trim();
+                if (en && ua) parsedWords[en] = ua;
+            }
+        });
+
+        if (Object.keys(parsedWords).length === 0) {
+            alert('Не вдалося розпізнати формат слів. Перевір розділювачі (дефіс або табуляція).');
+            return;
+        }
+
+        ALL_DATA[name] = parsedWords;
+        localStorage.setItem('my_quiz_modules', JSON.stringify(ALL_DATA));
+        
+        document.getElementById('new-module-name').value = '';
+        document.getElementById('new-module-words').value = '';
+        switchScreen('menu-screen');
+    }
+
+    function deleteModule(name, event) {
+        event.stopPropagation();
+        if (confirm(`Видалити модуль "${name}"?`)) {
+            delete ALL_DATA[name];
+            localStorage.setItem('my_quiz_modules', JSON.stringify(ALL_DATA));
+            renderMenu();
+        }
+    }
+
+    function startQuiz(name) {
+        currentModuleKey = name;
+        questions = Object.entries(ALL_DATA[name]);
+        if(questions.length === 0) {
+            alert('В цьому модулі немає слів!');
+            return;
+        }
+        questions.sort(() => Math.random() - 0.5); // Рандомний мікс
+        currentIndex = 0;
+        score = 0;
+        switchScreen('quiz-screen');
+        showQuestion();
+    }
 
     function showQuestion() {
+        const inputEl = document.getElementById('user-input');
+        const msgEl = document.getElementById('result-msg');
+        const btnEl = document.getElementById('action-btn');
+        
         if (currentIndex < questions.length) {
-            progressEl.innerText = `Картка: ${currentIndex + 1} з ${questions.length}`;
-            wordEl.innerText = questions[currentIndex][1];
+            document.getElementById('quiz-progress').innerText = `Модуль: ${currentModuleKey} | Картка: ${currentIndex + 1} з ${questions.length}`;
+            document.getElementById('target-word').innerText = questions[currentIndex][1];
             inputEl.value = '';
             inputEl.disabled = false;
             msgEl.innerText = '';
             btnEl.innerText = 'Перевірити';
             isShowingAnswer = false;
-            // Фокус на полі (зручно на ПК, на телефоні відкриє клавіатуру)
             setTimeout(() => inputEl.focus(), 50);
         } else {
             const percent = Math.round((score / questions.length) * 100);
-            document.getElementById('quiz-box').innerHTML = `
+            document.getElementById('quiz-screen').innerHTML = `
                 <div class="word" style="color: var(--green)">Фініш! 🔥</div>
-                <div class="result" style="margin-bottom: 20px;">Твій результат: ${score} з ${questions.length}<br>Точність: ${percent}%</div>
-                <button onclick="location.reload()">Пройти ще раз</button>
+                <div style="font-size:18px; margin-bottom:20px;">Результат: ${score} з ${questions.length}<br>Точність: ${percent}%</div>
+                <button class="main-btn" onclick="location.reload()">До меню модулів</button>
             `;
         }
     }
 
-    function handleSubmit() {
+    function handleQuizSubmit() {
+        const inputEl = document.getElementById('user-input');
+        const msgEl = document.getElementById('result-msg');
+        const btnEl = document.getElementById('action-btn');
+
         if (!isShowingAnswer) {
             const userAns = inputEl.value.trim().toLowerCase().replace(/\s+/g, ' ');
             const correctAns = questions[currentIndex][0].toLowerCase();
@@ -101,28 +214,24 @@
             if (userAns === correctAns) {
                 score++;
                 msgEl.className = 'result success';
-                msgEl.innerText = '🔥 Правильно! +1 до дофаміну!';
-                btnEl.innerText = 'Далі';
+                msgEl.innerText = '🔥 Точно в ціль! +1 до дофаміну!';
             } else {
                 msgEl.className = 'result error';
-                msgEl.innerText = `❌ Помилка! Правильно: ${questions[currentIndex][0]}`;
-                btnEl.innerText = 'Далі';
+                msgEl.innerText = `❌ Схибив! Правильно: ${questions[currentIndex][0]}`;
             }
+            btnEl.innerText = 'Далі';
         } else {
             currentIndex++;
             showQuestion();
         }
     }
 
-    // Дозволяємо надсилати по кнопці Enter на клавіатурі
-    inputEl.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            handleSubmit();
-        }
+    document.getElementById('user-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handleQuizSubmit();
     });
 
-    // Запуск першого запитання
-    showQuestion();
+    // Старт
+    renderMenu();
 </script>
 
 </body>
