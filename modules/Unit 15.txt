@@ -1,0 +1,69 @@
+Australia	Австралія
+Canberra	Канберра
+Canada	Канада
+Ottawa	Оттава
+Ireland	Ірландія
+Dublin	Дублін
+New Zealand	Нова Зеландія
+Wellington	Веллінгтон
+South Africa	Південна Африка
+Cape Town	Кейптаун
+bilingual education	двомовне навчання
+Comenius programme	програма Коменіус
+e-learning education	навчання онлайн
+Erasmus programme	програма Еразмус
+e-twinning	навчальна програма eTwinning
+Youth in Action programme	програма "Молодь в дії"
+believe in	вірити в
+choose from	обирати з
+choose between	обирати між
+compare with	порівнювати з
+compare to	порівнювати з
+cooperate with	співпрацювати з
+decide on	приймати рішення щодо
+involve in	залучати до
+report on	доповідати про
+translate from	перекладати з
+translate into	перекладати на
+accustomed to	звикнути до
+concerned about	занепокоєний чимось
+concerned for	занепокоєний чимось
+equal to	рівний чомусь
+famous for	відомий чимось
+proud of	пишатись кимось
+similar to	подібний до
+autumn (UK) / fall (US)	осінь
+bill (UK) / check (US)	рахунок (у ресторані)
+chemist's (UK) / pharmacy (US)	аптека
+chips (UK) / French fries (US)	картопля фрі
+cinema (UK) / movie theater (US)	кінотеатр
+city centre (UK) / downtown (US)	центр міста
+cooker (UK) / stove (US)	плита
+cooker (UK) / oven (US)	духовка
+crisps (UK) / potato chips (US)	чіпси
+film (UK) / movie (US)	фільм
+flat (UK) / apartment (US)	квартира
+flatmate (UK) / roommate (US)	співмешканець
+football (UK) / soccer (US)	футбол
+fridge (UK) / refrigerator (US)	холодильник
+garden (UK) / yard (US)	сад / подвір'я
+ground floor (UK) / first floor (US)	перший (наземний) поверх
+holiday (UK) / vacation (US)	канікули / відпустка
+jumper (UK) / sweater (US)	светр
+lift (UK) / elevator (US)	ліфт
+lorry (UK) / truck (US)	вантажівка
+mobile phone (UK) / cell phone (US)	мобільний телефон
+petrol (UK) / gas (US)	бензин
+primary school (UK) / elementary school (US)	початкова школа
+railway station (UK) / train station (US)	залізничний вокзал
+rubbish (UK) / garbage (US)	сміття
+rubbish (UK) / trash (US)	сміття
+secondary school (UK) / high school (US)	середня / старша школа
+shop (UK) / store (US)	магазин
+shop assistant (UK) / salesperson (US)	продавець-консультант
+surname (UK) / last name (US)	прізвище
+trainers (UK) / sneakers (US)	кросівки
+trousers (UK) / pants (US)	штани
+TV programme (UK) / TV show (US)	телепрограма
+radio programme (UK) / radio show (US)	радіопрограма
+underground (UK) / subway (US)	метро

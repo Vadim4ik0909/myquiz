@@ -1,0 +1,242 @@
+climate	клімат
+cold	холодний
+cool	прохолодний
+hot	спекотний / гарячий
+warm	теплий
+humid	вологий
+mild	м'який / помірний (клімат)
+tropical	тропічний
+wet	мокрий / вологий
+dry	сухий
+weather	погода
+beautiful weather	гарна погода
+lovely weather	чудова погода
+gorgeous weather	прекрасна погода
+chilly	прохолодно
+clear sky	безхмарне небо
+freezing cold	холоднеча
+It's cloudy.	Хмарно.
+It's sunny.	Сонячно.
+It's windy.	Вітряно.
+It's foggy.	Туманно.
+It's rainy.	Дощить.
+It's stormy.	Негода / штормить.
+It's snowing.	Йде сніг.
+It's raining.	Йде дощ.
+It looks like rain.	Схоже на дощ.
+clear up	розвиднітись
+downpour	злива
+drizzle	мжичка / мряка
+fog	туман
+frost	мороз
+ground frost	приморозки на землі
+hail	град
+heat	спека
+heatwave	хвиля спеки
+rain	дощ
+rainbow	веселка
+rainy spell	період дощів
+sunny spell	період сонячної погоди
+showers	зливи
+sleet	дощ зі снігом
+snowdrift	кучугура снігу / сніговий замет
+temperature above zero	температура вище нуля
+temperature below zero	температура нижче нуля
+There will be a drop in temperature next week.	На наступному тижні буде похолодання.
+There will be a rise in temperature next week.	На наступному тижні буде потепління.
+weather forecast	прогноз погоди
+snow	сніг
+storm	шторм / негода
+wind	вітер
+plant	рослина
+ant	мураха
+bee	бджола
+bumble bee	джміль
+butterfly	метелик
+fly	муха
+grasshopper	коник-стрибунець
+mosquito	комар
+wasp	оса
+crow	ворона
+cuckoo	зозуля
+eagle	орел
+owl	сова
+parrot	папуга
+peacock	павич
+pheasant	фазан
+pigeon	голуб
+seagull	чайка
+sparrow	горобець
+stork	лелека
+swan	лебідь
+cock	півень
+cow	корова
+duck	качка
+goat	коза
+goose	гуска
+geese	гуси
+hen	курка
+horse	кінь
+pig	свиня
+sheep	вівця / вівці
+turkey	індик
+budgie	хвилястий папуга
+canary	канарка
+dog: Alsatian	пес: вівчарка
+dog: dachshund	пес: такса
+dog: mongrel	пес: дворняжка
+dog: Doberman	пес: доберман
+guinea pig	морська свинка
+hamster	хом'як
+rabbit	кролик
+tortoise	черепашка (сухопутна)
+wild animals	дикі тварини
+bear	ведмідь
+crocodile	крокодил
+deer	олень
+elephant	слон
+fox	лисиця
+giraffe	жирафа
+hare	заєць
+hippo	бегемот
+kangaroo	кенгуру
+lizard	ящірка
+seal	тюлень
+snake	змія
+squirrel	білка
+wolf	вовк
+zebra	зебра
+sea animals	морські тварини
+whale	кит
+shark	акула
+sea turtle	морська черепаха
+dolphin	дельфін
+crocus	шафран (крокус)
+daffodil	нарцис
+daisy	маргаритка
+lily of the valley	конвалія
+poppy	мак
+primrose	первоцвіт
+snowdrop	пролісок
+sunflower	соняшник
+tulip	тюльпан
+violet	фіалка
+chestnut	каштан
+oak	дуб
+pine	сосна
+willow	верба
+beautiful	гарний
+picturesque	мальовничий
+breathtaking	захоплюючий / такий, що аж дух забиває
+rocky	кам'янистий
+mountainous	гірський
+rural	сільський
+urban	міський
+acid rain	кислотний дощ
+be environmentally aware	бути екологічно свідомим
+blossom	цвісти / розцвітати
+be in bloom	цвісти / бути в цвіту
+biodegradable	біорозкладний
+bottle bank	контейнер для пляшок
+paper bank	контейнер для паперу
+plastic bank	контейнер для пластику
+campaign for sth	кампанія за щось
+campaign against sth	кампанія проти чогось
+deforestation	вирубка лісів
+desert	пустеля
+destroy natural habitat	знищувати природне середовище проживання
+destruction	знищення
+die out	вимирати
+become extinct	стати вимерлим
+do damage to the environment	шкодити навколишньому середовищу
+cause damage to the environment	завдавати шкоди навколишньому середовищу
+ecology	екологія
+ecological disaster	екологічна катастрофа
+emit	викидати / випромінювати
+emissions	викиди
+endangered species of animals	види тварин під загрозою зникнення
+environmentally friendly	безпечний для довкілля
+environmental protection	охорона навколишнього середовища
+environmental preservation	збереження довкілля
+environmental threat	екологічна загроза
+exhaust fumes	вихлопні гази
+global warming	глобальне потепління
+greenhouse effect	парниковий ефект
+jungle	джунглі
+natural resources	природні ресурси
+natural disaster	стихійне лихо / природна катастрофа
+nature reserve	природний заповідник
+nature trail	екологічна тропа
+oil spill	вилив нафти / нафтова пляма
+ozone layer	озоновий шар
+ozone hole	озонова діра
+planting trees	саджати дерева
+protect	захищати
+preserve	оберігати / зберігати
+pollution	забруднення
+rainforest	тропічний ліс
+recycle	переробляти відходи
+renewable source of energy	відновлюване джерело енергії
+alternative source of energy	альтернативне джерело енергії
+returnable bottles	пляшки, які можна здавати
+rubbish	сміття
+rubbish dump	сміттєзвалище
+sewage	стічні води / каналізація
+sewage plant	станція очищення стічних вод
+sewage disposal	каналізація / очищення вод
+waste disposal	вивіз / утилізація сміття
+soil	ґрунт
+Some animals are in danger of extinction.	Деякі тварини знаходяться під загрозою вимирання.
+sort the rubbish into glass, paper, plastic	сортувати сміття на скло, папір, пластик
+toxic waste	токсичні відходи
+industrial waste	промислові відходи
+nuclear waste	радіоактивні відходи
+tropical forests	тропічні ліси
+wildlife	дика природа
+wilderness	дике місце / дика природа (пустеля)
+Earth Day	День Землі
+Mother Nature	Матір-Природа
+National Park	Національний парк
+scarce	обмежений / дефіцитний
+natural habitat	природне сереовище проживання
+avalanche	лавина
+drought	засуха
+earthquake	землетрус
+flood	повінь
+flooding	повінь / затоплення
+forest fire	лісова пожежа
+tornado	торнадо
+tsunami	цунамі
+typhoon	тайфун
+volcanic eruption	виверження вулкану
+animal shelter	притулок для тварин
+be bitten by mosquitoes	бути покусаним комарами
+be stung on the arm by a wasp	бути вжаленим осою в руку
+cage	клітка
+come to sb's rescue	приходити комусь на допомогу
+go to sb's rescue	йти комусь на допомогу
+crop failure	неврожай
+evacuate	евакуювати
+evacuation	евакуація
+feed	годувати
+flood damage	збитки від повені
+future generations	майбутні покоління
+grow vegetables	вирощувати овочі
+grow crops	вирощувати сільськогосподарські культури
+iceberg	айсберг
+melt	танути
+natural fertiliser	природні добрива
+artificial fertiliser	штучні (хімічні) добрива
+pesticides	пестициди
+reduce	зменшувати
+rescue	рятувати / порятунок
+rescue operation	операція з порятунку
+save sb from death	врятувати когось від смерті
+save sth from death	врятувати щось від загибелі
+season of the year	пора року
+survivor of a tsunami	особа, яка пережила цунамі
+threat	загроза
+danger	небезпека
+victim of an earthquake	потерпілий від землетрусу
+wave	хвиля
+in season	в сезон
