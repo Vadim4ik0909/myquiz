@@ -53,9 +53,13 @@
 
     <div id="create-screen" class="screen">
         <h2>Новий модуль</h2>
-        <input type="text" id="new-module-name" placeholder="Назва (напр. Unit 1: People)">
-        <p style="text-align:left;">Встав слова. Формат: англійські_форми [дефіс або табуляція] переклад. Кожна пара з нового рядка. Можна копіювати текст прямо з експорту Квізлет.</p>
-        <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;awake awoke awoken - прокидатися"></textarea>
+        <input type="text" id="new-module-name" placeholder="Назва (напр. Unit 4: Одяг)">
+        <p style="text-align:left;">
+            <strong>Розумний імпорт:</strong> Програма сама зрозуміє формат слів!<br>
+            • Звичайні слова: <code>age - вік</code> або <code>car автомобіль</code><br>
+            • Дієслова (3 форми): <code>arise arose arisen - виникати</code>
+        </p>
+        <textarea id="new-module-words" placeholder="arise arose arisen - виникати&#10;age - вік&#10;beautiful - красивий"></textarea>
         <button class="main-btn" onclick="saveNewModule()">Зберегти модуль</button>
         <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
     </div>
@@ -63,7 +67,7 @@
     <div id="quiz-screen" class="screen">
         <div class="progress" id="quiz-progress" style="color:var(--subtext); margin-bottom:10px;"></div>
         <div class="word" id="target-word">...</div>
-        <input type="text" id="user-input" placeholder="Введи форми через пробіл" autocomplete="off" autocapitalize="none">
+        <input type="text" id="user-input" placeholder="Введи правильну відповідь" autocomplete="off" autocapitalize="none">
         <button class="main-btn" id="action-btn" onclick="handleQuizSubmit()">Перевірити</button>
         <div class="result" id="result-msg"></div>
         <button class="secondary-btn" onclick="switchScreen('menu-screen')">Перервати тест</button>
@@ -72,10 +76,13 @@
 
 <script>
     const DEFAULT_MODULES = {
-        "Неправильні дієслова (Демо)": {
+        "Демо: Неправильні дієслова": {
             "arise arose arisen": "виникати, з'являтися",
-            "awake awoke awoken": "прокидатися",
-            "be was were been": "бути"
+            "awake awoke awoken": "прокидатися"
+        },
+        "Демо: Звичайні слова": {
+            "age": "вік",
+            "environment": "навколишнє середовище"
         }
     };
 
@@ -111,7 +118,7 @@
         const text = document.getElementById('new-module-words').value.trim();
         
         if (!name || !text) {
-            alert('Заповни назву і додай хоча б кілька слів!');
+            alert('Заповни назву і додай слова!');
             return;
         }
 
@@ -119,19 +126,46 @@
         const parsedWords = {};
 
         lines.forEach(line => {
-            let parts = line.split('\t');
-            if (parts.length < 2) parts = line.split(' - ');
-            if (parts.length < 2) parts = line.split('-');
+            let cleanedLine = line.trim();
+            if (!cleanedLine) return;
 
-            if (parts.length >= 2) {
-                const en = parts[0].trim();
-                const ua = parts[1].trim();
-                if (en && ua) parsedWords[en] = ua;
+            let en = "";
+            let ua = "";
+
+            // 1. Пробуємо розбити по дефісах або тире
+            if (cleanedLine.includes(' - ')) {
+                let parts = cleanedLine.split(' - ');
+                en = parts[0].trim();
+                ua = parts[1].trim();
+            } else if (cleanedLine.includes('-')) {
+                let parts = cleanedLine.split('-');
+                en = parts[0].trim();
+                ua = parts[1].trim();
+            } else if (cleanedLine.includes('\t')) {
+                // 2. Пробуємо розбити по знаку табуляції (копіювання з Quizlet)
+                let parts = cleanedLine.split('\t');
+                en = parts[0].trim();
+                ua = parts[1].trim();
+            } else {
+                // 3. Якщо розділювача немає, парсимо розумним пробілом (для звичайних слів "пробіл переклад")
+                // Шукаємо перший кириличний символ (українську літеру), щоб зрозуміти, де починається переклад
+                let match = cleanedLine.match(/[а-яієґыуэояёа-яА-ЯІЄҐ]/);
+                if (match) {
+                    let index = match.index;
+                    en = cleanedLine.substring(0, index).trim();
+                    ua = cleanedLine.substring(index).trim();
+                }
+            }
+
+            // Очищаємо подвійні пробіли всередині англійської частини (щоб 3 форми дієслова зливалися гарно)
+            if (en && ua) {
+                en = en.replace(/\s+/g, ' ');
+                parsedWords[en] = ua;
             }
         });
 
         if (Object.keys(parsedWords).length === 0) {
-            alert('Не вдалося розпізнати формат слів. Перевір розділювачі (дефіс або табуляція).');
+            alert('Не вдалося розпізнати формат. Переконайся, що англійська частина йде першою, а переклад другою.');
             return;
         }
 
@@ -179,6 +213,16 @@
             msgEl.innerText = '';
             btnEl.innerText = 'Перевірити';
             isShowingAnswer = false;
+            
+            // Підказка в плейсхолдері в залежності від типу картки
+            let correctAns = questions[currentIndex][0];
+            let spaceCount = (correctAns.match(/\s/g) || []).length;
+            if (spaceCount >= 2) {
+                inputEl.placeholder = "Введи 3 форми через пробіл";
+            } else {
+                inputEl.placeholder = "Введи слово англійською";
+            }
+
             setTimeout(() => inputEl.focus(), 50);
         } else {
             const percent = Math.round((score / questions.length) * 100);
