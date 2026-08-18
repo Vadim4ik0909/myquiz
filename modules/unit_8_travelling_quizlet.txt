@@ -1,0 +1,228 @@
+travel guide book	путівник
+guide book	путівник
+cycling tour	велосипедна екскурсія
+walking tour	пішохідна екскурсія
+go camping	іти в похід (відпочинок у наметах)
+go hiking	іти в піший похід
+go on a cruise	відправлятися в круїз
+go on a journey	відправлятися в подорож
+go on a trip	відправлятися в поїздку
+go on an expedition	відправлятися в експедицію
+go on an excursion	відправлятися на екскурсію
+go on a round-the-world trip	відправлятися в навколосвітню подорож
+go to the seaside	поїхати на море
+go to the lake	поїхати на озеро
+Have a safe journey!	Щасливої дороги!
+Have a safe trip!	Щасливої дороги!
+hitchhike	подорожувати автостопом
+hitchhiker	той, хто подорожує автостопом
+hitchhiking	подорож автостопом
+set off on a journey	відправлятися в подорож
+set off	вирушати в дорогу
+She travels widely.	Вона багато подорожує.
+show the tourist group around the town	показувати туристам визначні памʼятки міста
+sightseeing	оглядати визначні пам'ятки
+They're hitchhiking around Europe.	Вони подорожують автостопом по Європі.
+tour guide	туристичний гід
+travel via London	подорожувати через Лондон
+go via London	їхати через Лондон
+fly via London	літати через Лондон
+travel abroad	подорожувати за кордоном
+go abroad	їхати за кордон
+Travel broadens the mind.	Подорожі розширюють світогляд
+travel by rail	подорожувати залізницею
+travel by sea	подорожувати морем
+travel by air	подорожувати повітрям
+travel by road	подорожувати дорогою
+travel by train	подорожувати потягом
+travel by ship	подорожувати кораблем
+travel by plane	подорожувати літаком
+travel by car	подорожувати автомобілем
+travel expenses	витрати на подорож
+travel light	подорожувати з невеликим багажем
+travelling conditions	умови подорожі
+bicycle	велосипед
+bike	велосипед
+boat	човен
+bus	автобус
+car	автомобіль
+canoe	каное
+coach	туристичний (міжміський) автобус
+ferry	паром
+helicopter	гелікоптер
+jet	реактивний літак
+lorry	вантажний автомобіль
+moped	мопед
+motorbike	мотоцикл
+plane	літак
+motor scooter	скутер
+scooter	скутер
+ship	корабель
+intercity train	міжміський потяг
+international train	міжнародний потяг
+slow train	повільний потяг
+goods train	вантажний потяг
+fast train	швидкісний потяг
+an express train	експрес-потяг
+direct train	прямий потяг
+tram	трамвай
+underground	метро
+tube	метро (в Лондоні)
+yacht	яхта
+adventure holiday	активний (пригодницький) відпочинок
+beach holiday	пляжний відпочинок
+camping holiday	відпочинок у наметовому містечку
+cruise	круїз
+family holiday	сімейний відпочинок
+hiking holiday	пішохідний туризм
+package holiday	організована туристична поїздка (все включено)
+safari	сафарі
+seaside holiday	відпочинок на морі
+summer holiday	літній відпочинок
+winter holiday	зимовий відпочинок
+go sightseeing	оглядати визначні памʼятки
+go touring	подорожувати
+see the sights	оглядати визначні пам'ятки
+tour around	робити екскурсію довкола
+go to a funfair	відвідувати парк розваг
+lie on the beach	лежати на пляжі
+see an exhibition	відвідувати виставку
+visit a museum	відвідувати музей
+visit a cathedral	відвідувати собор
+scuba diving	підводне плавання (з аквалангом)
+snorkel	плавати з трубкою
+sunbathe	засмагати
+swim in the sea	плавати в морі
+swim in the lake	плавати в озері
+take photos	робити фотознімки
+visit different countries	відвідувати різні країни
+windsurf	займатися віндсерфінгом
+cabin	будиночок для кемпінгу / каюта
+caravan	причіп-фургон (трейлер)
+guesthouse	пансіон / гостьовий будинок
+boarding house	пансіон
+youth hostel	молодіжний хостел
+hoster	хостел
+private rooms	окремі кімнати
+private accommodation	приватне житло
+three star hotel	3-зірковий готель
+accident victim	потерпілий в аварії
+ambulance	швидка допомога
+car accident	автомобільна аварія (ДТП)
+road accident	дорожньо-транспортна пригода
+plane accident	авіакатастрофа
+cause an accident	спричиняти аварію
+cause of an accident	причина аварії
+collide with	зіштовхнутись з
+crash one's car	розбити свою машину
+crash into someone's car	зіштовхнутись з іншим автомобілем
+emergency	надзвичайна ситуація
+emergency case	нещасний випадок
+crash into	врізатися в
+have a head-on collision	мати лобове зіткнення
+have a knock	мати легке зіткнення (удар)
+have a bump	мати легке зіткнення (гулю на машині)
+hit sth	вдарити щось
+injury	травма
+injured	травмований
+person responsible for the accident	винуватець ДТП
+accommodation	проживання / житло
+airport	аеропорт
+arrive at the station	прибувати на станцію
+arrive at platform 6	прибувати на платформу 6
+arrivals lounge	зал прибуття
+departure lounge	зал вильоту
+board a plane	сідати на літак
+board a ship	сідати на корабель
+book a ticket	бронювати квиток
+book a holiday	бронювати подорож
+book a flight	бронювати рейс
+bus stop	автобусна зупинка
+buy souvenirs	купувати сувеніри
+campsite	наметове містечко / кемпінг
+cancel a reservation	скасовувати бронювання
+cancelled	скасований
+delayed	затримується
+car park	стоянка / парковка для автомобілів
+catch a train	встигнути на потяг
+miss a train	пропустити потяг
+catch a bus	встигнути на автобус
+miss a bus	пропустити автобус
+change trains	пересідати на інший потяг
+change trains three times	їхати з трьома пересадками
+check in a hotel	заселятися в готель
+check out of a hotel	виселятися з готелю
+drunk driving	керувати автомобілем у нетверезому стані
+valid driving licence	дійсне посвідчення водія
+invalid driving licence	недійсне посвідчення водія
+fasten one's seat belt	пристебнути ремінь безпеки
+flight	рейс / політ
+full board	повний пансіон (триразове харчування)
+half board	напівпансіон (сніданок та вечеря)
+gate	ворота (вихід на посадку в аеропорту)
+get on a train	сідати на потяг
+get off a train	виходити з потяга
+get on a bus	сідати на автобус
+get off a bus	виходити з автобуса
+get into a car	сідати в автомобіль
+get out of a car	виходити з автомобіля
+get a puncture	пробити колесо
+have a puncture	пробити колесо
+get lost	загубитись
+luggage	багаж
+hand luggage	ручна поклажа
+go the wrong way	іти неправильним шляхом
+holiday resort	курорт
+holiday home at the seaside	літній будинок на березі моря
+holiday season	період відпусток (сезон)
+holidaymaker	турист / відпочивальник
+land	приземлятися (про літак)
+left luggage	камера схову
+left luggage office	камера схову
+make a reservation	робити бронювання
+means of transport	види транспорту
+motorway	автомагістраль
+passenger	пасажир
+passport control	паспортний контроль
+platform	платформа
+put up a tent	ставити намет
+railway station	залізничний вокзал
+bus station	автовокзал
+road check	дорожній контроль (перевірка)
+runway	злітна смуга
+rush hour	година пік
+single ticket	квиток в один бік
+return ticket	квиток в обидва боки
+seaside resort	морський курорт
+ski resort	лижний курорт
+sleeping car	спальний вагон
+sleeping carriage	спальний вагон
+sleeping bag	спальний мішок
+sleep in a tent	спати в наметі
+suitcase	валіза
+take driving lessons	براти уроки водіння
+take off	злітати (про літак)
+taxi	такі
+terminal	термінал
+The train is running three hours late.	Потяг затримується на три години.
+ticket office	каса (для квитків)
+flight timetable	розклад рейсів
+train timetable	розклад потягів
+bus timetable	розклад автобусів
+travel agency	туристична агенція
+traffic jam	затор (пробка)
+tourist office	туристичне бюро
+tourist information office	туристичне інформаційне бюро
+domestic tourism	внутрішній туризм
+foreign tourism	зовнішній туризм
+tourist destination	туристичний напрямок
+vacancy	вільна кімната (у готелі)
+voyage	подорож (морем)
+Excuse me, is this seat free?	Перепрошую, це місце вільне?
+Excuse me, is this seat taken?	Перепрошую, це місце зайняте?
+Excuse me, how can I get to...?	Перепрошую, як дістатись до...?
+Is accommodation included in the price?	Чи проживання входить у вартість?
+Is insurance included in the price?	Чи страхування входить у вартість?
+Where does this train go to?	Куди прямує цей потяг?
+When is the next train to Warsaw?	О котрій годині наступний потяг до Варшави?
+wonderful view	чудовий вид

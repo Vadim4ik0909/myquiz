@@ -1,0 +1,238 @@
+age	вік
+citizenship	громадянство
+date of birth	дата народження
+email address	адреса електронної пошти
+first name	ім'я
+male	чоловіча стать
+female	жіноча стать
+marital status: single	сімейний стан: неодружений / незаміжня
+marital status: married	сімейний стан: одружений / заміжня
+marital status: separated	сімейний стан: проживаємо окремо
+marital status: divorced	сімейний стан: розлучений / розлучена
+marital status: widowed	сімейний стан: вдівець / вдова
+name	ім'я
+surname	прізвище
+nationality	національність
+permanent address	постійна адреса
+temporary address	тимчасова адреса
+place of birth	місце народження
+place of residence	місце проживання
+telephone number	номер телефону
+a bald man	лисий чоловік
+a beautiful lady	прекрасна леді
+a pretty girl	гарна дівчина
+fair complexion	світле обличчя
+dark complexion	темне обличчя
+pale complexion	бліде обличчя
+tanned complexion	засмагле обличчя
+a girl with freckles	дівчина з веснянками
+a good-looking woman	красива на вигляд жінка
+an attractive woman	приваблива на вигляд жінка
+an ordinary-looking woman	звичайна на вигляд жінка
+a handsome man	гарний чоловік
+a well-built man	чоловік з гарною статурою (дужий)
+a man with a beard and a moustache	чоловік з бородою та вусами
+a middle-aged person	людина середнього віку
+a slim girl	струнка дівчина
+a skinny girl	худа дівчина
+a thin girl	схудла дівчина
+a tall man	високий чоловік
+a short man	чоловік низького зросту
+a woman of average height	жінка середнього зросту
+a woman of medium height	жінка середнього зросту
+an elderly person	літня людина
+blond	блондин
+blonde	блондинка
+chubby	пухкий / пухка
+brown eyes	коричневі очі
+blue eyes	блакитні очі
+green eyes	зелені очі
+hazel eyes	карі очі
+round face	кругле обличчя
+oval face	овальне обличчя
+long face	витягнуте обличчя
+thin face	схудле обличчя
+dark hair	темне волосся
+fair hair	світле волосся
+red hair	руде волосся
+grey hair	сиве волосся
+short hair	коротке волосся
+long hair	довге волосся
+straight hair	пряме волосся
+curly hair	кучеряве волосся
+wavy hair	хвилясте волосся
+spiky hair	неслухняне волосся (те, яке стирчить)
+cropped hair	підстрижене волосся
+shoulder length hair	волосся до плечей
+medium-length hair	волосся середньої довжини
+How much does he weigh?	Скільки він важить?
+How much does she weigh?	Скільки вона важить?
+in his early 20s	у віці від 20 до 23 років
+in his mid 20s	у віці від 24 до 26 років
+in his late 20s	у віці від 27 до 29 років
+in her early 30s	у віці від 30 до 33 років
+in her mid 30s	у віці від 34 до 36 років
+in her late 30s	у віці від 37 до 39 років
+big nose	великий ніс
+small nose	маленький ніс
+long nose	довгий ніс
+snub nose	кирпатий ніс
+pointed nose	загострений ніс
+old	старий
+overweight	із зайвою вагою
+teenager	підліток
+toddler	малюк
+What does he look like?	Який він має вигляд?
+What does she look like?	Який вона має вигляд?
+young	молодий
+younger than he looks	молодше, ніж на вигляд
+older than he looks	старше, ніж на вигляд
+active	активний
+adventurous	ризиковий, відчайдушний
+aggressive	агресивний
+ambitious	амбітний
+boring	нудний
+brave	хоробрий
+calm	спокійний
+relaxed	розслаблений
+caring	турботливий
+cheerful	веселий
+clever	розумний
+confident	впевнений
+consistent	послідовний
+creative	творчий
+easy-going	безтурботний, життєрадісний
+flexible	гнучкий
+forgetful	забудькуватий
+friendly	доброзичливий
+funny	смішний
+generous	щедрий
+have a sense of humour	із почуттям гумору
+hard-working	працьовитий
+helpful	корисний, який завжди допомагає
+honest	чесний
+dishonest	нечесний
+indecisive	нерішучий
+independent	незалежний
+jealous	ревнивий
+kind	добрий
+lazy	ледачий
+mean	підлий
+messy	безладний
+moody	похмурий / людина настрою
+patient	терплячий
+impatient	нетерплячий
+polite	ввічливий
+impolite	неввічливий
+punctual	пунктуальний
+reasonable	розважливий
+rebellious	непокірний
+reliable	надійний
+reserved	замкнений
+responsible	відповідальний
+irresponsible	безвідповідальний
+rude	грубий
+self-confident	впевнений у собі
+selfish	егоїстичний
+sensitive	чутливий
+serious	серйозний
+shy	сором'язливий
+sociable	товариський
+spoilt	розбещений
+sporty	спортивний
+strict	суворий
+stubborn	впертий
+talented	талановитий
+talkative	балакучий
+understanding	той, який ставиться із розумінням
+unpredictable	непередбачуваний
+unreliable	ненадійний
+appropriate for the occasion	відповідний до нагоди (події)
+baseball cap	бейсбольна кепка
+belt	ремінь
+blouse	блузка
+boots	чоботи
+bracelet	браслет
+braces	підтяжки, брекети
+cap	кепка
+cardigan	кофта (кардиган)
+coat	пальто
+jacket	куртка
+designer clothes	дизайнерський одяг
+expensive clothes	дорогий одяг
+second-hand clothes	вживаний одяг (секонд-хенд)
+earring	сережка
+evening dress	вечірня сукня
+everyday (casual)	повсякденний одяг
+comfortable	зручний одяг
+flip-flops	в'єтнамки
+formal	офіційний одяг
+smart	гарний / охайний одяг
+elegant	елегантний одяг
+gloves	рукавички
+hat	шапка
+hooded sweatshirt	светр з капюшоном
+jeans	джинси
+jewelry	ювелірні прикраси
+necklace	намисто
+overcoat	пальто
+polo neck	гольф
+pajamas	піжама
+ring	каблучка, кільце
+sandals	босоніжки
+scarf	шарф
+shirt	сорочка
+shoes	черевики / взуття
+shorts	шорти
+skirt	спідниця
+socks	шкарпетки
+suit	костюм
+sweater	светр
+jumper	джемпер / пуловер
+swimming trunks	плавки
+swimsuit	купальник
+tie	краватка
+bow tie	метелик
+tights	колготки
+tracksuit	спортивний костюм
+trainers	кросівки
+trendy	модний
+fashionable	модний
+underwear	білизна
+adore	обожнювати
+admire	милуватися, захоплюватися
+angry	злий
+furious	лютий
+annoyed	роздратований
+bored	той, якому нудно
+confused	розгублений
+delighted	задоволений
+pleased	задоволений
+depressed	пригнічений
+disappointed	розчарований
+embarrassed	збентежений, зніяковілий
+excited	схвильований
+fancy	гарний, модний
+frightened	зляканий
+scared	переляканий
+terrified	дуже переляканий
+grateful	вдячний
+hate	ненавидіти
+irritated	роздратований
+lonely	самотній
+nervous	знервований
+respect	повага
+sad	сумний
+surprised	здивований
+amazed	вражений
+sympathy	співчуття
+unhappy	нещасний
+worried	занепокоєний
+argue	сперечатись
+have an argument	посваритись
+be ashamed of	соромитись
+be attracted to sb	тобі хтось подобається
+can't stand	не витримувати, дуже не любити
+fall in love	закохатися
+get on well with	добре ладнати
+lose one's temper	розлютитися, втратити самовладання

@@ -1,0 +1,181 @@
+art	образотворче мистецтво
+biology	біологія
+business administration	управління бізнесом
+business studies	підприємництво
+chemistry	хімія
+civic education	громадянська освіта
+English	англійська мова
+foreign languages	іноземні мови
+French	французька мова
+geography	географія
+German	німецька мова
+history	історія
+ICT	інформаційні технології (інформатика)
+mathematics	математика
+maths	математика
+music	музика
+physical education (PE)	фізичне виховання (фізкультура)
+physics	фізика
+religious education	релігійна освіта
+science	природничі науки
+sport	спорт
+boarding school	школа-інтернат
+college	коледж
+evening classes	вечірні заняття
+kindergarten	дитячий садок
+language school	мовна школа
+lower secondary school	гімназія
+nursery school	дитячий садок (для найменших)
+police academy	академія поліції
+military academy	військова академія
+polytechnic	політехнічний заклад освіти
+primary school	молодша школа
+private school	приватна школа
+secondary school	середня школа
+state school	державна школа
+technical college	технікум
+university	університет
+vocational school	професійно-технічна школа
+canteen	їдальня
+classroom	класна кімната
+computer room	комп'ютерний клас
+gym	спортивний зал
+gymnasium	спортивний зал
+hall	коридор / актова зала
+headteacher's office	кабінет директора
+library	бібліотека
+locker	шафка (яка закривається)
+notebook	зошит, блокнот
+noticeboard	дошка оголошень
+playground	ігровий майданчик
+rubber	гумка (ластик)
+ruler	лінійка
+school bag	шкільний портфель, рюкзак
+science lab	лабораторія
+sharpener	точилка
+sports field	спортивне поле
+staffroom	кімната для персоналу (учительська)
+uniform	форма
+whiteboard	біла дошка
+absence	відсутність
+attend lessons	відвідувати уроки
+attend classes	відвідувати заняття
+attendance	присутність / відвідуваність
+be expelled from school	бути відрахованим зі東海коли
+be present	бути присутнім
+be absent	бути відсутнім
+broaden one's horizons	розширювати свій кругозір
+broaden one's knowledge	збагачувати свої знання
+certificate	свідоцтво / сертифікат
+cheat in the exam	обманювати під час екзамену (списувати)
+class tutor	класний керівник
+cram all night for a test	готуватися всю ніч до контрольної роботи
+cram all night before an exam	готуватися всю ніч до екзамену
+develop skills	розвивати навички
+do homework	робити домашнє завдання
+enrol at an institution	вступити до закладу освіти
+enrol on a course	записатися на курс
+enrolment	запис (до школи чи на курси)
+extracurricular activities	позакласні заходи
+fail an exam	не скласти екзамен
+pass an exam	скласти екзамен
+final exam	випускний екзамен
+free period	вільний час (вільний урок)
+get a scholarship	отримати стипендію
+get into university	вступити до університету
+get marks	отримати оцінки
+get nervous before an exam	нервувати перед екзаменом
+get nervous before a test	нервувати перед контрольною роботою
+grade	оцінка
+graduate from university	закінчити університет
+high standards of teaching	високі стандарти викладання
+learn by heart	вчити напам'ять
+leave school	закінчити школу
+make mistakes	робити помилки
+make progress	робити успіхи
+mock exam	пробний екзамен
+motivation	мотивація
+participate in a lesson	брати участь у уроці
+pass to the next class	перейти до наступного класу
+play truant	прогулювати уроки
+quick test	коротке опитування
+short test	швидке опитування
+resit a geography examination	перескладати екзамен з географії
+retake a geography examination	перескладати екзамен з географії повторно
+revise for an exam	повторювати матеріал перед екзаменом
+school report	табель
+school trip	шкільна подорож
+school-leaving exams	випускні екзамени
+set a lot of homework	задавати багато домашніх завдань
+skip lessons	пропустити уроки
+miss classes	пропустити заняття
+student exchange	обмін учнями
+study hard	сумлінно навчатися
+take a course in	проходити курс з
+do a course in	навчатися на курсі з
+take an exam	скдати екзамен
+sit an exam	складати екзамен
+new teaching methods	новітні методи навчання
+modern teaching methods	сучасні методи навчання
+term	семестр (чверть)
+textbook	підручник
+coursebook	підручник
+school timetable	розклад уроків
+ambitious	амбітний
+competent	компетентний
+incompetent	некомпетентний
+creative	творчий
+demanding	вимогливий
+fair	справедливий
+unfair	несправедливий
+messy	безладний
+motivated	мотивований
+motivating	мотиваційний (той, що мотивує)
+organised	організований
+patient	терплячий
+punctual	пунктуальний
+strict	суворий
+systematic	систематичний
+understanding	той, хто розуміє
+bully	цькувати / хуліган
+different forms of aggression	різні форми агресії
+physical and verbal abuse	фізичне та вербальне насильство
+victim	жертва
+bell	дзвоник
+classmate	однокласник / однокласниця
+schoolmate	той, хто навчається в одній школі
+compulsory classes	обов'язкові заняття
+optional classes	додаткові заняття (за вибором)
+entrance exam	вступний екзамен
+examiner	екзаменатор
+have primary education	мати початкову освіту
+have secondary education	мати середню освіту
+have higher education	мати вищу освіту
+have vocational education	мати професійно-технічну освіту
+have private lessons in chemistry	брати приватні уроки з хімії
+take private lessons in chemistry	брати приватні уроки з хімії
+I'm doing political science.	Я вивчаю політологію.
+I'm in the third year of law school.	Я на третьому курсі юридичного факультету.
+I'm in the third year of medical school.	Я на третьому курсі медичного факультету.
+lecturer	викладач (у виші)
+parent-teacher meeting	батьківські збори
+postgraduate studies	післядипломна освіта
+provide lessons	забезпечувать уроки
+offer classes	пропонувати заняття
+sit at a desk with someone	сидіти за партою з кимось
+anxious about	занепокоєний чимось
+bored with	той, якому нудно від чогось
+curious about	зацікавлений чимось
+excellent at	досконалий у чомусь
+be fond of	захоплюватися чимось / кимось
+good at	вдало робити щось (сильний у чомусь)
+be late for	запізнитися на
+nervous about	знервований з приводу чогось
+patient with	терплячий до когось / чогось
+pleased with	задоволений чимось / кимось
+qualified for	кваліфікований для чогось
+terrible at	жахливо знати / розбиратися в чомусь
+tired of	втомлений від чогось / когось
+useful for	корисний для чогось
+worried about	занепокоєний чимось
+be wrong about	помилятися щодо чогось / когось

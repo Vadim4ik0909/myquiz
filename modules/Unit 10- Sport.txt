@@ -1,0 +1,212 @@
+combat sports	єдиноборства
+boxing	бокс
+karate	карате
+judo	дзюдо
+wrestling	боротьба (реслінг)
+extreme sports	екстремальні види спорту
+bungee jumping	банджі-джампінг (стрибки з мотузкою)
+individual sports	індивідуальні види спорту
+cycling	велоспорт
+golf	гольф
+horse riding	їзда верхи
+team sports	командні види спорту
+basketball	баскетбол
+baseball	бейсбол
+cricket	крикет
+handball	гандбол
+football	футбол
+volleyball	волейбол
+water sports	водні види спорту
+canoeing	гребля на каное
+rowing	веслування
+sailing	вітрильний спорт
+swimming	плавання
+water polo	водне поло
+water skiing	водні лижі
+windsurfing	віндсерфінг
+surfing	серфінг
+winter sports	зимові види спорту
+ice hockey	хокей на льоду
+figure skating	фігурне катання
+speed skating	швидкісний біг на ковзанах
+ski jumping	стрибки на лижах з трампліна
+skiing	катання на лижах
+athletics	легка атлетика
+the long jump	стрибок в довжину
+the high jump	стрибок у висоту
+the relay race	естафета
+the hurdles	біг з перешкодами (бар'єрний біг)
+the javelin	метання списа
+the discus	метання диска
+the hammer	метання молота
+the pole vault	стрибок з жердиною
+other sports	інші види спорту
+archery	стрільба з лука
+fencing	фехтування
+motor racing	автоперегони
+speedway	спідвей
+tennis	теніс
+table tennis	настільний теніс
+weightlifting	важка атлетика
+sportsmen	спортсмени
+sportswomen	спортсменки
+archer	лучник
+athlete	атлет
+cyclist	велосипедист
+hockey player	хокеїст
+jumper	стрибун
+hurdler	барʼєрист
+parachutist	парашутист
+pole vaulter	стрибун з жердиною
+racing driver	гонщик
+skater	фігурист / ковзаняр
+skier	лижник
+swimmer	плавець
+weightlifter	важкоатлет
+windsurfer	віндсерфер
+wrestler	борець
+competition	змагання
+event	подія / захід
+field events	технічні дисципліни (у легкій атлетиці)
+track events	бігові дисципліни (у легкій атлетиці)
+final	фінал
+quarter-final	чвертьфінал
+semi-final	півфінал
+inter-school chess tournament	міжшкільний шаховий турнір
+marathon	марафон
+match	матч
+open competition	відкриті змагання
+Paralympics	Паралімпійські ігри
+race	перегони / забіг
+the Olympic Games	Олімпійські ігри
+the Olympics	Олімпіада
+the UEFA Cup	Кубок UEFA
+the World Cup	Кубок світу
+tournament	турнір
+world championship	чемпіонат світу
+arrow	стріла
+basket	кошик
+baseball bat	бейсбольна бита
+table tennis bat	ракетка для настільного тенісу
+catch a ball	ловити м'яч
+kick a ball	забивати м'яч ногою
+lose a ball	втрачати м'яч
+pass a ball	передавати м'яч
+win a ball	здобувати м'яч
+board	дошка
+golf club	ключка для гольфу
+boxing gloves	боксерські рукавички
+gloves	рукавички
+goggles	захисні окуляри (для плавання)
+gym mat	гімнастичний мат
+helmet	шолом
+hockey stick	хокейна ключка
+stick	ключка
+kit	інвентар / екіпірування
+net	сітка
+pad	вистілка / підкладка / захисний щиток
+paddle	весло (для каное)
+pole	жердина
+tennis racket	тенісна ракетка
+badminton racket	ракетка для бадмінтону
+sail	вітрило
+snowboard	дошка для сноуборду
+swimming cap	шапочка для плавання
+indoor swimming pool	критий басейн
+outdoor swimming pool	відкритий басейн
+spikes	шиповане взуття
+studded shoes	шиповане взуття
+training shoes	спортивне взуття (кросівки)
+running track	бігова доріжка
+racecourse	іподром
+sword	шпага
+ankle	щиколотка
+arm	рука (від плеча до запʼястя)
+back	спина
+bone	кістка
+chest	грудна клітина
+ear	вухо
+elbow	лікоть
+eye	око
+finger	палець (на руці)
+foot	стопа
+hand	рука (кисть)
+heart	серце
+knee	коліно
+leg	нога
+lungs	легені
+mouth	вуста / рот
+muscle	м'язи
+shoulder	плече
+stomach	шлунок
+throat	горло
+toe	палець на нозі
+waist	талія
+wrist	зап'ястя
+bleed	кровити
+break	зламати
+bruise	синець
+burn	отримати опік
+cut	поріз
+dislocate	вивихнути
+fracture	перелом / ламати
+hurt	завдавати болю / боліти
+injure	травмувати
+sprain	розтягнення зв'язок
+strain	напруження / розтягнення (м'яза)
+tear	розрив (зв'язок / м'яза)
+come round	оговтуватись / прийти до тями
+crash into	зіштовхнутись з кимось
+have a leg in plaster	нога загіпсована
+have an arm in plaster	рука загіпсована
+heal	загоювати(ся)
+I ache all over.	У мене болить все тіло.
+I've twisted my ankle.	Я підвернув ногу.
+injury	травма
+lose consciousness	втратити свідомість
+regain consciousness	прийти до тями
+pain	біль
+put a plaster on	накладати пластир / гіпс
+put a dressing on	накладати пов'язку
+put a bandage on	накладати бандаж / бинт
+sprained ankle	вивих щиколотки
+swollen	припухлий / набряклий
+wound	рана
+X-ray	рентген
+be held	проводитися
+be in good form	бути в хорошій формі
+be in good shape	бути в хорошій формі
+be in poor form	бути в поганій формі
+be in poor shape	бути в поганій формі
+break the record	побити рекорд
+set a new record	встановити рекорд
+hold the record	утримувати рекорд
+break the rules	порушувати правила
+champion	чемпіон
+coach	тренер
+defeat	зазнати поразки / поразка
+beat	перемагати
+win	виграти
+dope	допінг
+take drugs	приймати допінг
+doping test	допінг-тест
+draw	гра внічию
+drug abuse	зловживання допінгом / наркотиками
+eliminations	дискваліфікація / відбіркові змагання
+fair play	чесна гра
+football pitch	футбольне поле
+foul	фол / порушення правил
+commit a foul	вчинити фол
+game	гра
+go to the gym	ходити в спортзал
+goalkeeper	воротар
+golf course	майданчик для гри у гольф
+He took third place in the race.	Він посів третє місце в забігу.
+I do aerobics twice a week.	Я займаюсь аеробікою двічі на тиждень.
+I go to aerobics twice a week.	Я хожу на аеробіку двічі на тиждень.
+indoor sports	спорт у закритому приміщенні
+outdoor sports	спорт на свіжому повітрі
+Let's go for a swim.	Ходімо поплаваємо.
+Let's have a game of chess.	Пропоную зіграти в шахи.
+Let's play a game of chess.	Пропоную зіграти в шахи.
+medallist	медаліст

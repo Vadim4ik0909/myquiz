@@ -1,0 +1,300 @@
+achieve	досягти чогось
+achievement	досягнення
+advanced technology	провідна техніка
+modern technology	сучасна техніка
+analyze	аналізувати
+argument for sth	докази за щось
+argument against sth	докази проти чогось
+branch of technology	галузь технологій
+field of technology	сфера технологій
+breakthrough	прорив
+collect data	збирати дані
+design (v)	розробляти
+do an experiment	проводити експеримент
+conduct an experiment	проводити експеримент
+carry out an experiment	проводити експеримент
+do research on ways of treating cancer	проводити дослідження способів лікування раку
+conduct research on ways of treating cancer	проводити дослідження способів лікування раку
+carry out research on ways of treating cancer	проводити дослідження способів лікування раку
+digital electronics	цифрова електроніка
+do research into sth	робити дослідження в галузі чогось
+discover	виявляти, відкривати
+invent	винаходити
+invention	винахід
+invention of the telephone	винахід телефону
+invention of printing	винахід друку
+invention of paper	винахід паперу
+lab	лабораторія
+laboratory	лабораторія
+laboratory technician	лаборант
+make a discovery	зробити відкриття
+manual	інструкція (довідник)
+microchip	мікрочіп
+microscope	мікроскоп
+new technologies	нові технології
+one must assume that	маємо визнати що (слід припустити)
+proof	докази
+evidence	докази
+prove	доводити щось
+publish a study	опублікувати дослідження
+research paper	наукова праця
+research project	дослідницький проєкт
+research work	дослідницька робота
+results	результати
+robot	робот
+sample	зразок
+satellite	супутник
+scientific research	наукове дослідження
+scientific discovery	наукове відкриття
+scientific approach	науковий підхід
+scientific theory	наукова теорія
+scientific knowledge	наукові знання
+scientist	вчений
+discoverer	першовідкривач
+inventor	винахідник
+researcher	дослідник
+scientifically-based information	науково обґрунтована інформація
+scientifically proven	науково доведено
+study	вчення / дослідження
+technological progress	технічний прогрес
+technological revolution	технічна революція
+telecommunications	телекомунікації
+test	проба / тест
+3D cinema	3D кінотеатр
+3D printing	3D друк
+Bluetooth	блютуз
+Blu-ray disc	диск у форматі Blu-ray
+Blu-ray button	кнопка Blu-ray
+cable	кабель
+charger	зарядний пристрій
+copier	копіювальний пристрій
+cordless telephone	безпровідний телефон
+digital camera	цифрова камера
+display images	показувати зображення
+earphones	навушники
+fax	факс
+flat screen TV	телевізор з плоским екраном
+gadget	пристрій (гаджет)
+GPS	пристрій для визначення місцеперебування (GPS)
+graphics	графіка
+high-definition TV	телебачення високої чіткості
+iPod	плеєр iPod
+MP3 player	MP3 програвач
+MP4 player	MP4 програвач
+DVD player	DVD програвач
+photocopier	фотокопіювальний пристрій
+plasma TV	плазмовий телевізор
+plug in	підключатись до розетки / вмикати в мережу
+remote control	пульт управління
+portable TV	портативний телевізор
+video camera	відеокамера
+camcorder	відеокамера
+waterproof watch	водонепроникний годинник
+access a website	мати доступ до вебсторінки
+access a file	мати доступ до файлу
+antivirus program	антивірусна програма
+antispam program	програма проти спаму
+antispyware program	антишпигунська програма
+application	додаток
+app	додаток (аппка)
+be out of range	бути поза зоною досяжності
+be within range	бути в зоні досяжності
+browse the web	переглядати вебсторінки
+burn a CD	записати CD
+CD-ROM drive	CD-ROM привід
+DVD drive	DVD привід
+chat room	чат
+check one's email	перевіряти пошту
+computer program	комп'ютерна програма
+computer programming	програмування
+connect to the Internet	підключатись до Інтернету
+connection	зʼєднання
+copy	копіювати
+crash	вилітати (про програму) / зламатися
+cursor	курсор
+cut	вирізати
+database	база даних
+delete a file	видаляти файл
+erase a file	стирати файл
+double click	подвійний клік
+download	завантажувати
+download a file	завантажувати файл на свій пристрій
+upload a file	завантажувати файл у мережу
+download data	завантажувати дані
+upload data	вивантажувати дані в мережу
+download a program	завантажувати програму
+upload a program	завантажувати програму в мережу
+electronic mail	електронна пошта
+equipment	обладнання
+external hard disk	зовнішній жорсткий диск
+file	файл
+folder	папка
+forward an email	пересилати email
+forward a link	пересилати посилання
+go online	заходити в Інтернет
+graphics card	відеокарта
+sound card	звукова карта
+hack into	зламувати щось (систему)
+hard copy	паперова копія
+hard disk	жорсткий диск
+hard drive	жорсткий диск
+hardware	апаратне забезпечення (залізо)
+insert	вставити
+install a program	встановлювати програму
+instant messenger	чат / миттєвий обмін повідомленнями
+wireless keyboard	бездротова клавіатура
+keyboard	клавіатура
+laptop	ноутбук
+load	завантажувати (навантажувати)
+log on	підʼєднатися до системи / увійти
+memory stick	карта памʼяті
+USB stick	флеш-накопичувач
+modem	модем
+mouse	миша
+mouse pad	килимок для миші
+online shopping	покупки онлайн
+open a file	відкривати файл
+close a file	закривати файл
+password	пароль
+paste	вставити (скопійоване)
+PC	персональний комп'ютер
+desktop computer	стаціонарний компʼютер
+pop-up ads	рекламні оголошення, що спливають
+portable	портативний
+press a button	натискати кнопку
+print	друкувати
+laser printer	лазерний принтер
+printer	принтер
+printout	роздруківка
+properties	властивості
+receive spam	отримувати спам
+reply	відповідати
+run	запускати (програму)
+save	зберігати
+scanner	сканер
+screen	екран
+screensaver	заставка екрану
+scroll down	прокрутити вниз
+scroll up	прокрутити вгору
+scroll across	прокрутити через весь екран
+search engine	пошукова система
+select	обирати (виділяти)
+send an attachment	надсилати вкладення
+attach a file	додавати файл
+server	сервер
+settings	налаштування
+software	програмне забезпечення (софт)
+speakers	колонки
+store information	зберігати інформацію
+tablet	планшет
+technical problems	технічні проблеми
+technical knowledge	технічні знання
+technical experts	технічні експерти
+tower	системний блок
+undo	анулювати / скасувати дію
+USB port	USB-порт
+user friendly	зручний у користуванні
+virus	вірус
+webcam	вебкамера
+website	вебсайт
+window	вікно
+wireless	бездротовий
+Wi-Fi	Wi-Fi
+write on a computer	писати на комп'ютері
+type on a computer	набирати текст на компʼютері
+answer the phone	відповідати на телефон
+answering machine	автовідповідач
+answerphone	автовідповідач
+dial the number	набирати номер
+extension	розширення номеру (додатковий номер)
+hands free	система «вільні руки» (керування без допомоги рук)
+Hold on, please.	Зачекайте, будь ласка.
+keypad	клавіатура на телефоні
+leave a message	залишати повідомлення
+make a phone call	зателефонувати
+mobile phone	мобільний телефон
+mobile	мобільний
+phone sb	телефонувати до когось
+ring up sb	телефонувати до когось
+call sb	телефонувати до когось
+pick up the receiver	підіймати слухавку
+lift the receiver	підіймати слухавку
+put down the receiver	класти слухавку
+replace the receiver	класти слухавку
+hang up the receiver	повісити слухавку
+hang up	покласти слухавку
+receiver	слухавка
+handset	слухавка
+recharge the battery	заряджати батарею
+charge the battery	заряджати батарею
+ringtone	рингтон / мелодія телефону
+run down	розрядитися (про батарею)
+go dead	розрядитися (відключитися)
+text a message	відправляти текстове повідомлення
+send a short message	відправляти SMS
+smartphone	смартфон
+access	доступ
+accessible via the internet	доступний через інтернет
+attach a document	додавати документ
+attachment	додаток / вкладення
+back up	зробити резервну копію
+be on the internet	бути підключеним до Інтернету
+be connected to the internet	бути підключеним до Інтернету
+be down	не працювати / лягти (про мережу чи сайт)
+benefit	користь / вигода
+break down	зламатись
+browser	браузер (програма для перегляду вебсторінок)
+chat on the internet	спілкуватись в чаті в інтернеті
+chat	чат
+come in handy for	бути в пригоді для чогось
+develop	розвивати
+development	розвиток
+device	пристрій
+do without sth	обійтися без чогось
+effective	ефективний
+engine	двигун
+enter the web page	відвідувати вебсторінку
+explore	досліджувати
+function	функція
+get an email	отримувати email
+receive an email	отримувати email
+email handy	практична пошта
+have access to the Internet	мати доступ до інтернету
+headphones	навушники
+improve	покращувати
+make improvements to sth	робити покращення чогось
+Internet user	користувач інтернетом
+inbox	вхідні листи
+log in	увійти в систему
+log on	увійти в систему
+mailbox	поштова скринька
+take advantage of	скористатися чимось
+offline	без підключення до Інтернету (офлайн)
+online	підключений до інтернету (онлайн)
+photocopy sth	робити фотокопію чогось
+copy sth	копіювати щось
+plug	штепсель / вилка
+press the button	натиснути кнопку
+search for	шукати щось
+send an email	відправляти email
+set up	встановлювати / налаштовувати
+sign in	увійти в систему
+sign out	вийти із системи
+solution	рішення
+socket	розетка
+space exploration	дослідження космосу
+switch on	вмикати
+switch off	вимикати
+turn on	вмикати
+turn off	вимикати
+telephone network	телефонна мережа
+computer network	комп'ютерна мережа
+update	оновлення / оновлювати
+turn up	робити голосніше
+turn down	робити тихіше
+via the Internet	через Інтернет
+through the Internet	через Інтернет
+virtual reality	віртуальна реальність
+zoom in	збільшувати зображення
+zoom out	зменшувати зображення
+My email address is	Моя електронна адреса

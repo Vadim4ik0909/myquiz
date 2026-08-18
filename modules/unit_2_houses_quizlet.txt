@@ -1,0 +1,181 @@
+block of flats	багатоквартирний будинок
+bungalow	бунгало
+cottage	котедж
+detached house	особняк
+maisonette	мезонет
+multi-storey house	багатоповерховий будинок
+semi-detached house	двоквартирний будинок
+skyscraper	хмарочос
+summer house	літній будинок
+terraced house	будинок із верандою
+ten-storey block	десятиповерховий будинок
+tower block	багатоповерховий будинок
+flat	квартира
+apartment	квартира
+one-room flat	однокімнатна квартира
+bedsit	однокімнатна квартира (студія)
+bedsitter	однокімнатна квартира (студія)
+three-room flat	трикімнатна квартира
+antique furniture	антикварні меблі
+convenient	зручний
+comfortable	комфортний
+cosy	затишний
+functional	функциональний
+furnished	мебльований
+unfurnished	немебльований
+in good condition	в гарному стані
+in bad condition	в поганому стані
+luxurious	розкішний
+modern	сучасний
+nicely-decorated	гарно оформлений
+peaceful	спокійний, мирний
+spacious	просторий
+large	великий
+sunny	сонячний
+tiny	крихітний
+well-equipped	добре обладнаний
+well-kept	доглянутий
+with a view of the lake	з видом на озеро
+with windows overlooking a busy street	з вікнами, які виходять на жваву вулицю
+attic	горище
+balcony	балкон
+basement	підвал
+bathroom	ванна кімната
+bedroom	спальня
+child's room	дитяча кімната
+children's room	дитяча кімната
+corridor	коридор
+dining room	їдальня
+downstairs	внизу
+drive	під'їзд (до будинку)
+fence	паркан
+floor	підлога / поверх
+garage	гараж
+garden	сад
+ground floor	перший (наземний) поверх
+guest room	кімната для гостей
+spare room	вільна кімната
+hall	передпокій / хол
+kitchen	кухня
+lawn	газон
+lift	ліфт
+loft	горище / лофт
+porch	ґанок
+roof	дах
+sitting room	вітальня
+living room	вітальня
+stairs	сходи
+study	кабінет
+upstairs	нагорі
+utility room	підсобне приміщення
+blind	ролети / жалюзі
+carpet	килим
+central heating	центральне опалення
+curtain	завіса, штора
+drinks cabinet	шафа для напоїв
+cocktail cabinet	шафа для напоїв
+fitted carpet	килимове покриття
+ornament	прикраса
+pot plant	кімнатна рослина
+radiator	батарея опалення
+rug	килимок
+shelf	полиця
+vacuum cleaner	пилосос
+cooker	плита
+wall cupboard	настінна шафа
+cupboard	шафа для посуду
+dishwasher	посудомийна машина
+freezer	морозильна камера
+fridge	холодильник
+microwave oven	мікрохвильова піч
+sink	раковина на кухні
+bath	ванна
+bathtub	ванна
+cabinet	шафка (у ванній)
+laundry hamper	кошик для білизни
+laundry basket	кошик для білизни
+mirror	дзеркало
+shower	душ
+tap	кран
+toilet	вбиральня / туалет
+washbasin	умивальник
+washing machine	пральна машина
+armchair	крісло
+bookcase	книжкова шафа
+bookshelf	книжкова полиця
+chest of drawers	комод
+coffee table	журнальний столик
+cushion	декоративна подушка
+display cabinet	вітрина
+fireplace	камін
+furniture	меблі
+rocking chair	крісло-гойдалка
+sofa	диван
+couch	диван
+corner couch	кутовий диван
+DVD player	DVD-програвач
+desk	парта, робочий стіл
+desk chair	офісне крісло
+swivel chair	крісло на колесах (поворотне)
+wastepaper basket	кошик для паперового сміття
+wastepaper bin	кошик для паперового сміття
+bedside table	нічний столик / тумбочка
+nightstand	нічний столик / тумбочка
+clothes shelf	полиця для одягу
+single bed	односпальне ліжко
+double bed	двоспальне ліжко
+wardrobe	шафа для одягу
+change a lightbulb	міняти лампочку
+clean up	прибирати
+tidy up	прибирати
+decorate a room	прикрашати кімнату
+do housework	робити хатню роботу
+dust	витирати пил / пил
+house renovation	ремонт будинку
+mend	ремонтувати / лагодити
+move in	в'їхати (у новий дім)
+move out	виїхати (з будинку)
+renovate	оновити, відремонтувати
+do up	відремонтувати
+accommodation	проживання / житло
+Croydon district	район Кройдон
+do the cleaning	прибирати
+do the cooking	готувати їжу
+do the ironing	прасувати
+do the washing-up	прати посуд
+electricity bill	рахунок за електроенергію
+telephone bill	рахунок за телефон
+estate agent	агент з нерухомості
+estate agency	агентство нерухомості
+flatmate	співмешканець по квартирі
+for sale	на продаж
+housemate	співмешканець по будинку
+housing estate	житловий масив
+I live at 1 King Street, flat 1.	Я живу за адресою 1 Кінг Стріт, квартира 1.
+in the centre	у центрі
+in the suburbs	в передмісті
+landlord	орендодавець (хазяїн)
+landlady	орендодавець (хазяйка)
+live on the first floor	жити на першому поверсі
+live on the second floor	жити на другому поверсі
+located in a residential area	розташований у житловому районі
+lower the rent	знизити оренду
+increase the rent	збільшити оренду
+neighbour	сусід
+on the ground floor	на першому (наземному) поверсі
+on the outskirts	на околиці
+pay high rent	платити високу орендну плату
+pay low rent	платити низьку орендну плату
+pay the bills	оплатити рахунки
+rent a flat from sb	винаймати квартиру у когось
+rent a room from sb	винаймати кімнату у когось
+rent a flat to sb	здавати квартиру комусь
+rent a room to sb	здавати кімнату комусь
+rural	сільський
+share a room	мешкати в одній кімнаті з ким-небудь
+take the rubbish out	виносити сміття
+tenant	орендар
+There is a school in the neighbourhood	У мікрорайоні є школа.
+urban	міський
+We had our house renovated last year.	Ми відремонтували наш будинок минулого року.
+We had our house done up last year.	Ми відремонтували наш будинок минулого року.

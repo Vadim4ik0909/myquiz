@@ -1,0 +1,205 @@
+adopt	прийняти (закон) / запровадити
+establish	заснувати
+be in authority	бути при владі
+central government	центральний уряд
+charity	благодійна організація
+charity organization	благодійна організація
+citizen	громадянин
+city council	місцева рада / міська рада
+town council	місцева рада
+constitution	конституція
+criminal organization	кримінальна організація
+department	міністерство / департамент
+ministry	міністерство
+elect deputies to the Senate	обирати депутатів до Верховної Ради
+election campaign	передвиборча кампанія
+elections	вибори
+electors	виборці
+voters	виборці
+embassy	посольство
+general election	загальні вибори
+presidential election	президентські вибори
+go into politics	займатися політикою
+enter politics	увійти в політику / зайнятися політикою
+government offices	державні установи
+government proposals	пропозиції уряду
+head of state	глава держави
+immigration authorities	міграційна служба
+influential politician	впливовий політик
+leading politician	провідний політик
+local authorities	місцева влада
+municipal authorities	місцеві органи влади
+local government	місцева влада
+make a career in politics	зробити політичну карʼєру
+mayor	мер
+Member of Parliament (MP)	член парламенту
+Ministry of National Defence	Міністерство оборони
+Ministry of Education	Міністерство освіти
+Ministry of Finance	Міністерство фінансів
+Ministry of Home Affairs	Міністерство внутрішніх справ
+Ministry of the Interior and Administration	Міністерство внутрішніх справ та адміністрування
+municipal government	муніципальні органи влади
+national anthem	національний гімн
+opinion poll	опитування громадської думки
+party leader	лідер партії
+government policy	політика уряду
+politics	політика
+president	президент
+Prime Minister (PM)	прем'єр-міністр
+proposal for changes	пропозиція про зміни
+proposal for new regulations	пропозиція про нові положення
+province	область / провінція
+right-wing senator	правий сенатор
+left-wing senator	лівий сенатор
+session	засідання / сесія
+meeting	нарада / збори
+society	суспільство
+state	держава
+support	підтримка
+backing	підтримка / опора
+talk politics	говорити про політику
+the Customs Bureau	митна служба
+the Ministry of Justice	Міністерство юстиції
+the Municipal Council	Муніципальна рада
+the Opposition	опозиція
+the Senate	сенат
+the tax office	податкова інспекція
+EC (European Commission)	Європейська комісія
+European Parliament	Європарламент
+EU (European Union)	Европейський Союз
+ICJ (International Court of Justice)	Міжнародний суд
+NATO (North Atlantic Treaty Organization)	НАТО (Організація Північноатлантичного договору)
+UNESCO	ЮНЕСКО
+UNICEF	ЮНІСЕФ (Дитячий фонд ООН)
+UN	ООН (Організація Обʼєднаних Націй)
+UNO	Організація Обʼєднаних Націй
+WHO (World Health Organization)	Всесвітня організація охорони здоров'я
+accuse sb of sth	звинувачувати когось у чомусь
+against the law	проти закону / незаконно
+arrest	арештовувати
+be in prison	перебувати у вʼязниці
+break the law	порушувати закон
+obey the law	дотримуватись закону
+respect the law	поважати закон
+capital punishment	смертна кара
+the death penalty	смертна кара
+case	судова справа
+crime rate	темпи зростання злочинності
+criminal	злочинець
+commit a crime	вчинити злочин
+commit suicide	вчинити самогубство
+death sentence	смертний вирок
+go to prison	потрапити до вʼязниці
+escape from prison	втекти з вʼязниці
+give evidence	давати свідчення (в суді)
+guilty	винний
+innocent	невинний
+investigate	розслідувати
+Judge	суддя
+justification	виправдання
+juvenile delinquency	підліткова злочинність
+life sentence	довічне увʼязнення
+life imprisonment	довічне увʼязнення
+offence	правопорушення
+organized crime	організована злочинність
+pass a law	приймати закон
+adopt a law	приймати закон
+prison	в'язниця
+jail	в'язниця
+proof	доказ (речовий)
+evidence	доказ (свідчення)
+punishment	карання
+put sb in prison	ув'язнювати когось
+release sb from prison	звільняти когось з вʼязниці
+suspect	підозрюваний
+be suspected of sth	бути підозрюваним у чомусь
+under Ukrainian law	відповідно до законодавства України
+sentence sb	виносити вирок комусь
+serve a sentence	відбувати покарання
+sue sb for sth	подавати позов до суду на когось
+Supreme Court	Верховний Суд
+High Court	Верховний Суд
+trial	судовий процес / слухання справи
+verdict	вирок / судове рішення
+sentence	вирок
+judgment	судове рішення
+arson	підпал
+arsonist	палій
+blackmail	шантаж
+blackmailer	шантажист
+burglary	крадіжка зі зломом
+burglar	крадій-зломщик
+drug dealing	наркоторгівля
+drug dealer	наркоторговець
+hijacking	викрадення (літака чи транспорту)
+hijacker	викрадач літака
+kidnapping	викрадення людей
+kidnapper	викрадач людей
+mugging	вуличне пограбування (напад)
+mugger	вуличний грабіжник
+murder	вбивство
+murderer	вбивця
+rape	зґвалтування
+rapist	ґвалтівник
+robbery	грабіж (банку / магазину)
+robber	грабіжник
+shoplifting	крадіжка в магазині
+shoplifter	магазинний злодій
+smuggling	контрабанда
+smuggler	контрабандист
+terrorism	тероризм
+terrorist	терорист
+theft	крадіжка / злодійство
+thief	злодій
+pickpocketing	кишенькова крадіжка
+pickpocket	кишеньковий злодій
+employment	працевлаштування
+authorities	влада
+ban	заборона / забороняти
+campaign	кампанія
+community	громада / спільнота
+community service	громадські роботи
+demonstration	демонстрація
+homeless	безхатько
+homelessness	безпритульність
+population	населення
+poverty	бідність
+protest (v)	протестувати
+protest (n)	протест
+racism	расизм
+refugee	біженець
+social injustice	соціальна несправедливість
+violence	насильство
+volunteer	волонтер
+unemployment	безробіття
+accept a bribe	براти хабар
+be robbed of sth	бути пограбованим (у когось щось украли)
+be fined for speeding	отримувати штраф за перевищення швидкості
+bribery	хабарництво
+bomb attack	вибух бомби / терористична атака
+break into a house	незаконне вторгнення в будинок з метою пограбування
+bully	хуліган / залякувати
+bullying	булінг / залякування
+have a burglar alarm installed	встановити охоронну сигналізацію
+charge with sth	звинувачувати в чомусь
+be charged with sth	пред'явити звинувачення в чомусь
+corruption	корупція
+corrupt	корумпований
+demonstration against sth	демонстрація проти чогось
+demonstration for sth	демонстрація за щось
+go off	вибухнути (про бомбу)
+hostage	заручник
+kidnap attempt	спроба викрадення людини
+legal costs	юридичні / судові витрати
+impose a fine on sb	виписувати штраф комусь
+pay damages	відшкодовувати збитки
+plant a bomb	закладати бомбу
+drop a bomb	скинути бомбу
+sexual harassment	сексуальне домагання
+steal	красти
+taxes	податки
+military service	військова служба
+make ends meet	зводити кінці з кінцями
+make a living	заробляти на життя
+active interest	активний інтерес / зацікавленість
+awareness raising programme	програми підвищення обізнаності

@@ -1,0 +1,224 @@
+accountant	бухгалтер
+actor	актор
+actress	акторка
+architect	архітектор
+baker	пекар
+bank clerk	банківський працівник
+bank manager	менеджер банку
+businessman	бізнесмен (підприємець)
+businesswoman	бізнес-леді
+cashier	касир
+chemist	хімік
+clerk	службовець
+computer specialist	IT спеціаліст
+IT specialist	IT спеціаліст
+computer programmer	програміст
+cook	кухар
+dentist	стоматолог
+director	режисер / директор
+doctor	лікар
+driver	водій
+electrician	електрик
+engineer	інженер
+estate agent	агент з продажу нерухомості
+farmer	фермер
+fashion designer	модельєр
+financial director	фінансовий директор
+firefighter	пожежник
+fisherman	рибалка
+flight attendant	стюардеса / стюард
+hairdresser	перукар
+insurance agent	страховий агент
+journalist	журналіст
+judge	суддя
+lawyer	юрист
+manager	керівник / менеджер
+mechanic	механік
+musician	музикант
+nurse	медсестра
+optician	оптик
+photographer	фотограф
+police officer	офіцер поліції
+postman	листоноша
+priest	священник
+receptionist	адміністратор (ресепшиніст)
+sales manager	менеджер з продажу
+sales director	директор з продажу
+sales representative	торговий представник
+salesman	продавець (чоловік)
+saleswoman	продавець (жінка)
+salesperson	продавець
+shop assistant	продавець-консультант
+secretary	секретар
+surgeon	хірург
+teacher	вчитель
+ticket inspector	контролер (квитків)
+travel agent	туристичний агент
+vet	ветеринар
+waiter	офіціант
+waitress	офіціантка
+a dead-end job	безперспективна робота
+a full-time job	робота на повний робочий день
+a part-time job	робота на неповний робочий день
+a highly-paid job	високооплачувана робота
+a well-paid job	добре оплачувана робота
+a holiday job	робота на канікулах
+a job with a future	перспективна робота
+a low-paid job	низькооплачувана робота
+a badly-paid job	погано оплачувана робота
+a permanent job	постійна робота
+a steady job	стабільна робота
+a temporary job	тимчасова робота
+an extra job	додаткова робота
+seasonal work	сезонна робота
+stressful work	напружена робота
+physical work	фізична праця
+mental work	розумова праця
+dangerous work	небезпечна робота
+tiring work	виснажлива робота
+back-breaking work	непосильна (каторжна) праця
+monotonous work	монотонна робота
+good job	хороша робота
+ideal job	найкраща (ідеальна) робота
+satisfying job	робота, що приносить задоволення
+responsible job	відповідальна робота
+profitable job	прибуткова робота
+boring work	нудна праця
+interesting work	цікава праця
+fascinating work	захоплива праця
+easy work	легка праця
+difficult work	важка праця
+skilled work	кваліфікована праця
+semi-skilled work	малокваліфікована праця
+unskilled work	некваліфікована праця
+time-consuming work	робота, що віднімає багато часу
+cancel an appointment	скасувати зустріч
+do clerical work	виконувати канцелярську роботу
+do office work	виконувати офісну роботу
+I'm in charge of ten other people.	Я керівник десяти інших людей.
+It's not my responsibility.	Це не входить у мої обов'язки.
+make an appointment	призначити зустріч
+My duties include typing letters.	В мої обов'язки входить друкування листів.
+prepare documents	підготувати документи
+run a company	управляти компанією
+send emails	відправляти електронну пошту
+send faxes	відправляти факси
+the person in charge of sth	особа, яка відповідає за щось
+apply for a job	подавати заяву на роботу
+apply for the post of	подавати заяву на посаду
+apply for the position of	подавати заяву на позицію
+be employed	бути працевлаштованим
+be unemployed	бути безробітним
+apply for dismissal	подавати заяву на звільнення
+be on the dole	отримувати допомогу по безробіттю
+be out of work	бути без роботи
+be out of a job	бути без роботи
+be permanently employed	бути постійно працевлаштованим
+be temporarily employed	бути тимчасово працевлаштованим
+bonus	премія
+extra money	додаткова грошова винагорода
+change a job	змінювати місце роботи
+company car	службовий автомобіль
+day shift	денна зміна
+night shift	нічна зміна
+dismiss sb	звільняти когось
+fire sb	вигнати когось з роботи (звільнити)
+employ	працевлаштовувати
+employee	працівник
+worker	робітник
+employer	працедавець
+employment centre	центр зайнятості
+employment contract	трудовий договір
+find employment	знайти роботу (працевлаштуватися)
+get a job	отримати роботу
+lose a job	втратити роботу
+give up a job	кинути роботу
+resign from a job	звільнитися з роботи за власним бажанням
+get a commission	отримувати винагороду (відсоток)
+get a job as a	влаштуватися на роботу як
+get a pay rise	отримувати підвищення зарплатні
+get a promotion	отримувати підвищення по службі
+get promoted	бути підвищеним у посаді
+get the sack	бути звільненим (з тріском)
+get sacked	бути звільненим
+get unemployment benefit	отримувати допомогу у зв'язку з безробіттям
+have a job	мати роботу
+look for a job	шукати роботу
+make sb redundant	звільнити когось за скороченням штату
+perks of the job	додаткові бонуси (пільги) на роботі
+place of employment	місце роботи
+workplace	робоче місце
+run one's own business	управляти власною фірмою
+self-employed	самозайнятий
+sign a contract	підписувати контракт
+start work at	починати роботу о
+finish work at	закінчувати роботу о
+unemployment	безробіття
+unemployment rate	рівень безробіття
+work flexitime	мати гнучкий графік роботи
+work in shifts	працювати по змінах
+working hours	робочий час
+committed	зацікавлений / відданий справі
+competent	компетентний
+qualified	кваліфікований
+conscientious	сумлінний
+devoted	відданий
+dedicated	відданий своїй справі
+experienced	досвідчений
+inexperienced	недосвідчений
+precise	скрупульозний / точний
+resourceful	винахідливий
+respected	той, якого поважають
+job description	посадова інструкція
+letter of application	заява про прийняття на роботу
+conditions of employment	умови праці
+terms of employment	умови трудового договору
+cover for sb	замінити когось (підстрахувати)
+curriculum vitae (CV)	резюме
+difficult working conditions	важкі умови праці
+do business with sb	мати бізнес / працювати з кимось
+do the job	виконувати роботу
+do voluntary work	виконувати волонтерську роботу
+earn a living	заробляти на життя
+make a living	заробляти на життя
+fill in an application form	заповнювати заявку на роботу
+gain experience	отримувати досвід
+go for an interview	йти на співбесіду
+have a day off	мати вихідний день
+have a sense of responsibility	мати почуття відповідальності
+have an accident at work	нещасний випадок на роботі
+have no work experience	не мати досвіду роботи
+He is going to become a lawyer.	Він збирається стати юристом.
+He performs his duties with devotion.	Він віддано виконує свої обов'язки.
+He phoned in sick.	Він зателефонував повідомити, що захворів.
+What do you think she makes?	Як ти гадаєш, скільки вона заробляє?
+I make 300 pounds a week.	Я заробляю 300 фунтів на тиждень.
+I'm working to get enough money to buy a flat	Я працюю, щоб назбирати грошей на покупку квартири.
+In summer he did casual work picking strawberries.	Влітку він працював на сезонних роботах зі збору полуниці.
+income tax	податок на прибуток
+job centre	центр зайнятості
+job creation	створення робочих місць
+labour market	ринок праці
+live off one's salary	жити на зарплату
+live off one's pension	жити на пенсію
+pay	оплата праці
+pension	пенсія
+qualifications	кваліфікація
+qualify	здобувати кваліфікацію
+retrain as	перекваліфікуватись на
+salary	заробітна плата (щомісячна)
+skills	навички
+support a family	утримувати родину
+maintain a family	утримувати родину
+take a holiday	взяти відпустку
+be on leave	бути у відпустці
+The pay is good here.	Тут гарна оплата праці.
+training course	тренінг / навчальний курс
+wages	заробітна плата (потижнева / відрядна)
+What's the pay like?	Яка там оплата праці?
+work overtime	працювати понаднормово
+do overtime	працювати понаднормово
+work in advertising	працювати в рекламі
+workaholic	трудоголік
+workmate	колега з роботи
+colleague from work	колега з роботи

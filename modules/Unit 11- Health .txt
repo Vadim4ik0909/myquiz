@@ -1,0 +1,173 @@
+backache	біль в спині
+catch a cold	застудитися
+cold symptoms	симптоми застуди
+flu symptoms	симптоми грипу
+cough	кашляти
+have a bad cough	мати поганий кашель
+earache	біль у вусі
+stomach ache	біль у шлунку
+faint	знепритомніти
+feel bad	почуватись погано
+get food poisoning	отруїтися
+have a high temperature	мати високу температуру
+have a rash	мати висип
+have a runny nose	нежить
+have breathing problems	мати проблеми з диханням
+He was unconscious for five days.	Він був непритомний 5 днів.
+He's been sneezing and coughing all day - he must be coming down with something.	Він чхає та кашляє весь день, мабуть, він захворіє.
+He's got a heart condition.	У нього хворе серце.
+high blood pressure	високий кров'яний тиск
+low blood pressure	низький кров'яний тиск
+I feel dizzy.	У мене запаморочення.
+I have a sore throat.	У мене хворе горло.
+I've got a pain in my chest.	У мене болить в грудях.
+I've got toothache	У мене болить зуб
+I've got a headache.	У мене головний біль.
+pale	блідий
+sneeze	чхати
+take sb's blood pressure	вимірювати комусь тиск
+take sb's temperature	вимірювати комусь температуру
+avoid stress	уникати стресу
+eat healthy food	споживати здорову їжу
+have a healthy appetite	мати здоровий апетит
+keep fit	підтримувати гарну фізичну форму
+vitamins	вітаміни
+allergy	алергія
+common cold	звичайна простуда
+cold	простуда
+alternative medicine	нетрадиційна медицина
+conventional medicine	традиційна медицина
+be operated on	бути прооперованим
+cancer	рак (захворювання)
+cough syrup	сироп проти кашлю
+disease	хвороба
+drops	краплі
+flu	грип
+give sb a shot	робити укол комусь
+give sb an injection	робити укол комусь
+have an injection	зробити укол (собі)
+have an operation	прооперуватись
+He had his chest X-rayed last year.	Йому робили рентген грудної клітини минулого року.
+heart attack	серцевий напад
+I need something for a cough.	Мені потрібне щось проти кашлю.
+illness	хвороба
+sickness	хвороба / нудота
+infection	інфекція
+mental disease	психічні захворювання
+outbreak of flu	спалах (епідемія) грипу
+painkillers	знеболювальні засоби
+pneumonia	пневмонія
+side effects	побічні ефекти
+stroke	інсульт
+suffer a heart attack	переносити серцевий напад
+treatment	лікування
+virus	вірус
+blind	сліпий
+deaf	глухий
+disabled people	люди з обмеженими можливостями
+physical disability	люди з фізичними вадами
+mental disability	люди з розумовими вадами
+special facilities for disabled people	спеціальне обладнання для людей з інвалідністю
+wheelchair ramp	пандус для інвалідного візка
+addict	наркоман / людина, яка має залежність
+addiction	залежність
+be addicted to	бути залежним від
+become addicted to	пристраститися до
+get addicted to	пристраститися до
+cut down on smoking	кинути палити / зменшити паління
+cut down on eating sweets	зменшити вживання солодощів
+dose	доза
+overdose	передозування
+gambling	азартні ігри
+get into a habit	увійти у звичку
+give up a habit	кинути звичку
+have a drink	випити
+get drunk	спʼяніти
+lead to addiction	призводить до залежності
+take drugs	вживати наркотики
+use drugs	вживати наркотики
+Are you taking any other medicine?	Ви приймаєте інші ліки?
+Breathe deeply.	Дихайте глибоко.
+be referred to hospital	бути направленим до лікарні
+refer to hospital	звертатися в лікарню
+consult a specialist	консультуватись з лікарем
+see a specialist	консультуватись з лікарем
+Cough, please.	Покашляйте, будь ласка.
+doctor's orders	призначення лікарем (медичних препаратів)
+emergency	надзвичайна ситуація / нещасний випадок
+examine	проводити огляд
+general practitioner (a GP)	лікар сімейної медицини
+family doctor	сімейний лікар
+go for a check-up	проходити медичний огляд
+have a check-up	проходити медичний огляд
+go to see a doctor	звертатися до лікаря
+visit a doctor	звертатися до лікаря
+have a blood test	зробити аналіз крові
+How long have you been feeling like this?	Як довго ви себе так почуваєте?
+I have an appointment at the doctor's tomorrow.	Я завтра записаний до лікаря.
+I'm allergic to penicillin.	У мене алергія на пеніцилін.
+I'm going to prescribe a course of antibiotics.	Я випишу вам курс антибіотиків.
+I've been taking antibiotics for 10 days and it hasn't got any better.	Я приймаю антибіотики 10 днів, але стан не покращується.
+Is it catching?	Це заразно?
+make a diagnosis	ставити діагноз
+make out a prescription	виписати рецепт
+give a prescription	виписати рецепт
+medicine	ліки
+medication	ліки / медикаменти
+patient	пацієнт
+pill	пігулка
+Please undress to the waist.	Будь ласка, роздягніться до пояса.
+sick leave	лікарняний
+doctor's surgery	кабінет лікаря
+surgery (room)	операційна / кабінет лікаря
+Stay in bed	залишатись в ліжку
+Take one pill every 8 hours.	Приймайте 1 таблетку кожні 8 годин.
+waiting room	приймальня
+What's wrong with you?	На що скаржитесь?
+What's the Problem?	На що скаржитесь? / У чому проблема?
+be taken ill	захворіти
+fall ill with	хворіти на
+call an ambulance	викликати карету швидкої допомоги
+come down with	злягти від / захворіти на
+come round	оговтатись / прийти до тями
+contagious disease	заразне захворювання
+infectious disease	інфекційне захворювання
+die of sth	вмирати від чогось
+die from sth	вмирати від чогось
+fatal disease	смертельна хвороба
+feel well	почуватись добре
+feel unwell	почуватись зле
+filling	пломба
+first-aid kit	аптечка
+first-aid course	курси першої медичної допомоги
+first-aid post	пункт надання першої медичної допомоги
+get over the flu	одужувати після грипу
+get over sth	одужувати після чогось
+go on a diet	бути на дієті / сідати на дієту
+have plastic surgery on	робити пластичну операцію на
+health	здоров'я
+health Centre	медичний центр
+health clinic	клініка
+health insurance	медичне страхування
+health problems	проблеми зі здоров'ям
+health service	медична система / охорона здоров'я
+health care	медична система / турбота про здоров'я
+hypochondriac	людина, яка страждає від іпохондрії
+lose weight	втрачати вагу
+National Health System	Національна система охорони здоров'я
+operating theatre	операційна
+overweight	надлишкова вага
+pull through	вилікуватись / викарабкатися
+put on weight	набирати вагу
+gain weight	набирати вагу
+recover from an illness	вилікуватись від хвороби
+spread	розповсюджуватись
+suffer from	страждати від / хворіти на
+surgery (process)	операція / хірургічне втручання
+take care of	піклуватись про когось
+look after	піклуватись про когось
+vaccine for sth	щеплення проти певного захворювання
+vaccine against sth	вакцина проти чогось
+vaccinate against	зробити щеплення проти
+vacination	вакцинація
+ward	палата (у лікарні)
