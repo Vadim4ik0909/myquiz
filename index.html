@@ -8,6 +8,7 @@
     <!-- Підключення зовнішніх баз даних та контексту -->
     <script src="scripts/database.js"></script>
     <script src="scripts/context-data.js"></script>
+    <script src="scripts/grammar-data.js"></script>
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
@@ -145,6 +146,54 @@
         <div class="result" id="result-msg"></div>
         <button class="secondary-btn" onclick="switchScreen('menu-screen')">Перервати (Esc)</button>
     </div>
+    <div id="grammar-hub-screen" class="screen">
+        <h2>⏳ Часи (Tenses Grammar Hub)</h2>
+        <p>Оберіть час для вивчення теорії та практики, або пройдіть комплексний тест.</p>
+        
+        <button class="main-btn" style="margin-bottom: 25px; background: var(--purple);" onclick="startGrammarQuiz('all')">🧠 Запустити комплексний тест (усі часи)</button>
+        
+        <div class="module-list" id="grammar-tenses-container"></div>
+        
+        <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
+    </div>
+
+    <!-- Екран Теорії певного часу -->
+    <div id="grammar-theory-screen" class="screen">
+        <h2 id="theory-title">Назва часу</h2>
+        <div class="theory-card">
+            <h3 style="color:var(--accent);">📖 Опис</h3>
+            <p id="theory-desc" style="color:var(--text); font-size:15px; margin-bottom:15px;"></p>
+            
+            <h3 style="color:var(--orange);">🔑 Маркери часу</h3>
+            <div id="theory-markers" class="markers-container" style="margin-bottom:15px;"></div>
+            
+            <h3 style="color:var(--green);">📐 Формула побудови</h3>
+            <div class="formula-box">
+                <div class="formula-row"><span class="formula-sign plus">+</span><span id="formula-plus"></span></div>
+                <div class="formula-row"><span class="formula-sign minus">-</span><span id="formula-minus"></span></div>
+                <div class="formula-row"><span class="formula-sign question">?</span><span id="formula-question"></span></div>
+            </div>
+        </div>
+        <button class="main-btn" id="start-grammar-btn" onclick="startGrammarQuiz()">Пройти тест 🔥</button>
+        <button class="secondary-btn" onclick="switchScreen('grammar-hub-screen')">Назад до списку часів</button>
+    </div>
+
+    
+    <!-- Новий екран спеціально для граматичних тестів -->
+    <div id="grammar-quiz-screen" class="screen">
+        <div id="grammar-progress" style="color:var(--subtext); margin-bottom:20px; font-size:16px;">Питання 1 з 10 | Рахунок: 0</div>
+        
+        <div class="grammar-sentence-card" id="grammar-sentence-card">
+            <!-- Речення буде вставлятись сюди через JS -->
+        </div>
+        
+        <div class="grammar-options-grid" id="grammar-options-grid">
+            <!-- Варіанти будуть вставлятись сюди через JS -->
+        </div>
+        
+        <button class="secondary-btn" onclick="switchScreen('grammar-hub-screen')" style="margin-top: 30px;">Перервати тест</button>
+    </div>
+
     <!-- Екран підсумків завершеної сесії тестування -->
     <div id="result-screen" class="screen">
         <div class="session-summary-box" id="result-container-box"></div>

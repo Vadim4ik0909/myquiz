@@ -12,6 +12,7 @@
     let currentChoices = [];
     let isMenuRendered = false;
     let currentActiveScreen = 'menu-screen';
+    let isGrammarQuiz = false;
     let selectedTimeFilter = 'all';
 
     let wordStartTime = 0;
@@ -117,6 +118,9 @@
         if (saved.hardOnly !== undefined) document.getElementById('hard-only-toggle').checked = saved.hardOnly;
     }
 
+    
+    }
+
     function toggleMobileMenu() {
         const bar = document.getElementById('sticky-bar');
         bar.classList.toggle('mobile-open');
@@ -134,6 +138,9 @@
         stopLiveTimer();
         currentActiveScreen = screenId;
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+        
+
         const targetScreen = document.getElementById(screenId);
         if (targetScreen) targetScreen.classList.add('active');
         
@@ -338,6 +345,20 @@
 
         const fragment = document.createDocumentFragment();
 
+        // Grammar Card injection
+        const grammarCard = document.createElement('div');
+        grammarCard.className = 'module-item grammar-card';
+        grammarCard.innerHTML = `
+            <div class="module-top" onclick="openGrammarHub()">
+                <div class="module-name-click" style="font-size: 18px;">
+                    ⏳ <strong style="color: var(--purple);">Часи граматика</strong>
+                    <div style="font-size:13px; color:var(--subtext); margin-top:5px; font-weight:normal;">Всі часи (Tenses)</div>
+                </div>
+            </div>
+        `;
+        fragment.appendChild(grammarCard);
+
+
         sortedKeys.forEach(name => {
             const stats = calculateModuleProgress(name);
             const item = document.createElement('div');
@@ -374,6 +395,11 @@
         const btn = e.target.closest('[data-action]');
         const card = e.target.closest('.module-item');
         if (!card) return;
+
+        if (card.classList.contains('grammar-card')) {
+            openGrammarHub();
+            return;
+        }
 
         const name = card.getAttribute('data-name');
         const action = btn ? btn.getAttribute('data-action') : 'open';
@@ -513,6 +539,20 @@
 
         const fragment = document.createDocumentFragment();
 
+        // Grammar Card injection
+        const grammarCard = document.createElement('div');
+        grammarCard.className = 'module-item grammar-card';
+        grammarCard.innerHTML = `
+            <div class="module-top" onclick="openGrammarHub()">
+                <div class="module-name-click" style="font-size: 18px;">
+                    ⏳ <strong style="color: var(--purple);">Часи граматика</strong>
+                    <div style="font-size:13px; color:var(--subtext); margin-top:5px; font-weight:normal;">Всі часи (Tenses)</div>
+                </div>
+            </div>
+        `;
+        fragment.appendChild(grammarCard);
+
+
         Object.keys(ALL_DATA).forEach(moduleName => {
             const stats = getModuleDetailedStats(moduleName);
             const unitPeriodStats = getUnitAnalyticsForPeriod(moduleName, selectedTimeFilter);
@@ -601,6 +641,20 @@
 
         const hasContext = typeof CONTEXT_DATA !== 'undefined';
         const fragment = document.createDocumentFragment();
+
+        // Grammar Card injection
+        const grammarCard = document.createElement('div');
+        grammarCard.className = 'module-item grammar-card';
+        grammarCard.innerHTML = `
+            <div class="module-top" onclick="openGrammarHub()">
+                <div class="module-name-click" style="font-size: 18px;">
+                    ⏳ <strong style="color: var(--purple);">Часи граматика</strong>
+                    <div style="font-size:13px; color:var(--subtext); margin-top:5px; font-weight:normal;">Всі часи (Tenses)</div>
+                </div>
+            </div>
+        `;
+        fragment.appendChild(grammarCard);
+
         pairs.forEach(([en, ua]) => {
             const statKey = `${moduleName}_${en}`;
             const m = MEMORY_STATS[statKey];
@@ -715,7 +769,80 @@
         }
     }
 
+    
+    function openGrammarHub() {
+        const container = document.getElementById('grammar-tenses-container');
+        container.innerHTML = '';
+        
+        GRAMMAR_TENSES.forEach(tense => {
+            const item = document.createElement('div');
+            item.className = 'module-item';
+            item.innerHTML = `
+                <div class="module-top" onclick="openGrammarTheory('${tense.id}')">
+                    <div class="module-name-click">
+                        📘 <strong>${tense.name}</strong>
+                        <div style="font-size:13px; color:var(--subtext); margin-top:5px; font-weight:normal;">${tense.translate}</div>
+                    </div>
+                </div>
+                <button class="main-btn" style="margin: 10px 0 0 0; padding: 8px;" onclick="startGrammarQuiz('${tense.id}')">Пройти тест</button>
+            `;
+            container.appendChild(item);
+        });
+        
+        switchScreen('grammar-hub-screen');
+    }
+
+    let selectedGrammarTenseId = '';
+    function openGrammarTheory(tenseId) {
+        selectedGrammarTenseId = tenseId;
+        const tense = GRAMMAR_TENSES.find(t => t.id === tenseId);
+        if (!tense) return;
+        
+        document.getElementById('theory-title').innerText = `${tense.name} (${tense.translate})`;
+        document.getElementById('theory-desc').innerText = tense.description;
+        
+        const markersContainer = document.getElementById('theory-markers');
+        markersContainer.innerHTML = tense.markers.map(m => `<span class="marker-badge">${m}</span>`).join('');
+        
+        document.getElementById('formula-plus').innerHTML = tense.formula.plus;
+        document.getElementById('formula-minus').innerHTML = tense.formula.minus;
+        document.getElementById('formula-question').innerHTML = tense.formula.question;
+        
+        const btn = document.getElementById('start-grammar-btn');
+        btn.onclick = () => startGrammarQuiz(tense.id);
+        
+        switchScreen('grammar-theory-screen');
+    }
+
+    function startGrammarQuiz(tenseId) {
+        isGrammarQuiz = true;
+        configMode = 'choice';
+        configTarget = 'en'; // default for UI display, but we'll override showQuestion logic
+        questions = [];
+        
+        let targetTenses = tenseId === 'all' ? GRAMMAR_TENSES : GRAMMAR_TENSES.filter(t => t.id === tenseId);
+        
+        targetTenses.forEach(tense => {
+            tense.questions.forEach(q => {
+                questions.push({
+                    en: q.text,
+                    ua: tense.name, // Just as a hint
+                    question: q.text,
+                    answer: q.answer,
+                    options: q.options
+                });
+            });
+        });
+        
+        questions.sort(() => Math.random() - 0.5);
+        currentIndex = 0; score = 0; currentCombo = 0; sessionLogs = [];
+        
+        switchScreen('grammar-quiz-screen');
+        showGrammarQuestion();
+    }
+
     function generateQuiz() {
+        isGrammarQuiz = false;
         saveUserSettings();
         configMode = document.querySelector('input[name="quiz-mode"]:checked').value;
         configTarget = document.querySelector('input[name="quiz-lang"]:checked').value;
@@ -754,10 +881,97 @@
         questions = questions.slice(0, Math.min(targetLimit, originalPairs.length));
         
         currentIndex = 0; score = 0; currentCombo = 0; sessionLogs = [];
-        switchScreen('quiz-screen'); showQuestion();
+        switchScreen('grammar-quiz-screen');
+        showGrammarQuestion();
     }
 
+    
+    function showGrammarQuestion() {
+        if (currentIndex < questions.length) {
+            const currentObj = questions[currentIndex];
+            document.getElementById('grammar-progress').innerText = `Питання ${currentIndex + 1} з ${questions.length} | Рахунок: ${score}`;
+            
+            const sentenceCard = document.getElementById('grammar-sentence-card');
+            const sentenceText = currentObj.en.replace('___', '<span class="grammar-blank"></span>');
+            sentenceCard.innerHTML = sentenceText;
+            
+            const optionsGrid = document.getElementById('grammar-options-grid');
+            optionsGrid.innerHTML = '';
+            
+            currentObj.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'grammar-option-btn';
+                btn.innerHTML = `<span>${opt}</span> <span style="font-size:14px; opacity:0.5; background:rgba(0,0,0,0.3); padding:4px 8px; border-radius:6px;">${idx + 1}</span>`;
+                btn.onclick = () => handleGrammarAnswer(btn, opt, currentObj);
+                optionsGrid.appendChild(btn);
+            });
+            isShowingAnswer = false;
+        } else {
+            // Finish grammar quiz — update streak and render results
+            stopLiveTimer();
+            const todayStr = new Date().toDateString();
+            if (STREAK_DATA.lastDate !== todayStr) {
+                if (STREAK_DATA.lastDate === new Date(Date.now() - 86400000).toDateString()) {
+                    STREAK_DATA.currentStreak++;
+                } else {
+                    STREAK_DATA.currentStreak = 1;
+                }
+                STREAK_DATA.lastDate = todayStr;
+                localStorage.setItem('my_quiz_streak', JSON.stringify(STREAK_DATA));
+                document.getElementById('stat-streak').innerText = `🔥 ${STREAK_DATA.currentStreak} днів стрік`;
+            }
+            renderSessionSummary();
+        }
+    }
+
+    function handleGrammarAnswer(btn, selectedOption, currentObj) {
+        if (isShowingAnswer) return;
+        isShowingAnswer = true;
+        
+        const isCorrect = selectedOption === currentObj.answer;
+        if (isCorrect) score++;
+        
+        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+        
+        // Find and highlight correct answer when wrong
+        if (!isCorrect) {
+            const allBtns = document.querySelectorAll('.grammar-option-btn');
+            allBtns.forEach(b => {
+                const label = b.querySelector('span:first-child');
+                if (label && label.textContent.trim() === currentObj.answer) {
+                    b.classList.add('correct');
+                }
+            });
+        }
+        
+        sessionLogs.push({
+            question: currentObj.en,
+            answer: currentObj.answer,
+            userAnswer: isCorrect ? currentObj.answer : selectedOption,
+            isCorrect: isCorrect,
+            timeMs: 0
+        });
+        
+        setTimeout(() => {
+            currentIndex++;
+            showGrammarQuestion();
+        }, 1500);
+    }
+    
+    document.addEventListener('keydown', function(e) {
+        if (currentActiveScreen === 'grammar-quiz-screen' && !isShowingAnswer) {
+            if (['1', '2', '3', '4'].includes(e.key)) {
+                const choiceIndex = parseInt(e.key) - 1;
+                const btns = document.querySelectorAll('.grammar-option-btn');
+                if (btns[choiceIndex]) {
+                    btns[choiceIndex].click();
+                }
+            }
+        }
+    });
+
     function startMistakesOnlyQuiz() {
+        isGrammarQuiz = false;
         const errorLogs = sessionLogs.filter(item => !item.isCorrect);
         if (errorLogs.length === 0) return;
 
@@ -769,7 +983,8 @@
         }));
 
         currentIndex = 0; score = 0; currentCombo = 0; sessionLogs = [];
-        switchScreen('quiz-screen'); showQuestion();
+        switchScreen('grammar-quiz-screen');
+        showGrammarQuestion();
     }
 
     function startWordTimer() {
@@ -928,6 +1143,17 @@
 
     function generateChoices(currentObj) {
         const choiceBlock = document.getElementById('choice-block'); choiceBlock.innerHTML = '';
+        
+        if (isGrammarQuiz) {
+            currentChoices = currentObj.options.slice();
+            currentChoices.forEach((choice, idx) => {
+                const btn = document.createElement('button'); btn.className = 'choice-btn';
+                btn.innerHTML = `<span>${choice}</span><span class="key-hint">${idx + 1}</span>`;
+                btn.onclick = () => selectChoice(btn, choice, currentObj.answer); choiceBlock.appendChild(btn);
+            });
+            return;
+        }
+
         let allAnswersPool = Object.entries(ALL_DATA[selectedModule]).map(pair => configTarget === 'ua' ? pair[0] : pair[1]);
         let pool = allAnswersPool.filter(ans => ans.toLowerCase() !== currentObj.answer.toLowerCase()).sort(() => Math.random() - 0.5);
         let finalChoices = [currentObj.answer, pool[0], pool[1], pool[2]].filter(Boolean).sort(() => Math.random() - 0.5);
@@ -1078,6 +1304,9 @@
     // Алгоритм інтервального повторення та збереження статистики пам'яті
     function updateMemoryAlgorithm(currentObj, isCorrect, timeSpentMs = 0) {
         const enWord = currentObj.en;
+
+        if (isGrammarQuiz) return;
+
         if (!enWord) return;
 
         const statKey = `${selectedModule}_${enWord}`;
