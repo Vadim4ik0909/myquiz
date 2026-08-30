@@ -181,7 +181,10 @@
     
     <!-- Новий екран спеціально для граматичних тестів -->
     <div id="grammar-quiz-screen" class="screen">
-        <div id="grammar-progress" style="color:var(--subtext); margin-bottom:20px; font-size:16px;">Питання 1 з 10 | Рахунок: 0</div>
+        <div id="grammar-progress" style="color:var(--subtext); margin-bottom:10px; font-size:16px;">Питання 1 з 10 | Рахунок: 0</div>
+        <div class="grammar-progress-track" id="grammar-progress-track">
+            <div class="grammar-progress-fill" id="grammar-progress-fill"></div>
+        </div>
         
         <div class="grammar-sentence-card" id="grammar-sentence-card">
             <!-- Речення буде вставлятись сюди через JS -->

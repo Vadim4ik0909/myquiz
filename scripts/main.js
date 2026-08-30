@@ -118,9 +118,6 @@
         if (saved.hardOnly !== undefined) document.getElementById('hard-only-toggle').checked = saved.hardOnly;
     }
 
-    
-    }
-
     function toggleMobileMenu() {
         const bar = document.getElementById('sticky-bar');
         bar.classList.toggle('mobile-open');
@@ -330,22 +327,9 @@
             return numA - numB;
         });
 
-        if (sortedKeys.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state" style="grid-column: 1 / -1;">
-                    <div class="empty-state-icon">📦</div>
-                    <h3>Тут поки порожньо</h3>
-                    <p>Завантажте .txt файли через кнопку нижче або створіть свій перший модуль вручну!</p>
-                    <button class="main-btn" onclick="openCreateScreen()" style="margin-top:15px;">+ Створити модуль</button>
-                </div>
-            `;
-            isMenuRendered = true;
-            return;
-        }
-
         const fragment = document.createDocumentFragment();
 
-        // Grammar Card injection
+        // Grammar Card — always show first, regardless of module count
         const grammarCard = document.createElement('div');
         grammarCard.className = 'module-item grammar-card';
         grammarCard.innerHTML = `
@@ -357,6 +341,22 @@
             </div>
         `;
         fragment.appendChild(grammarCard);
+
+        if (sortedKeys.length === 0) {
+            const emptyEl = document.createElement('div');
+            emptyEl.className = 'empty-state';
+            emptyEl.style.gridColumn = '1 / -1';
+            emptyEl.innerHTML = `
+                <div class="empty-state-icon">📦</div>
+                <h3>Тут поки порожньо</h3>
+                <p>Завантажте .txt файли через кнопку нижче або створіть свій перший модуль вручну!</p>
+                <button class="main-btn" onclick="openCreateScreen()" style="margin-top:15px;">+ Створити модуль</button>
+            `;
+            fragment.appendChild(emptyEl);
+            container.appendChild(fragment);
+            isMenuRendered = true;
+            return;
+        }
 
 
         sortedKeys.forEach(name => {
@@ -539,19 +539,6 @@
 
         const fragment = document.createDocumentFragment();
 
-        // Grammar Card injection
-        const grammarCard = document.createElement('div');
-        grammarCard.className = 'module-item grammar-card';
-        grammarCard.innerHTML = `
-            <div class="module-top" onclick="openGrammarHub()">
-                <div class="module-name-click" style="font-size: 18px;">
-                    ⏳ <strong style="color: var(--purple);">Часи граматика</strong>
-                    <div style="font-size:13px; color:var(--subtext); margin-top:5px; font-weight:normal;">Всі часи (Tenses)</div>
-                </div>
-            </div>
-        `;
-        fragment.appendChild(grammarCard);
-
 
         Object.keys(ALL_DATA).forEach(moduleName => {
             const stats = getModuleDetailedStats(moduleName);
@@ -641,19 +628,6 @@
 
         const hasContext = typeof CONTEXT_DATA !== 'undefined';
         const fragment = document.createDocumentFragment();
-
-        // Grammar Card injection
-        const grammarCard = document.createElement('div');
-        grammarCard.className = 'module-item grammar-card';
-        grammarCard.innerHTML = `
-            <div class="module-top" onclick="openGrammarHub()">
-                <div class="module-name-click" style="font-size: 18px;">
-                    ⏳ <strong style="color: var(--purple);">Часи граматика</strong>
-                    <div style="font-size:13px; color:var(--subtext); margin-top:5px; font-weight:normal;">Всі часи (Tenses)</div>
-                </div>
-            </div>
-        `;
-        fragment.appendChild(grammarCard);
 
         pairs.forEach(([en, ua]) => {
             const statKey = `${moduleName}_${en}`;
@@ -784,7 +758,7 @@
                         <div style="font-size:13px; color:var(--subtext); margin-top:5px; font-weight:normal;">${tense.translate}</div>
                     </div>
                 </div>
-                <button class="main-btn" style="margin: 10px 0 0 0; padding: 8px;" onclick="startGrammarQuiz('${tense.id}')">Пройти тест</button>
+                <button class="main-btn" style="margin: 10px 0 0 0; padding: 8px;" onclick="event.stopPropagation(); startGrammarQuiz('${tense.id}')">Пройти тест</button>
             `;
             container.appendChild(item);
         });
@@ -881,8 +855,8 @@
         questions = questions.slice(0, Math.min(targetLimit, originalPairs.length));
         
         currentIndex = 0; score = 0; currentCombo = 0; sessionLogs = [];
-        switchScreen('grammar-quiz-screen');
-        showGrammarQuestion();
+        switchScreen('quiz-screen');
+        showQuestion();
     }
 
     
@@ -890,6 +864,12 @@
         if (currentIndex < questions.length) {
             const currentObj = questions[currentIndex];
             document.getElementById('grammar-progress').innerText = `Питання ${currentIndex + 1} з ${questions.length} | Рахунок: ${score}`;
+            // Оновлюємо прогрес-бар
+            const progressFill = document.getElementById('grammar-progress-fill');
+            if (progressFill) {
+                const pct = questions.length > 0 ? (currentIndex / questions.length) * 100 : 0;
+                progressFill.style.width = pct + '%';
+            }
             
             const sentenceCard = document.getElementById('grammar-sentence-card');
             const sentenceText = currentObj.en.replace('___', '<span class="grammar-blank"></span>');
@@ -912,13 +892,14 @@
             const todayStr = new Date().toDateString();
             if (STREAK_DATA.lastDate !== todayStr) {
                 if (STREAK_DATA.lastDate === new Date(Date.now() - 86400000).toDateString()) {
-                    STREAK_DATA.currentStreak++;
+                    STREAK_DATA.count++;
                 } else {
-                    STREAK_DATA.currentStreak = 1;
+                    STREAK_DATA.count = 1;
                 }
                 STREAK_DATA.lastDate = todayStr;
                 localStorage.setItem('my_quiz_streak', JSON.stringify(STREAK_DATA));
-                document.getElementById('stat-streak').innerText = `🔥 ${STREAK_DATA.currentStreak} днів стрік`;
+                const streakEl = document.getElementById('stat-streak');
+                if (streakEl) streakEl.innerText = `🔥 ${STREAK_DATA.count} днів стрік`;
             }
             renderSessionSummary();
         }
@@ -958,9 +939,11 @@
         }, 1500);
     }
     
+    // Клавіші для граматичного тесту (цифри 1-4, Esc вбудований у глобальний обробник нижче)
     document.addEventListener('keydown', function(e) {
-        if (currentActiveScreen === 'grammar-quiz-screen' && !isShowingAnswer) {
-            if (['1', '2', '3', '4'].includes(e.key)) {
+        if (currentActiveScreen === 'grammar-quiz-screen') {
+            if (!isShowingAnswer && ['1', '2', '3', '4'].includes(e.key)) {
+                e.preventDefault();
                 const choiceIndex = parseInt(e.key) - 1;
                 const btns = document.querySelectorAll('.grammar-option-btn');
                 if (btns[choiceIndex]) {
@@ -990,7 +973,13 @@
     function startWordTimer() {
         stopLiveTimer();
         wordStartTime = Date.now();
-        const isTimerMode = document.getElementById('timer-mode-toggle').checked;
+        const isTimerMode = document.getElementById('timer-mode-toggle')?.checked ?? false;
+        const isTrackTime = document.getElementById('track-time-toggle')?.checked ?? true;
+
+        // Якщо «Тихий аналіз часу» вимкнено — скидаємо час на 0 (не рахуємо)
+        if (!isTrackTime) {
+            wordStartTime = 0;
+        }
 
         if (isTimerMode) {
             timerTimeout = setTimeout(() => {
@@ -1384,7 +1373,14 @@
     document.addEventListener('keydown', function(e) {
         const quizScreen = document.getElementById('quiz-screen');
         if (e.key === 'Escape') {
-            switchScreen('menu-screen');
+            e.preventDefault();
+            if (currentActiveScreen === 'grammar-quiz-screen') {
+                switchScreen('grammar-hub-screen');
+            } else if (currentActiveScreen === 'grammar-theory-screen') {
+                switchScreen('grammar-hub-screen');
+            } else {
+                switchScreen('menu-screen');
+            }
             return;
         }
 

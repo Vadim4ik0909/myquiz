@@ -1,0 +1,18 @@
+name: Local Ollama Config
+version: 1.0.0
+schema: v1
+
+models:
+  - name: Llama 3 Chat
+    provider: ollama
+    model: llama3:latest
+    roles:
+      - chat
+      - edit
+      - apply
+
+  - name: Qwen2.5 Coder 7B
+    provider: ollama
+    model: qwen2.5-coder:7b
+    roles:
+      - autocomplete

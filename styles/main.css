@@ -326,9 +326,13 @@
 
 .grammar-blank {
     display: inline-block;
-    width: 80px;
+    min-width: 90px;
     border-bottom: 3px solid var(--accent);
-    margin: 0 10px;
+    margin: 0 8px;
+    background: rgba(137, 180, 250, 0.08);
+    border-radius: 4px 4px 0 0;
+    padding: 2px 8px;
+    vertical-align: middle;
 }
 
 .grammar-options-grid {
@@ -380,4 +384,23 @@
         font-size: 20px;
         padding: 30px 20px;
     }
+}
+
+/* Grammar quiz progress bar */
+.grammar-progress-track {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    background: #1e1e2e;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #313244;
+}
+.grammar-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--purple), var(--accent));
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
