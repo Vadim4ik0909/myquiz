@@ -73,10 +73,10 @@ function saveUserSettings() {
     const timerModeVal = document.getElementById('timer-mode-toggle')?.checked ?? false;
     const hardOnlyVal = document.getElementById('hard-only-toggle')?.checked ?? false;
 
-    const settingsObj = { 
-        mode: modeVal, 
-        lang: langVal, 
-        limit: limitVal, 
+    const settingsObj = {
+        mode: modeVal,
+        lang: langVal,
+        limit: limitVal,
         audio: audioVal,
         trackTime: trackTimeVal,
         timerMode: timerModeVal,
@@ -136,19 +136,27 @@ function switchScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const targetScreen = document.getElementById(screenId);
     if (targetScreen) targetScreen.classList.add('active');
-    
+
     const statsPanel = document.getElementById('stats-panel');
     const navToggleBtn = document.getElementById('nav-toggle-btn');
-    
+
     if (screenId === 'menu-screen') {
         if (statsPanel) statsPanel.style.display = 'flex';
-        if (navToggleBtn) navToggleBtn.innerText = '📊 Детальна статистика';
+        if (navToggleBtn) {
+            navToggleBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>';
+            navToggleBtn.title = 'Детальна статистика';
+            navToggleBtn.setAttribute('aria-label', 'Детальна статистика');
+        }
         updateStreakAndGlobalStats();
         isMenuRendered = false;
         renderMenu();
     } else if (screenId === 'stats-screen') {
         if (statsPanel) statsPanel.style.display = 'flex';
-        if (navToggleBtn) navToggleBtn.innerText = '🏠 Повернутися до головного меню';
+        if (navToggleBtn) {
+            navToggleBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>';
+            navToggleBtn.title = 'Головне меню';
+            navToggleBtn.setAttribute('aria-label', 'Головне меню');
+        }
         renderDetailedStats();
     } else {
         if (statsPanel && (screenId === 'quiz-screen' || screenId === 'result-screen')) {
@@ -171,11 +179,11 @@ function handleBulkImport(input) {
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const reader = new FileReader();
-        
+
         let unitNumber = file.name.match(/\d+/)?.[0];
         let moduleName = (unitNumber && BOOK_TITLES[unitNumber]) ? BOOK_TITLES[unitNumber] : file.name.replace('.txt', '').replace(/_/g, ' ');
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const text = e.target.result;
             const lines = text.split('\n');
             const parsedWords = {};
@@ -225,7 +233,7 @@ function exportBackupJSON() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `my_quiz_backup_${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `my_quiz_backup_${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
 }
@@ -235,7 +243,7 @@ function importBackupJSON(input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         try {
             const data = JSON.parse(e.target.result);
             if (data.modules) {
@@ -296,7 +304,7 @@ function getModuleDetailedStats(name) {
 
     const unlearned = total - learned - learning;
     const exactPct = (learned / total) * 100;
-    
+
     let displayPct = "0%";
     if (exactPct > 0 && exactPct < 1) {
         displayPct = exactPct.toFixed(1) + "%";
@@ -316,7 +324,7 @@ function renderMenu() {
     const container = document.getElementById('modules-container');
     if (!container) return;
     container.innerHTML = '';
-    
+
     const sortedKeys = Object.keys(ALL_DATA).sort((a, b) => {
         let numA = parseInt(a.match(/\d+/)?.[0]) || 999;
         let numB = parseInt(b.match(/\d+/)?.[0]) || 999;
@@ -343,12 +351,15 @@ function renderMenu() {
         const item = document.createElement('div');
         item.className = 'module-item';
         item.setAttribute('data-name', name);
-        
+
         item.innerHTML = `
             <div class="module-top" data-action="open">
-                <div class="module-name-click">
-                    📂 <strong>${name}</strong>
-                    <div style="font-size:13px; color:var(--subtext); margin-top:5px;">${stats.total} картка(ок)</div>
+                <div class="module-name-click" style="display:flex; align-items:flex-start; gap:8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:3px; color:var(--accent);"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <div>
+                        <strong>${name}</strong>
+                        <div style="font-size:13px; color:var(--subtext); margin-top:3px;">${stats.total} картка(ок)</div>
+                    </div>
                 </div>
             </div>
             <div data-action="open">
@@ -359,31 +370,42 @@ function renderMenu() {
                 <div class="progress-track"><div class="progress-bar" style="width: ${Math.max(stats.progressPct, stats.learned > 0 ? 2 : 0)}%"></div></div>
             </div>
             <div class="actions-block">
-                <button class="action-btn-small edit-btn" data-action="edit">✏️</button>
-                <button class="action-btn-small delete-btn" data-action="delete">❌</button>
+                <button class="action-btn-small edit-btn" data-action="edit" title="Редагувати" aria-label="Редагувати"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>
+                <button class="action-btn-small delete-btn" data-action="delete" title="Видалити" aria-label="Видалити"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
             </div>
         `;
         fragment.appendChild(item);
     });
 
+    const addCard = document.createElement('div');
+    addCard.className = 'module-item-add';
+    addCard.setAttribute('data-action', 'create');
+    addCard.innerHTML = `
+        <span class="add-icon">+</span>
+        <span>Add unit</span>
+    `;
+    fragment.appendChild(addCard);
+
     container.appendChild(fragment);
     isMenuRendered = true;
 }
 
-document.getElementById('modules-container').addEventListener('click', function(e) {
+document.getElementById('modules-container').addEventListener('click', function (e) {
     const btn = e.target.closest('[data-action]');
-    const card = e.target.closest('.module-item');
+    const card = e.target.closest('.module-item, .module-item-add');
     if (!card) return;
 
+    const action = btn ? btn.getAttribute('data-action') : card.getAttribute('data-action') || 'open';
     const name = card.getAttribute('data-name');
-    const action = btn ? btn.getAttribute('data-action') : 'open';
 
-    if (action === 'open') {
+    if (action === 'create') {
+        openCreateScreen();
+    } else if (action === 'open' && name) {
         openSetup(name);
-    } else if (action === 'edit') {
+    } else if (action === 'edit' && name) {
         e.stopPropagation();
         openEditScreen(name);
-    } else if (action === 'delete') {
+    } else if (action === 'delete' && name) {
         e.stopPropagation();
         deleteModule(name);
     }
@@ -466,7 +488,7 @@ function getUnitAnalyticsForPeriod(moduleName, filterKey) {
     });
 
     const pct = total > 0 ? Math.round((correct / total) * 100) + '%' : '0%';
-    
+
     let formattedTime = "0с";
     if (totalTimeMs > 0) {
         let sec = Math.round(totalTimeMs / 1000);
@@ -474,6 +496,31 @@ function getUnitAnalyticsForPeriod(moduleName, filterKey) {
     }
 
     return { correct, total, pct, timeFormatted: formattedTime };
+}
+
+function getModuleActivityMetrics(moduleName) {
+    let lastPracticed = 0;
+    let totalAttempts = 0;
+    const wordPairs = Object.keys(ALL_DATA[moduleName] || {});
+
+    wordPairs.forEach(enWord => {
+        const statKey = `${moduleName}_${enWord}`;
+        const item = MEMORY_STATS[statKey];
+        if (item) {
+            if (item.log && item.log.length > 0) {
+                totalAttempts += item.log.length;
+                const latestInWord = item.log[item.log.length - 1].date;
+                if (latestInWord && latestInWord > lastPracticed) {
+                    lastPracticed = latestInWord;
+                }
+            } else if (item.stats) {
+                const totalFromStats = (item.stats.modes?.write?.total || 0) + (item.stats.modes?.choice?.total || 0);
+                totalAttempts += totalFromStats;
+            }
+        }
+    });
+
+    return { lastPracticed, totalAttempts };
 }
 
 function renderDetailedStats() {
@@ -513,7 +560,24 @@ function renderDetailedStats() {
 
     const fragment = document.createDocumentFragment();
 
-    Object.keys(ALL_DATA).forEach(moduleName => {
+    const sortedModuleNames = Object.keys(ALL_DATA).sort((a, b) => {
+        const metricsA = getModuleActivityMetrics(a);
+        const metricsB = getModuleActivityMetrics(b);
+
+        if (metricsA.lastPracticed !== metricsB.lastPracticed) {
+            return metricsB.lastPracticed - metricsA.lastPracticed;
+        }
+
+        if (metricsA.totalAttempts !== metricsB.totalAttempts) {
+            return metricsB.totalAttempts - metricsA.totalAttempts;
+        }
+
+        let numA = parseInt(a.match(/\d+/)?.[0]) || 999;
+        let numB = parseInt(b.match(/\d+/)?.[0]) || 999;
+        return numA - numB;
+    });
+
+    sortedModuleNames.forEach(moduleName => {
         const stats = getModuleDetailedStats(moduleName);
         const unitPeriodStats = getUnitAnalyticsForPeriod(moduleName, selectedTimeFilter);
 
@@ -522,8 +586,9 @@ function renderDetailedStats() {
 
         const card = document.createElement('div');
         card.className = 'stats-card';
+
         card.innerHTML = `
-            <h4>📂 ${moduleName}</h4>
+            <h4 style="display:flex; align-items:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent); flex-shrink:0;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> ${moduleName}</h4>
             <div class="stats-row"><span>Всього слів:</span> <strong>${stats.total}</strong></div>
             <div class="stats-row"><span style="color:var(--green);">Заучено:</span> <strong>${stats.learned}</strong></div>
             <div class="stats-row"><span style="color:var(--orange);">В процесі:</span> <strong>${stats.learning}</strong></div>
@@ -534,7 +599,7 @@ function renderDetailedStats() {
                 <strong>${unitPeriodStats.pct} (${unitPeriodStats.correct}/${unitPeriodStats.total})</strong>
             </div>
             <div class="stats-row">
-                <span style="color:var(--orange);">⏱️ Чистий час тренувань:</span> 
+                <span style="color:var(--orange); display:inline-flex; align-items:center; gap:4px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Чистий час тренувань:</span> 
                 <strong>${unitPeriodStats.timeFormatted}</strong>
             </div>
 
@@ -567,44 +632,94 @@ function openEditScreen(name) {
     switchScreen('create-screen');
 }
 
-function openSetup(name) { 
-    selectedModule = name; 
-    document.getElementById('setup-title').innerText = `Тренажер: ${name}`; 
+function openSetup(name) {
+    selectedModule = name;
+    document.getElementById('setup-title').innerText = `Тренажер: ${name}`;
     renderUnitWordsTable(name);
-    switchScreen('setup-screen'); 
+    switchScreen('setup-screen');
+}
+
+function getUnitPageSize(moduleName) {
+    const saved = JSON.parse(localStorage.getItem('my_quiz_unit_pagesize')) || {};
+    return saved[moduleName] || '25';
+}
+
+function setUnitPageSize(moduleName, size) {
+    const saved = JSON.parse(localStorage.getItem('my_quiz_unit_pagesize')) || {};
+    saved[moduleName] = size;
+    localStorage.setItem('my_quiz_unit_pagesize', JSON.stringify(saved));
+}
+
+function changeUnitPageSize(val) {
+    if (!selectedModule) return;
+    setUnitPageSize(selectedModule, val);
+    renderUnitWordsTable(selectedModule);
 }
 
 function filterUnitWordsTable(query) {
     const q = (query || '').toLowerCase().trim();
     const rows = document.querySelectorAll('#unit-table-body tr');
+    let visibleCount = 0;
     rows.forEach(tr => {
         const text = tr.innerText.toLowerCase();
-        tr.style.display = (!q || text.includes(q)) ? '' : 'none';
+        const matches = !q || text.includes(q);
+        tr.style.display = matches ? '' : 'none';
+        if (matches) visibleCount++;
     });
+
+    const counterEl = document.getElementById('unit-table-counter');
+    if (counterEl) {
+        const totalWords = Object.keys(ALL_DATA[selectedModule] || {}).length;
+        if (q) {
+            counterEl.innerText = `Знайдено ${visibleCount} з ${totalWords}`;
+        } else {
+            const pageSize = getUnitPageSize(selectedModule);
+            const displayed = pageSize === 'all' ? totalWords : Math.min(parseInt(pageSize), totalWords);
+            counterEl.innerText = `${displayed} / ${totalWords}`;
+        }
+    }
 }
 
 function renderUnitWordsTable(moduleName) {
     const searchInput = document.getElementById('unit-table-search');
     if (searchInput) searchInput.value = '';
 
+    const pageSize = getUnitPageSize(moduleName);
+    const selectEl = document.getElementById('unit-page-size-select');
+    if (selectEl) selectEl.value = pageSize;
+
     const tbody = document.getElementById('unit-table-body');
     if (!tbody) return;
     tbody.innerHTML = '';
 
     const wordsObj = ALL_DATA[moduleName] || {};
-    const pairs = Object.entries(wordsObj);
+    const allPairs = Object.entries(wordsObj);
+    const totalCount = allPairs.length;
 
-    if (pairs.length === 0) {
+    if (totalCount === 0) {
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--subtext);">Модуль порожній</td></tr>`;
+        const counterEl = document.getElementById('unit-table-counter');
+        if (counterEl) counterEl.innerText = '0 / 0';
         return;
+    }
+
+    let pairsToRender = allPairs;
+    if (pageSize !== 'all') {
+        const limit = parseInt(pageSize) || 25;
+        pairsToRender = allPairs.slice(0, limit);
+    }
+
+    const counterEl = document.getElementById('unit-table-counter');
+    if (counterEl) {
+        counterEl.innerText = `${pairsToRender.length} / ${totalCount}`;
     }
 
     const hasContext = typeof CONTEXT_DATA !== 'undefined';
     const fragment = document.createDocumentFragment();
-    pairs.forEach(([en, ua]) => {
+    pairsToRender.forEach(([en, ua]) => {
         const statKey = `${moduleName}_${en}`;
         const m = MEMORY_STATS[statKey];
-        
+
         let statusBadge = '<span style="color:#4a4b5e;">— не вчено</span>';
         if (m && m.score <= 0 && m.history?.length > 0 && m.history[m.history.length - 1] === true) {
             statusBadge = '<span style="color:#4f9e5a;">✅ Заучено</span>';
@@ -672,9 +787,9 @@ function updateStreakAndGlobalStats() {
         if (diffDays > 1) STREAK_DATA.count = 0;
         localStorage.setItem('my_quiz_streak', JSON.stringify(STREAK_DATA));
     }
-    
+
     const streakEl = document.getElementById('stat-streak');
-    if (streakEl) streakEl.innerText = `🔥 ${STREAK_DATA.count} днів стрік`;
+    if (streakEl) streakEl.innerHTML = `${STREAK_DATA.count}д`;
 
     let totalLearned = 0;
     Object.values(MEMORY_STATS).forEach(m => {
@@ -684,7 +799,7 @@ function updateStreakAndGlobalStats() {
     });
 
     const totalWordsEl = document.getElementById('stat-total-words');
-    if (totalWordsEl) totalWordsEl.innerText = `🧠 ${totalLearned} вивчено`;
+    if (totalWordsEl) totalWordsEl.innerHTML = `🧠 ${totalLearned} вивчено`;
 }
 
 function cleanTextForTTS(text) {
@@ -721,7 +836,7 @@ function generateQuiz() {
     configTarget = document.querySelector('input[name="quiz-lang"]:checked').value;
     const limitVal = document.getElementById('quiz-limit-select').value;
     const isHardOnly = document.getElementById('hard-only-toggle')?.checked ?? false;
-    
+
     let originalPairs = Object.entries(ALL_DATA[selectedModule]);
 
     if (isHardOnly) {
@@ -749,10 +864,10 @@ function generateQuiz() {
     pool.sort(() => Math.random() - 0.5);
     questions = []; let usedEn = new Set();
     pool.forEach(item => { if (!usedEn.has(item.en)) { questions.push(item); usedEn.add(item.en); } });
-    
+
     let targetLimit = limitVal === 'max' ? originalPairs.length : parseInt(limitVal);
     questions = questions.slice(0, Math.min(targetLimit, originalPairs.length));
-    
+
     currentIndex = 0; score = 0; currentCombo = 0; sessionLogs = [];
     switchScreen('quiz-screen'); showQuestion();
 }
@@ -787,7 +902,7 @@ function startWordTimer() {
 
 function handleTimeOut() {
     if (isShowingAnswer) return;
-    const msgEl = document.getElementById('result-msg'); 
+    const msgEl = document.getElementById('result-msg');
     const btnEl = document.getElementById('action-btn');
     isShowingAnswer = true;
     currentCombo = 0;
@@ -819,15 +934,15 @@ function showQuestion() {
     const btnEl = document.getElementById('action-btn'); const writeBlock = document.getElementById('write-block'); const choiceBlock = document.getElementById('choice-block');
     isShowingAnswer = false; if (msgEl) msgEl.innerText = '';
     if (btnEl) { btnEl.innerText = 'Перевірити (Enter ↵)'; btnEl.style.display = configMode === 'write' ? 'block' : 'none'; }
-    
+
     if (currentIndex < questions.length) {
         const currentObj = questions[currentIndex];
         const comboBadgeHtml = currentCombo >= 2 ? `<span class="combo-badge">⚡ ${currentCombo}x COMBO!</span>` : '';
         document.getElementById('quiz-progress').innerHTML = `Картка ${currentIndex + 1} з ${questions.length} | Рахунок: ${score} ${comboBadgeHtml}`;
-        
+
         const wordEl = document.getElementById('target-word');
         wordEl.innerText = currentObj.question;
-        
+
         const autoAudio = document.getElementById('auto-audio-toggle').checked;
         if (autoAudio && configTarget === 'en') {
             speakText(currentObj.en, 'en-US');
@@ -844,10 +959,10 @@ function showQuestion() {
     } else {
         stopLiveTimer();
         const todayStr = new Date().toDateString();
-        if (STREAK_DATA.lastDate !== todayStr) { 
-            STREAK_DATA.count += 1; 
-            STREAK_DATA.lastDate = todayStr; 
-            localStorage.setItem('my_quiz_streak', JSON.stringify(STREAK_DATA)); 
+        if (STREAK_DATA.lastDate !== todayStr) {
+            STREAK_DATA.count += 1;
+            STREAK_DATA.lastDate = todayStr;
+            localStorage.setItem('my_quiz_streak', JSON.stringify(STREAK_DATA));
         }
         renderSessionSummary();
     }
@@ -932,7 +1047,7 @@ function generateChoices(currentObj) {
     let pool = allAnswersPool.filter(ans => ans.toLowerCase() !== currentObj.answer.toLowerCase()).sort(() => Math.random() - 0.5);
     let finalChoices = [currentObj.answer, pool[0], pool[1], pool[2]].filter(Boolean).sort(() => Math.random() - 0.5);
     currentChoices = finalChoices;
-    
+
     finalChoices.forEach((choice, idx) => {
         const btn = document.createElement('button'); btn.className = 'choice-btn';
         btn.innerHTML = `<span>${choice}</span><span class="key-hint">${idx + 1}</span>`;
@@ -941,22 +1056,22 @@ function generateChoices(currentObj) {
 }
 
 function selectChoice(clickedBtn, selectedAnswer, correctAnswer) {
-    if (isShowingAnswer) return; 
+    if (isShowingAnswer) return;
     isShowingAnswer = true;
     stopLiveTimer();
     currentWordDuration = Date.now() - wordStartTime;
 
     const msgEl = document.getElementById('result-msg'); const btnEl = document.getElementById('action-btn');
     if (btnEl) { btnEl.style.display = 'block'; btnEl.innerText = 'Далі (Enter ↵)'; }
-    document.querySelectorAll('.choice-btn').forEach(btn => { 
-        if (btn.innerText.toLowerCase().includes(correctAnswer.toLowerCase())) { 
-            btn.style.background = 'var(--green)'; btn.style.color = '#11111b'; 
-        } 
+    document.querySelectorAll('.choice-btn').forEach(btn => {
+        if (btn.innerText.toLowerCase().includes(correctAnswer.toLowerCase())) {
+            btn.style.background = 'var(--green)'; btn.style.color = '#11111b';
+        }
     });
-    
+
     const isCorrect = isFuzzyMatch(selectedAnswer, correctAnswer);
     const currentObj = questions[currentIndex];
-    
+
     if (isCorrect) {
         currentCombo++;
     } else {
@@ -964,7 +1079,7 @@ function selectChoice(clickedBtn, selectedAnswer, correctAnswer) {
     }
 
     updateMemoryAlgorithm(currentObj, isCorrect, currentWordDuration);
-    
+
     sessionLogs.push({
         question: currentObj.question,
         answer: currentObj.answer,
@@ -988,7 +1103,7 @@ function handleQuizSubmit() {
             const userAns = inputEl.value;
             const isCorrect = isFuzzyMatch(userAns, currentObj.answer);
             inputEl.disabled = true; isShowingAnswer = true;
-            
+
             if (isCorrect) {
                 currentCombo++;
             } else {
@@ -1048,7 +1163,7 @@ function levenshteinDistance(a, b) {
 function isFuzzyMatch(userInput, targetAnswer) {
     const normUser = normalizeText(userInput);
     const normTarget = normalizeText(targetAnswer);
-    
+
     if (!normUser) return false;
     if (normUser === normTarget) return true;
 
@@ -1064,7 +1179,7 @@ function isFuzzyMatch(userInput, targetAnswer) {
     });
 
     const targetVariants = Array.from(new Set(rawVariants.map(v => normalizeText(v)).filter(v => v.length > 0)));
-    
+
     for (let variant of targetVariants) {
         if (normUser === variant) return true;
         const dist = levenshteinDistance(normUser, variant);
@@ -1082,8 +1197,8 @@ function updateMemoryAlgorithm(currentObj, isCorrect, timeSpentMs = 0) {
 
     const statKey = `${selectedModule}_${enWord}`;
     if (!MEMORY_STATS[statKey]) {
-        MEMORY_STATS[statKey] = { 
-            score: 2, 
+        MEMORY_STATS[statKey] = {
+            score: 2,
             history: [],
             log: [],
             stats: {
@@ -1152,7 +1267,7 @@ window.addEventListener('beforeunload', () => {
 });
 
 // Обробка глобальних гарячих клавіш (Enter, Space, Esc, цифри вибору)
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     const quizScreen = document.getElementById('quiz-screen');
     if (e.key === 'Escape') {
         switchScreen('menu-screen');
@@ -1193,14 +1308,14 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-window.onload = function() { 
+window.onload = function () {
     loadUserSettings();
-    switchScreen('menu-screen'); 
+    switchScreen('menu-screen');
 };
 
-(function() {
+(function () {
     const btn = document.getElementById('scroll-top-btn');
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (window.scrollY > 300) {
             btn.classList.add('visible');
         } else {

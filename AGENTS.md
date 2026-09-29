@@ -22,3 +22,6 @@
    - HTML розмітка: [`index.html`](file:///Users/user/Desktop/my-quiz-local/index.html)
    - CSS стилі: [`style.css`](file:///Users/user/Desktop/my-quiz-local/style.css)
    - JS логіка: [`scripts/main.js`](file:///Users/user/Desktop/my-quiz-local/scripts/main.js)
+
+5. **Режим роботи з Git:**
+   - Працювати виключно локально. Не робити комміти чи `git push` без прямого запиту від Вадима (слово «пуш»).
