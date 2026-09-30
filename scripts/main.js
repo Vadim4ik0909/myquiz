@@ -1,3 +1,77 @@
+const APP_VERSION = "v6.7.3";
+const VERSION_HISTORY = [
+    {
+        version: "v6.7.3",
+        date: "2026-09-30",
+        changes: [
+            "Дефолтний фільтр аналітики прогресу встановлено на «Сьогодні» для миттєвого перегляду денних результатів"
+        ]
+    },
+    {
+        version: "v6.7.2",
+        date: "2026-09-30",
+        changes: [
+            "Виправлено локалізацію: прибрано шаблон картка(ок) у дашборді модулів",
+            "Впроваджено універсальну функцію плюралізації getPlural() для числівників (картки, дні, слова)"
+        ]
+    },
+    {
+        version: "v6.7.1",
+        date: "2026-09-30",
+        changes: [
+            "Рефакторинг хедера: об'єднано стрік і кнопку календаря в інтерактивний чіп-бейдж",
+            "Оптимізовано модальне вікно календаря: усунено внутрішній скролбар, компактна сітка",
+            "Покращено копірайтинг та структуру карток метрик активності (серія, місячний обсяг, рекорд дня, якість)"
+        ]
+    },
+    {
+        version: "v6.7.0",
+        date: "2026-09-30",
+        changes: [
+            "Додано інтерактивний Календар активності з Duolingo/GitHub Heatmap (навігація місяців, стрік, продуктивність)",
+            "Збереження щоденної активності у LocalStorage (myquiz_activity)",
+            "Покращено мобільний UX (<480px): зручні тач-кнопки (min 48px), компактні відступи, захист від горизонтального скролу",
+            "Оптимізовано фокус тренування (приховування панелі керування під час тесту)",
+            "Оновлено дизайн шапки зі швидким доступом до календаря"
+        ]
+    },
+    {
+        version: "v6.6.0",
+        date: "2026-09-30",
+        changes: [
+            "Базова версія перед впровадженням політики версіонування",
+            "Виправлено рендер карток зі словами в контексті (парсинг HTML-тегів)",
+            "Покращено синтез мовлення (TTS) для контекстних речень",
+            "Додано інтерактивну модалку історії версій (Changelog)"
+        ]
+    }
+];
+
+function openChangelogModal() {
+    const modal = document.getElementById('changelog-modal');
+    if (!modal) return;
+    const listEl = document.getElementById('changelog-list');
+    if (listEl) {
+        listEl.innerHTML = VERSION_HISTORY.map(item => `
+            <div class="changelog-item">
+                <div class="changelog-header">
+                    <span class="changelog-version">${item.version}</span>
+                    <span class="changelog-date">${item.date}</span>
+                </div>
+                <ul class="changelog-changes">
+                    ${item.changes.map(ch => `<li>${ch}</li>`).join('')}
+                </ul>
+            </div>
+        `).join('');
+    }
+    modal.classList.add('active');
+}
+
+function closeChangelogModal() {
+    const modal = document.getElementById('changelog-modal');
+    if (modal) modal.classList.remove('active');
+}
+
 // Ініціалізація та завантаження локальних даних користувача
 if (typeof DEFAULT_MODULES === 'undefined') window.DEFAULT_MODULES = {};
 
@@ -6,13 +80,215 @@ let ALL_DATA = Object.assign({}, DEFAULT_MODULES, SAVED_USER_DATA);
 
 let MEMORY_STATS = JSON.parse(localStorage.getItem('my_quiz_mem_stats')) || {};
 let STREAK_DATA = JSON.parse(localStorage.getItem('my_quiz_streak')) || { count: 0, lastDate: "" };
+let ACTIVITY_DATA = JSON.parse(localStorage.getItem('myquiz_activity')) || {};
+let calendarViewDate = new Date();
+
+function getLocalDateKey(dateObj = new Date()) {
+    const y = dateObj.getFullYear();
+    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const d = String(dateObj.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+function syncActivityDataFromLogs() {
+    let hasNew = false;
+    if (Object.keys(ACTIVITY_DATA).length === 0 && MEMORY_STATS) {
+        Object.values(MEMORY_STATS).forEach(item => {
+            if (item && Array.isArray(item.log)) {
+                item.log.forEach(entry => {
+                    if (entry && entry.date) {
+                        const dateKey = getLocalDateKey(new Date(entry.date));
+                        if (!ACTIVITY_DATA[dateKey]) {
+                            ACTIVITY_DATA[dateKey] = { cardsReviewed: 0, correct: 0, timeSpentSec: 0 };
+                        }
+                        ACTIVITY_DATA[dateKey].cardsReviewed += 1;
+                        if (entry.isCorrect) ACTIVITY_DATA[dateKey].correct += 1;
+                        ACTIVITY_DATA[dateKey].timeSpentSec += Math.round((entry.timeSpentMs || 0) / 1000);
+                        hasNew = true;
+                    }
+                });
+            }
+        });
+        if (hasNew) {
+            localStorage.setItem('myquiz_activity', JSON.stringify(ACTIVITY_DATA));
+        }
+    }
+}
+syncActivityDataFromLogs();
+
+function recordDailyActivity(isCorrect, timeSpentMs = 0) {
+    const dateKey = getLocalDateKey();
+    if (!ACTIVITY_DATA[dateKey]) {
+        ACTIVITY_DATA[dateKey] = { cardsReviewed: 0, correct: 0, timeSpentSec: 0 };
+    }
+    ACTIVITY_DATA[dateKey].cardsReviewed += 1;
+    if (isCorrect) ACTIVITY_DATA[dateKey].correct += 1;
+    ACTIVITY_DATA[dateKey].timeSpentSec += Math.round((timeSpentMs || 0) / 1000);
+    localStorage.setItem('myquiz_activity', JSON.stringify(ACTIVITY_DATA));
+}
+
+/**
+ * Універсальна функція плюралізації (відмінювання числівників) для української мови
+ * @param {number} n - число
+ * @param {[string, string, string]} forms - форми: [1, 2-4, 5-0] (наприклад, ['картка', 'картки', 'карток'])
+ * @param {boolean} [includeNumber=true] - чи додавати саме число до результату
+ * @returns {string}
+ */
+function getPlural(n, forms, includeNumber = true) {
+    const num = Math.abs(Number(n) || 0);
+    const lastTwo = num % 100;
+    const lastOne = num % 10;
+    let word = forms[2];
+    if (lastTwo < 11 || lastTwo > 19) {
+        if (lastOne === 1) {
+            word = forms[0];
+        } else if (lastOne >= 2 && lastOne <= 4) {
+            word = forms[1];
+        }
+    }
+    return includeNumber ? `${num} ${word}` : word;
+}
+
+const MONTH_NAMES_UA = [
+    'Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
+    'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'
+];
+
+const MONTH_NAMES_GENITIVE_UA = [
+    'січня', 'лютого', 'березня', 'квітня', 'травня', 'червня',
+    'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'
+];
+
+function openCalendarModal() {
+    const modal = document.getElementById('calendar-modal');
+    if (!modal) return;
+    calendarViewDate = new Date();
+    renderCalendar();
+    modal.classList.add('active');
+}
+
+function closeCalendarModal() {
+    const modal = document.getElementById('calendar-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+function changeCalendarMonth(delta) {
+    calendarViewDate.setMonth(calendarViewDate.getMonth() + delta);
+    renderCalendar();
+}
+
+function renderCalendar() {
+    const gridEl = document.getElementById('cal-days-grid');
+    const titleEl = document.getElementById('cal-month-title');
+    if (!gridEl || !titleEl) return;
+
+    const year = calendarViewDate.getFullYear();
+    const month = calendarViewDate.getMonth();
+
+    titleEl.textContent = `${MONTH_NAMES_UA[month]} ${year}`;
+
+    const firstDate = new Date(year, month, 1);
+    const firstDayOfWeek = (firstDate.getDay() + 6) % 7;
+    const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+    const prevMonthDays = new Date(year, month, 0).getDate();
+
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+    const todayDateNum = today.getDate();
+
+    let cellsHtml = '';
+
+    for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+        const dayNum = prevMonthDays - i;
+        cellsHtml += `<div class="cal-day cal-day-inactive">${dayNum}</div>`;
+    }
+
+    let monthTotalCards = 0;
+    let monthTotalCorrect = 0;
+    let bestDayNum = null;
+    let maxCardsInDay = 0;
+
+    for (let d = 1; d <= totalDaysInMonth; d++) {
+        const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const dayStat = ACTIVITY_DATA[dateKey];
+        const count = dayStat ? (dayStat.cardsReviewed || 0) : 0;
+        const correct = dayStat ? (dayStat.correct || 0) : 0;
+        const timeSec = dayStat ? (dayStat.timeSpentSec || 0) : 0;
+
+        monthTotalCards += count;
+        monthTotalCorrect += correct;
+
+        if (count > maxCardsInDay) {
+            maxCardsInDay = count;
+            bestDayNum = d;
+        }
+
+        let lvlClass = 'lvl-0';
+        if (count >= 1 && count <= 10) lvlClass = 'lvl-1';
+        else if (count >= 11 && count <= 20) lvlClass = 'lvl-2';
+        else if (count > 20) lvlClass = 'lvl-3';
+
+        const isToday = isCurrentMonth && d === todayDateNum;
+        const todayClass = isToday ? ' is-today' : '';
+
+        let tooltip = `${d} ${MONTH_NAMES_GENITIVE_UA[month]}: ${getPlural(count, ['картка', 'картки', 'карток'])}`;
+        if (count > 0) {
+            tooltip += ` (${correct} вірно${timeSec > 0 ? `, ~${Math.round(timeSec / 60)} хв` : ''})`;
+        }
+
+        cellsHtml += `
+            <div class="cal-day ${lvlClass}${todayClass}" title="${tooltip}" data-date="${dateKey}">
+                <span class="cal-day-num">${d}</span>
+                ${count > 0 ? `<span class="cal-day-badge">${count}</span>` : ''}
+            </div>
+        `;
+    }
+
+    const totalFilled = firstDayOfWeek + totalDaysInMonth;
+    const nextMonthDaysNeeded = totalFilled % 7 === 0 ? 0 : 7 - (totalFilled % 7);
+    for (let d = 1; d <= nextMonthDaysNeeded; d++) {
+        cellsHtml += `<div class="cal-day cal-day-inactive">${d}</div>`;
+    }
+
+    gridEl.innerHTML = cellsHtml;
+
+    const streakEl = document.getElementById('cal-stat-streak');
+    const monthCardsEl = document.getElementById('cal-stat-month-cards');
+    const bestDayEl = document.getElementById('cal-stat-best-day');
+    const bestDayLbl = document.getElementById('cal-stat-best-day-lbl');
+    const accuracyEl = document.getElementById('cal-stat-accuracy');
+
+    if (streakEl) streakEl.textContent = getPlural(STREAK_DATA.count || 0, ['день поспіль', 'дні поспіль', 'днів поспіль']);
+    if (monthCardsEl) monthCardsEl.textContent = getPlural(monthTotalCards, ['картка', 'картки', 'карток']);
+    if (bestDayEl) {
+        if (bestDayNum && maxCardsInDay > 0) {
+            bestDayEl.textContent = getPlural(maxCardsInDay, ['картка', 'картки', 'карток']);
+            if (bestDayLbl) {
+                bestDayLbl.textContent = `Рекорд за день (${bestDayNum} ${MONTH_NAMES_GENITIVE_UA[month].slice(0, 3)}.)`;
+            }
+        } else {
+            bestDayEl.textContent = '0 карток';
+            if (bestDayLbl) {
+                bestDayLbl.textContent = 'Рекорд за день (—)';
+            }
+        }
+    }
+    if (accuracyEl) {
+        if (monthTotalCards > 0) {
+            const acc = Math.round((monthTotalCorrect / monthTotalCards) * 100);
+            accuracyEl.textContent = `${acc}%`;
+        } else {
+            accuracyEl.textContent = '0%';
+        }
+    }
+}
 
 let selectedModule = ''; let questions = []; let currentIndex = 0; let score = 0;
-let isShowingAnswer = false; let configMode = 'write'; let configTarget = 'ua'; let editingModuleOriginalName = '';
+let isShowingAnswer = false; let configMaterial = 'words'; let configMode = 'choice'; let configTarget = 'ua'; let editingModuleOriginalName = '';
 let currentChoices = [];
 let isMenuRendered = false;
 let currentActiveScreen = 'menu-screen';
-let selectedTimeFilter = 'all';
+let selectedTimeFilter = 'today';
 
 let wordStartTime = 0;
 let currentWordDuration = 0;
@@ -38,10 +314,19 @@ const BOOK_TITLES = {
     "15": "Unit 15: Global English / Culture"
 };
 
-// Форматування секунд у зручний рядок (хвилі / секунди)
+function startWordTimer() {
+    wordStartTime = Date.now();
+}
+
+// Форматування секунд у зручний рядок (години / хвилини / секунди)
 function formatTime(totalSec) {
-    let min = Math.floor(totalSec / 60);
+    if (!totalSec || totalSec <= 0) return "0с";
+    let hrs = Math.floor(totalSec / 3600);
+    let min = Math.floor((totalSec % 3600) / 60);
     let sec = totalSec % 60;
+    if (hrs > 0) {
+        return `${hrs} год ${min} хв ${sec < 10 ? '0' : ''}${sec} сек`;
+    }
     if (min === 0) return `${sec} сек`;
     return `${min} хв ${sec < 10 ? '0' : ''}${sec} сек`;
 }
@@ -65,7 +350,8 @@ function handleNavToggle() {
 
 // Збереження параметрів користувача у LocalStorage
 function saveUserSettings() {
-    const modeVal = document.querySelector('input[name="quiz-mode"]:checked')?.value || 'write';
+    const materialVal = document.querySelector('input[name="quiz-material"]:checked')?.value || 'words';
+    const modeVal = document.querySelector('input[name="quiz-mode"]:checked')?.value || 'choice';
     const langVal = document.querySelector('input[name="quiz-lang"]:checked')?.value || 'ua';
     const limitVal = document.getElementById('quiz-limit-select')?.value || '20';
     const audioVal = document.getElementById('auto-audio-toggle')?.checked ?? false;
@@ -74,6 +360,7 @@ function saveUserSettings() {
     const hardOnlyVal = document.getElementById('hard-only-toggle')?.checked ?? false;
 
     const settingsObj = {
+        material: materialVal,
         mode: modeVal,
         lang: langVal,
         limit: limitVal,
@@ -89,8 +376,13 @@ function saveUserSettings() {
 function loadUserSettings() {
     const saved = JSON.parse(localStorage.getItem('my_quiz_settings'));
     if (!saved) {
-        document.getElementById('mode-choice').checked = true;
-        document.getElementById('lang-en').checked = true;
+        const matWords = document.getElementById('material-words');
+        if (matWords) matWords.checked = true;
+        handleMaterialChange();
+        const modeChoice = document.getElementById('mode-choice');
+        if (modeChoice) modeChoice.checked = true;
+        const langEn = document.getElementById('lang-en');
+        if (langEn) langEn.checked = true;
         document.getElementById('quiz-limit-select').value = '20';
         document.getElementById('auto-audio-toggle').checked = false;
         document.getElementById('track-time-toggle').checked = true;
@@ -99,8 +391,16 @@ function loadUserSettings() {
         return;
     }
 
+    if (saved.material) {
+        const matRadio = document.querySelector(`input[name="quiz-material"][value="${saved.material}"]`);
+        if (matRadio) matRadio.checked = true;
+    }
+    handleMaterialChange();
+
     if (saved.mode) {
-        const modeRadio = document.querySelector(`input[name="quiz-mode"][value="${saved.mode}"]`);
+        let modeVal = saved.mode;
+        if (modeVal === 'context-match') modeVal = 'context-slot';
+        const modeRadio = document.querySelector(`input[name="quiz-mode"][value="${modeVal}"]`);
         if (modeRadio) modeRadio.checked = true;
     }
     if (saved.lang) {
@@ -115,6 +415,35 @@ function loadUserSettings() {
     if (saved.trackTime !== undefined) document.getElementById('track-time-toggle').checked = saved.trackTime;
     if (saved.timerMode !== undefined) document.getElementById('timer-mode-toggle').checked = saved.timerMode;
     if (saved.hardOnly !== undefined) document.getElementById('hard-only-toggle').checked = saved.hardOnly;
+}
+
+function handleMaterialChange() {
+    const materialVal = document.querySelector('input[name="quiz-material"]:checked')?.value || 'words';
+    const wordsContainer = document.getElementById('mode-control-words');
+    const contextContainer = document.getElementById('mode-control-context');
+    const langGroup = document.getElementById('level-lang-group');
+
+    if (materialVal === 'words') {
+        if (wordsContainer) wordsContainer.style.display = 'grid';
+        if (contextContainer) contextContainer.style.display = 'none';
+        if (langGroup) langGroup.style.display = 'block';
+
+        const currentMode = document.querySelector('input[name="quiz-mode"]:checked')?.value;
+        if (!currentMode || !['choice', 'write'].includes(currentMode)) {
+            const choiceBtn = document.getElementById('mode-choice');
+            if (choiceBtn) choiceBtn.checked = true;
+        }
+    } else {
+        if (wordsContainer) wordsContainer.style.display = 'none';
+        if (contextContainer) contextContainer.style.display = 'grid';
+        if (langGroup) langGroup.style.display = 'none';
+
+        const currentMode = document.querySelector('input[name="quiz-mode"]:checked')?.value;
+        if (!currentMode || !['context-slot', 'context-write'].includes(currentMode)) {
+            const slotBtn = document.getElementById('mode-context-slot');
+            if (slotBtn) slotBtn.checked = true;
+        }
+    }
 }
 
 function toggleMobileMenu() {
@@ -133,6 +462,7 @@ function stopLiveTimer() {
 function switchScreen(screenId) {
     stopLiveTimer();
     currentActiveScreen = screenId;
+    document.body.classList.toggle('in-quiz', screenId === 'quiz-screen');
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const targetScreen = document.getElementById(screenId);
     if (targetScreen) targetScreen.classList.add('active');
@@ -222,11 +552,12 @@ function handleBulkImport(input) {
 // Експорт резервної копії (Бэкап у форматі JSON)
 function exportBackupJSON() {
     const backupData = {
-        version: "6.5",
+        version: "6.7.0",
         date: new Date().toISOString(),
         modules: SAVED_USER_DATA,
         stats: MEMORY_STATS,
         streak: STREAK_DATA,
+        activity: ACTIVITY_DATA,
         settings: JSON.parse(localStorage.getItem('my_quiz_settings')) || {}
     };
     const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -259,6 +590,10 @@ function importBackupJSON(input) {
                 STREAK_DATA = data.streak;
                 localStorage.setItem('my_quiz_streak', JSON.stringify(STREAK_DATA));
             }
+            if (data.activity) {
+                ACTIVITY_DATA = data.activity;
+                localStorage.setItem('myquiz_activity', JSON.stringify(ACTIVITY_DATA));
+            }
             if (data.settings) {
                 localStorage.setItem('my_quiz_settings', JSON.stringify(data.settings));
                 loadUserSettings();
@@ -276,7 +611,7 @@ function importBackupJSON(input) {
 function clearAllData() {
     if (confirm('Повністю очистити додаток та видалити прогрес?')) {
         localStorage.clear();
-        SAVED_USER_DATA = {}; ALL_DATA = Object.assign({}, DEFAULT_MODULES); MEMORY_STATS = {}; STREAK_DATA = { count: 0, lastDate: "" };
+        SAVED_USER_DATA = {}; ALL_DATA = Object.assign({}, DEFAULT_MODULES); MEMORY_STATS = {}; STREAK_DATA = { count: 0, lastDate: "" }; ACTIVITY_DATA = {};
         isMenuRendered = false;
         loadUserSettings();
         renderMenu(); updateStreakAndGlobalStats();
@@ -358,7 +693,7 @@ function renderMenu() {
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:3px; color:var(--accent);"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                     <div>
                         <strong>${name}</strong>
-                        <div style="font-size:13px; color:var(--subtext); margin-top:3px;">${stats.total} картка(ок)</div>
+                        <div style="font-size:13px; color:var(--subtext); margin-top:3px;">${getPlural(stats.total, ['картка', 'картки', 'карток'])}</div>
                     </div>
                 </div>
             </div>
@@ -437,7 +772,22 @@ function filterLogsByTime(logs, filterKey) {
     return logs.filter(entry => entry.date && entry.date >= startBound);
 }
 
+function sanitizeMemoryStats() {
+    if (!MEMORY_STATS || typeof MEMORY_STATS !== 'object') return;
+    Object.keys(MEMORY_STATS).forEach(statKey => {
+        const item = MEMORY_STATS[statKey];
+        if (item && item.log && Array.isArray(item.log)) {
+            item.log.forEach(entry => {
+                if (!entry.timeSpentMs || entry.timeSpentMs > 7200000 || entry.timeSpentMs < 0) {
+                    entry.timeSpentMs = 3000;
+                }
+            });
+        }
+    });
+}
+
 function calculateGlobalModeAnalytics(timeFilter) {
+    sanitizeMemoryStats();
     let summary = {
         write: { correct: 0, total: 0 },
         choice: { correct: 0, total: 0 },
@@ -445,30 +795,31 @@ function calculateGlobalModeAnalytics(timeFilter) {
         en: { correct: 0, total: 0 }
     };
 
-    Object.values(MEMORY_STATS).forEach(item => {
-        if (item.log) {
-            const filtered = filterLogsByTime(item.log, timeFilter);
-            filtered.forEach(entry => {
-                const modeKey = entry.mode === 'choice' ? 'choice' : 'write';
-                summary[modeKey].total++;
-                if (entry.isCorrect) summary[modeKey].correct++;
+    Object.keys(ALL_DATA).forEach(moduleName => {
+        const wordPairs = Object.keys(ALL_DATA[moduleName] || {});
+        wordPairs.forEach(enWord => {
+            const statKey = `${moduleName}_${enWord}`;
+            const item = MEMORY_STATS[statKey];
+            if (item && item.log && Array.isArray(item.log)) {
+                const filtered = filterLogsByTime(item.log, timeFilter);
+                filtered.forEach(entry => {
+                    const modeKey = entry.mode === 'choice' ? 'choice' : 'write';
+                    summary[modeKey].total++;
+                    if (entry.isCorrect) summary[modeKey].correct++;
 
-                const langKey = entry.lang === 'en' ? 'en' : 'ua';
-                summary[langKey].total++;
-                if (entry.isCorrect) summary[langKey].correct++;
-            });
-        } else if (timeFilter === 'all' && item.stats) {
-            if (item.stats.modes?.write) { summary.write.correct += item.stats.modes.write.correct || 0; summary.write.total += item.stats.modes.write.total || 0; }
-            if (item.stats.modes?.choice) { summary.choice.correct += item.stats.modes.choice.correct || 0; summary.choice.total += item.stats.modes.choice.total || 0; }
-            if (item.stats.langs?.ua) { summary.ua.correct += item.stats.langs.ua.correct || 0; summary.ua.total += item.stats.langs.ua.total || 0; }
-            if (item.stats.langs?.en) { summary.en.correct += item.stats.langs.en.correct || 0; summary.en.total += item.stats.langs.en.total || 0; }
-        }
+                    const langKey = entry.lang === 'en' ? 'en' : 'ua';
+                    summary[langKey].total++;
+                    if (entry.isCorrect) summary[langKey].correct++;
+                });
+            }
+        });
     });
 
     return summary;
 }
 
 function getUnitAnalyticsForPeriod(moduleName, filterKey) {
+    sanitizeMemoryStats();
     let correct = 0;
     let total = 0;
     let totalTimeMs = 0;
@@ -477,12 +828,14 @@ function getUnitAnalyticsForPeriod(moduleName, filterKey) {
     wordPairs.forEach(enWord => {
         const statKey = `${moduleName}_${enWord}`;
         const item = MEMORY_STATS[statKey];
-        if (item && item.log) {
+        if (item && item.log && Array.isArray(item.log)) {
             const filtered = filterLogsByTime(item.log, filterKey);
             filtered.forEach(e => {
                 total++;
                 if (e.isCorrect) correct++;
-                if (e.timeSpentMs) totalTimeMs += e.timeSpentMs;
+                if (e.timeSpentMs && e.timeSpentMs > 0 && e.timeSpentMs < 7200000) {
+                    totalTimeMs += e.timeSpentMs;
+                }
             });
         }
     });
@@ -524,6 +877,13 @@ function getModuleActivityMetrics(moduleName) {
 }
 
 function renderDetailedStats() {
+    sanitizeMemoryStats();
+
+    document.querySelectorAll('.time-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-time') === selectedTimeFilter) btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+
     const modeContainer = document.getElementById('mode-analytics-container');
     if (modeContainer) {
         const data = calculateGlobalModeAnalytics(selectedTimeFilter);
@@ -583,6 +943,7 @@ function renderDetailedStats() {
 
         const learnedPct = stats.total > 0 ? (stats.learned / stats.total) * 100 : 0;
         const learningPct = stats.total > 0 ? (stats.learning / stats.total) * 100 : 0;
+        const unlearnedPct = stats.total > 0 ? (stats.unlearned / stats.total) * 100 : 0;
 
         const card = document.createElement('div');
         card.className = 'stats-card';
@@ -603,9 +964,10 @@ function renderDetailedStats() {
                 <strong>${unitPeriodStats.timeFormatted}</strong>
             </div>
 
-            <div class="progress-track" style="margin-top:10px; display:flex; background:#1e1e2e;">
-                <div style="width: ${learnedPct}%; background: var(--green); height: 100%; transition: width 0.3s ease;" title="Заучено: ${stats.displayPct}"></div>
-                <div style="width: ${learningPct}%; background: var(--orange); height: 100%; transition: width 0.3s ease;" title="В процесі"></div>
+            <div class="progress-track" style="margin-top:10px; display:flex; background:#1e1e2e; height:8px; border-radius:4px; overflow:hidden;">
+                <div style="width: ${learnedPct}%; background: var(--green); height: 100%; transition: width 0.3s ease;" title="Заучено: ${stats.learned}"></div>
+                <div style="width: ${learningPct}%; background: var(--orange); height: 100%; transition: width 0.3s ease;" title="В процесі: ${stats.learning}"></div>
+                <div style="width: ${unlearnedPct}%; background: #45475a; height: 100%; transition: width 0.3s ease;" title="Ще не вчено: ${stats.unlearned}"></div>
             </div>
         `;
         fragment.appendChild(card);
@@ -632,9 +994,70 @@ function openEditScreen(name) {
     switchScreen('create-screen');
 }
 
+function countUnitContextWords(name) {
+    if (!ALL_DATA[name]) return 0;
+    const pairs = Object.entries(ALL_DATA[name]);
+    let count = 0;
+    pairs.forEach(([en]) => {
+        const rawCtx = getContextForWord(en);
+        if (rawCtx && getMaskedContext(en, rawCtx)) count++;
+    });
+    return count;
+}
+
+function checkUnitContextAvailability(name) {
+    const contextCount = countUnitContextWords(name);
+    const contextRadio = document.getElementById('material-context');
+    const wordsRadio = document.getElementById('material-words');
+    const labelContext = document.querySelector('label[for="material-context"]');
+    const matchModeRadio = document.getElementById('mode-context-match');
+    const labelMatchMode = document.querySelector('label[for="mode-context-match"]');
+
+    if (contextCount < 4) {
+        if (contextRadio) {
+            contextRadio.disabled = true;
+            if (contextRadio.checked && wordsRadio) {
+                wordsRadio.checked = true;
+            }
+        }
+        if (labelContext) {
+            labelContext.style.opacity = '0.5';
+            labelContext.style.cursor = 'not-allowed';
+            labelContext.title = 'Недоступно: недостатньо контекстних речень у цьому модулі';
+            labelContext.innerText = '📖 Слова в контексті (недоступно)';
+        }
+        if (matchModeRadio) {
+            matchModeRadio.disabled = true;
+        }
+        if (labelMatchMode) {
+            labelMatchMode.style.opacity = '0.5';
+            labelMatchMode.title = 'Недостатньо контекстних речень';
+        }
+        handleMaterialChange();
+    } else {
+        if (contextRadio) {
+            contextRadio.disabled = false;
+        }
+        if (labelContext) {
+            labelContext.style.opacity = '1';
+            labelContext.style.cursor = 'pointer';
+            labelContext.title = '📖 Слова в контексті';
+            labelContext.innerText = '📖 Слова в контексті';
+        }
+        if (matchModeRadio) {
+            matchModeRadio.disabled = false;
+        }
+        if (labelMatchMode) {
+            labelMatchMode.style.opacity = '1';
+            labelMatchMode.title = '';
+        }
+    }
+}
+
 function openSetup(name) {
     selectedModule = name;
     document.getElementById('setup-title').innerText = `Тренажер: ${name}`;
+    checkUnitContextAvailability(name);
     renderUnitWordsTable(name);
     switchScreen('setup-screen');
 }
@@ -789,7 +1212,10 @@ function updateStreakAndGlobalStats() {
     }
 
     const streakEl = document.getElementById('stat-streak');
-    if (streakEl) streakEl.innerHTML = `${STREAK_DATA.count}д`;
+    if (streakEl) {
+        const count = STREAK_DATA.count || 0;
+        streakEl.innerHTML = count > 0 ? `🔥 ${count}-й день активності` : `🔥 0 днів активності`;
+    }
 
     let totalLearned = 0;
     Object.values(MEMORY_STATS).forEach(m => {
@@ -805,9 +1231,12 @@ function updateStreakAndGlobalStats() {
 function cleanTextForTTS(text) {
     if (!text) return '';
     return text
+        .replace(/<[^>]*>/g, '')
         .replace(/\([^)]*\)/g, '')
         .replace(/^[a-zA-Z\s]+:\s*/, '')
         .replace(/[\/\;]/g, ', ')
+        .replace(/\[\s*\.{3}\s*\]/g, '')
+        .replace(/\[\s*[a-zA-Z_]+\s*\]/g, '')
         .trim();
 }
 
@@ -826,18 +1255,99 @@ function speakText(text, lang = 'en-US') {
 function speakCurrentWord() {
     if (currentIndex < questions.length) {
         const currentObj = questions[currentIndex];
-        speakText(currentObj.en, 'en-US');
+        if (configMode.startsWith('context-')) {
+            const rawCtx = getContextForWord(currentObj.en);
+            const parsed = parseContextString(rawCtx);
+            const sentenceToSpeak = parsed ? parsed.enSentence : currentObj.en;
+            speakText(sentenceToSpeak || currentObj.en, 'en-US');
+        } else {
+            speakText(currentObj.en, 'en-US');
+        }
     }
+}
+
+function formatContextPrompt(item, mode) {
+    const en = item.en;
+    const hasContext = typeof CONTEXT_DATA !== 'undefined';
+    const rawCtx = hasContext ? (CONTEXT_DATA[en] || CONTEXT_DATA[en.toLowerCase()] || '') : '';
+    if (!rawCtx) {
+        return item.question || item.ua || item.en;
+    }
+
+    const parsed = parseContextString(rawCtx);
+    const sentence = parsed ? parsed.enSentence : rawCtx;
+    const translation = parsed ? parsed.uaTranslation : '';
+
+    const escapedEn = en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedEn}\\b`, 'gi');
+
+    let maskedSentence = sentence;
+    if (regex.test(sentence)) {
+        if (mode === 'context-write') {
+            const hint = en.charAt(0) + '_'.repeat(Math.max(1, en.length - 1));
+            maskedSentence = sentence.replace(regex, `<span class="blank">[ ${hint} ]</span>`);
+        } else {
+            maskedSentence = sentence.replace(regex, `<span class="blank">[ ... ]</span>`);
+        }
+    } else {
+        const subRegex = new RegExp(escapedEn, 'gi');
+        if (subRegex.test(sentence)) {
+            if (mode === 'context-write') {
+                const hint = en.charAt(0) + '_'.repeat(Math.max(1, en.length - 1));
+                maskedSentence = sentence.replace(subRegex, `<span class="blank">[ ${hint} ]</span>`);
+            } else {
+                maskedSentence = sentence.replace(subRegex, `<span class="blank">[ ... ]</span>`);
+            }
+        } else {
+            if (mode === 'context-write') {
+                const hint = en.charAt(0) + '_'.repeat(Math.max(1, en.length - 1));
+                maskedSentence = sentence + ` <span class="blank">[ ${hint} ]</span>`;
+            } else {
+                maskedSentence = sentence + ` <span class="blank">[ ... ]</span>`;
+            }
+        }
+    }
+
+    return `
+        <div class="context-prompt-wrap">
+            <div class="context-prompt-sentence">${maskedSentence}</div>
+            ${translation ? `<div class="context-prompt-sub">(${translation})</div>` : ''}
+        </div>
+    `;
 }
 
 function generateQuiz() {
     saveUserSettings();
-    configMode = document.querySelector('input[name="quiz-mode"]:checked').value;
-    configTarget = document.querySelector('input[name="quiz-lang"]:checked').value;
+    configMaterial = document.querySelector('input[name="quiz-material"]:checked')?.value || 'words';
+    configMode = document.querySelector('input[name="quiz-mode"]:checked')?.value || 'choice';
+    if (configMaterial === 'words') {
+        configTarget = document.querySelector('input[name="quiz-lang"]:checked')?.value || 'ua';
+    } else {
+        configTarget = 'en';
+    }
     const limitVal = document.getElementById('quiz-limit-select').value;
     const isHardOnly = document.getElementById('hard-only-toggle')?.checked ?? false;
 
     let originalPairs = Object.entries(ALL_DATA[selectedModule]);
+
+    if (configMaterial === 'context' || configMode.startsWith('context-')) {
+        const contextPairs = originalPairs.filter(pair => {
+            const raw = getContextForWord(pair[0]);
+            return Boolean(raw && getMaskedContext(pair[0], raw));
+        });
+        const minRequired = configMode === 'context-match' ? 4 : 1;
+        if (contextPairs.length >= minRequired) {
+            originalPairs = contextPairs;
+        } else {
+            alert('⚠️ Для цього модуля ще не додано речення контексту. Оберіть режим "Окремі слова".');
+            configMaterial = 'words';
+            configMode = 'choice';
+            const matWords = document.getElementById('material-words');
+            if (matWords) matWords.checked = true;
+            handleMaterialChange();
+            return;
+        }
+    }
 
     if (isHardOnly) {
         const hardPairs = originalPairs.filter(pair => {
@@ -858,7 +1368,13 @@ function generateQuiz() {
         const wordStat = MEMORY_STATS[statKey] || { score: 2, history: [] };
         let weight = Math.max(1, wordStat.score);
         for (let i = 0; i < weight; i++) {
-            pool.push({ en: pair[0], ua: pair[1], question: configTarget === 'ua' ? pair[1] : pair[0], answer: configTarget === 'ua' ? pair[0] : pair[1] });
+            const isContext = configMaterial === 'context' || configMode.startsWith('context-');
+            pool.push({
+                en: pair[0],
+                ua: pair[1],
+                question: isContext ? pair[0] : (configTarget === 'ua' ? pair[1] : pair[0]),
+                answer: isContext ? pair[0] : (configTarget === 'ua' ? pair[0] : pair[1])
+            });
         }
     });
     pool.sort(() => Math.random() - 0.5);
@@ -887,53 +1403,79 @@ function startMistakesOnlyQuiz() {
     switchScreen('quiz-screen'); showQuestion();
 }
 
-function startWordTimer() {
-    stopLiveTimer();
-    wordStartTime = Date.now();
-    const isTimerMode = document.getElementById('timer-mode-toggle').checked;
-
-    if (isTimerMode) {
-        timerTimeout = setTimeout(() => {
-            stopLiveTimer();
-            handleTimeOut();
-        }, 7000);
+function toggleTranslationHint(btn) {
+    const hintText = btn.nextElementSibling;
+    if (hintText) {
+        if (hintText.style.display === 'none' || !hintText.style.display) {
+            hintText.style.display = 'inline-block';
+            btn.innerText = '🙈 Сховати';
+        } else {
+            hintText.style.display = 'none';
+            btn.innerText = '👁️ Переклад';
+        }
     }
 }
 
-function handleTimeOut() {
-    if (isShowingAnswer) return;
-    const msgEl = document.getElementById('result-msg');
-    const btnEl = document.getElementById('action-btn');
-    isShowingAnswer = true;
-    currentCombo = 0;
-    currentWordDuration = 7000;
-
-    const currentObj = questions[currentIndex];
-    updateMemoryAlgorithm(currentObj, false, currentWordDuration);
-
-    sessionLogs.push({
-        question: currentObj.question,
-        answer: currentObj.answer,
-        userAnswer: "Час вичерпано",
-        isCorrect: false,
-        timeMs: currentWordDuration
-    });
-
-    if (msgEl) {
-        msgEl.className = 'result error';
-        msgEl.innerText = `⏳ Час вичерпано! Правильно: ${currentObj.answer}`;
+function getContextForWord(enWord) {
+    if (!enWord || typeof CONTEXT_DATA === 'undefined') return '';
+    if (CONTEXT_DATA[enWord]) return CONTEXT_DATA[enWord];
+    const lower = enWord.toLowerCase();
+    if (CONTEXT_DATA[lower]) return CONTEXT_DATA[lower];
+    const keys = Object.keys(CONTEXT_DATA);
+    for (let k of keys) {
+        if (k.toLowerCase() === lower || k.toLowerCase().includes(lower)) {
+            return CONTEXT_DATA[k];
+        }
     }
-    if (btnEl) {
-        btnEl.style.display = 'block';
-        btnEl.innerText = 'Далі (Enter ↵)';
+    return '';
+}
+
+function parseContextString(rawCtx) {
+    if (!rawCtx) return null;
+    const match = rawCtx.match(/^(.*?)(?:\s*\((.*?)\))?$/);
+    if (!match) return { enSentence: rawCtx.trim(), uaTranslation: '' };
+    return {
+        enSentence: (match[1] || rawCtx).trim(),
+        uaTranslation: (match[2] || '').trim()
+    };
+}
+
+function getMaskedContext(enWord, rawCtx) {
+    if (!enWord || !rawCtx) return null;
+    const parsed = parseContextString(rawCtx);
+    if (!parsed || !parsed.enSentence) return null;
+
+    const escapedEn = enWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const testRegex = new RegExp(`\\b${escapedEn}\\b`, 'i');
+
+    let masked = parsed.enSentence;
+    if (testRegex.test(masked)) {
+        const replaceRegex = new RegExp(`\\b${escapedEn}\\b`, 'gi');
+        masked = masked.replace(replaceRegex, '<span class="blank">[ ... ]</span>');
+    } else {
+        const subTestRegex = new RegExp(escapedEn, 'i');
+        if (subTestRegex.test(masked)) {
+            const subReplaceRegex = new RegExp(escapedEn, 'gi');
+            masked = masked.replace(subReplaceRegex, '<span class="blank">[ ... ]</span>');
+        } else {
+            masked = parsed.enSentence + ' <span class="blank">[ ... ]</span>';
+        }
     }
+
+    return {
+        word: enWord,
+        enMasked: masked,
+        enFull: parsed.enSentence,
+        uaTrans: parsed.uaTranslation
+    };
 }
 
 function showQuestion() {
     const inputEl = document.getElementById('user-input'); const msgEl = document.getElementById('result-msg');
     const btnEl = document.getElementById('action-btn'); const writeBlock = document.getElementById('write-block'); const choiceBlock = document.getElementById('choice-block');
     isShowingAnswer = false; if (msgEl) msgEl.innerText = '';
-    if (btnEl) { btnEl.innerText = 'Перевірити (Enter ↵)'; btnEl.style.display = configMode === 'write' ? 'block' : 'none'; }
+    const isWriteType = configMode === 'write' || configMode === 'context-write';
+    if (btnEl) { btnEl.innerText = 'Перевірити (Enter ↵)'; btnEl.style.display = isWriteType ? 'block' : 'none'; }
 
     if (currentIndex < questions.length) {
         const currentObj = questions[currentIndex];
@@ -941,16 +1483,27 @@ function showQuestion() {
         document.getElementById('quiz-progress').innerHTML = `Картка ${currentIndex + 1} з ${questions.length} | Рахунок: ${score} ${comboBadgeHtml}`;
 
         const wordEl = document.getElementById('target-word');
-        wordEl.innerText = currentObj.question;
-
-        const autoAudio = document.getElementById('auto-audio-toggle').checked;
-        if (autoAudio && configTarget === 'en') {
-            speakText(currentObj.en, 'en-US');
+        if (configMode.startsWith('context-')) {
+            wordEl.innerHTML = formatContextPrompt(currentObj, configMode);
+        } else {
+            wordEl.innerText = currentObj.question;
         }
 
-        if (configMode === 'write') {
+        const autoAudio = document.getElementById('auto-audio-toggle').checked;
+        if (autoAudio && (configTarget === 'en' || configMode.startsWith('context-'))) {
+            speakCurrentWord();
+        }
+
+        if (isWriteType) {
             writeBlock.style.display = 'block'; choiceBlock.style.display = 'none';
-            if (inputEl) { inputEl.value = ''; inputEl.disabled = false; setTimeout(() => inputEl.focus(), 20); }
+            if (inputEl) { 
+                inputEl.value = ''; 
+                inputEl.disabled = false; 
+                inputEl.placeholder = configMode === 'context-write'
+                    ? 'Введіть пропущене слово...'
+                    : (configTarget === 'ua' ? 'Введіть переклад англійською...' : 'Введіть переклад українською...');
+                setTimeout(() => inputEl.focus(), 20); 
+            }
         } else {
             writeBlock.style.display = 'none'; choiceBlock.style.display = 'grid'; generateChoices(currentObj);
         }
@@ -1033,7 +1586,7 @@ function renderSessionSummary() {
                 </div>
             </div>
 
-            ${errorCount > 0 ? `<button class="main-btn btn-mistakes" onclick="startMistakesOnlyQuiz()">🔁 Опрацювати помилки (${errorCount} слів)</button>` : ''}
+            ${errorCount > 0 ? `<button class="main-btn btn-mistakes" onclick="startMistakesOnlyQuiz()">🔁 Опрацювати помилки (${getPlural(errorCount, ['слово', 'слова', 'слів'])})</button>` : ''}
             <button class="main-btn" onclick="switchScreen('menu-screen')" style="margin-top:15px;">Повернутися до меню</button>
         `;
     }
@@ -1043,7 +1596,161 @@ function renderSessionSummary() {
 
 function generateChoices(currentObj) {
     const choiceBlock = document.getElementById('choice-block'); choiceBlock.innerHTML = '';
-    let allAnswersPool = Object.entries(ALL_DATA[selectedModule]).map(pair => configTarget === 'ua' ? pair[0] : pair[1]);
+    
+    if (configMode === 'context-match') {
+        choiceBlock.classList.add('context-match-grid');
+        const targetCtxRaw = getContextForWord(currentObj.en);
+        const targetObj = getMaskedContext(currentObj.en, targetCtxRaw);
+
+        if (!targetObj) {
+            alert('⚠️ Для цього слова відсутнє речення контексту. Повертаємося до налаштувань.');
+            handleBackNavigation();
+            return;
+        }
+
+        const modulePairs = Object.entries(ALL_DATA[selectedModule]);
+        let distractorObjs = [];
+
+        const otherWords = modulePairs
+            .map(p => ({ en: p[0], ua: p[1] }))
+            .filter(w => w.en.toLowerCase() !== currentObj.en.toLowerCase())
+            .sort(() => Math.random() - 0.5);
+
+        for (let wItem of otherWords) {
+            if (distractorObjs.length >= 3) break;
+            const ctx = getContextForWord(wItem.en);
+            if (!ctx) continue;
+            const obj = getMaskedContext(wItem.en, ctx);
+            if (obj && !distractorObjs.some(d => d.word.toLowerCase() === obj.word.toLowerCase())) {
+                distractorObjs.push(obj);
+            }
+        }
+
+        if (distractorObjs.length < 3 && typeof CONTEXT_DATA !== 'undefined') {
+            const allCtxKeys = Object.keys(CONTEXT_DATA)
+                .filter(k => k.toLowerCase() !== currentObj.en.toLowerCase())
+                .sort(() => Math.random() - 0.5);
+            for (let k of allCtxKeys) {
+                if (distractorObjs.length >= 3) break;
+                if (distractorObjs.some(d => d.word.toLowerCase() === k.toLowerCase())) continue;
+                const obj = getMaskedContext(k, CONTEXT_DATA[k]);
+                if (obj) distractorObjs.push(obj);
+            }
+        }
+
+        const allOptions = [
+            { ...targetObj, isCorrect: true },
+            ...distractorObjs.map(d => ({ ...d, isCorrect: false }))
+        ].sort(() => Math.random() - 0.5);
+
+        currentChoices = allOptions;
+
+        allOptions.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'choice-btn context-card';
+            btn.innerHTML = `
+                <div class="context-card-top">
+                    <span class="sentence-text">${opt.enMasked}</span>
+                    <span class="key-hint">${idx + 1}</span>
+                </div>
+                ${opt.uaTrans ? `<div class="context-card-sub">(${opt.uaTrans})</div>` : ''}
+            `;
+            btn.onclick = () => selectContextMatchChoice(btn, opt, allOptions);
+            choiceBlock.appendChild(btn);
+        });
+        return;
+    }
+
+    choiceBlock.classList.remove('context-match-grid');
+    generateStandardChoices(currentObj);
+}
+
+function generateStandardChoices(currentObj) {
+    const choiceBlock = document.getElementById('choice-block');
+    const isContextMode = configMode.startsWith('context-');
+    let allAnswersPool = Object.entries(ALL_DATA[selectedModule]).map(pair => {
+        if (isContextMode) return pair[0];
+        return configTarget === 'ua' ? pair[0] : pair[1];
+    });
+    let pool = allAnswersPool.filter(ans => ans.toLowerCase() !== currentObj.answer.toLowerCase()).sort(() => Math.random() - 0.5);
+    let finalChoices = [currentObj.answer, pool[0], pool[1], pool[2]].filter(Boolean).sort(() => Math.random() - 0.5);
+    currentChoices = finalChoices;
+
+    finalChoices.forEach((choice, idx) => {
+        const btn = document.createElement('button'); btn.className = 'choice-btn';
+        btn.innerHTML = `<span>${choice}</span><span class="key-hint">${idx + 1}</span>`;
+        btn.onclick = () => selectChoice(btn, choice, currentObj.answer); choiceBlock.appendChild(btn);
+    });
+}
+
+function selectContextMatchChoice(clickedBtn, selectedOpt, allOptions) {
+    if (isShowingAnswer) return;
+    isShowingAnswer = true;
+    stopLiveTimer();
+    currentWordDuration = Date.now() - wordStartTime;
+
+    const msgEl = document.getElementById('result-msg');
+    const btnEl = document.getElementById('action-btn');
+    if (btnEl) btnEl.style.display = 'none';
+
+    const currentObj = questions[currentIndex];
+    const isCorrect = selectedOpt.isCorrect;
+
+    const allBtns = document.querySelectorAll('.choice-btn.context-card');
+
+    if (isCorrect) {
+        currentCombo++;
+        score++;
+        clickedBtn.classList.add('correct');
+        const textSpan = clickedBtn.querySelector('.sentence-text') || clickedBtn.querySelector('.context-card-text');
+        if (textSpan) textSpan.innerText = selectedOpt.enFull;
+
+        if (msgEl) {
+            msgEl.className = 'result success';
+            msgEl.innerText = currentCombo >= 2 ? `🔥 Точно в ціль! (Combo x${currentCombo})` : '🔥 Точно в ціль!';
+        }
+    } else {
+        currentCombo = 0;
+        clickedBtn.classList.add('incorrect');
+
+        allOptions.forEach((opt, idx) => {
+            if (opt.isCorrect && allBtns[idx]) {
+                allBtns[idx].classList.add('correct-outline');
+                const textSpan = allBtns[idx].querySelector('.sentence-text') || allBtns[idx].querySelector('.context-card-text');
+                if (textSpan) textSpan.innerText = opt.enFull;
+            }
+        });
+
+        if (msgEl) {
+            msgEl.className = 'result error';
+            msgEl.innerText = `❌ Схибив!`;
+        }
+    }
+
+    updateMemoryAlgorithm(currentObj, isCorrect, currentWordDuration);
+
+    sessionLogs.push({
+        question: currentObj.question,
+        answer: currentObj.answer,
+        userAnswer: selectedOpt.enFull || selectedOpt.enMasked,
+        isCorrect: isCorrect,
+        timeMs: currentWordDuration
+    });
+
+    setTimeout(() => {
+        currentIndex++;
+        showQuestion();
+    }, 900);
+}
+
+function generateChoices(currentObj) {
+    const choiceBlock = document.getElementById('choice-block'); choiceBlock.innerHTML = '';
+    const isContextMode = configMode.startsWith('context-');
+    let allAnswersPool = Object.entries(ALL_DATA[selectedModule]).map(pair => {
+        if (isContextMode) return pair[0];
+        return configTarget === 'ua' ? pair[0] : pair[1];
+    });
     let pool = allAnswersPool.filter(ans => ans.toLowerCase() !== currentObj.answer.toLowerCase()).sort(() => Math.random() - 0.5);
     let finalChoices = [currentObj.answer, pool[0], pool[1], pool[2]].filter(Boolean).sort(() => Math.random() - 0.5);
     currentChoices = finalChoices;
@@ -1061,21 +1768,60 @@ function selectChoice(clickedBtn, selectedAnswer, correctAnswer) {
     stopLiveTimer();
     currentWordDuration = Date.now() - wordStartTime;
 
-    const msgEl = document.getElementById('result-msg'); const btnEl = document.getElementById('action-btn');
+    const msgEl = document.getElementById('result-msg');
+    const btnEl = document.getElementById('action-btn');
     if (btnEl) { btnEl.style.display = 'block'; btnEl.innerText = 'Далі (Enter ↵)'; }
-    document.querySelectorAll('.choice-btn').forEach(btn => {
-        if (btn.innerText.toLowerCase().includes(correctAnswer.toLowerCase())) {
-            btn.style.background = 'var(--green)'; btn.style.color = '#11111b';
-        }
-    });
 
     const isCorrect = isFuzzyMatch(selectedAnswer, correctAnswer);
     const currentObj = questions[currentIndex];
 
+    // Highlight slot in prompt if in context-slot mode
+    if (configMode === 'context-slot') {
+        const slotEl = document.querySelector('#target-word .blank');
+        if (slotEl) {
+            if (isCorrect) {
+                slotEl.innerText = correctAnswer;
+                slotEl.style.background = 'var(--green)';
+                slotEl.style.color = '#11111b';
+                slotEl.style.borderColor = 'var(--green)';
+            } else {
+                slotEl.style.background = 'var(--red)';
+                slotEl.style.color = '#11111b';
+                slotEl.style.borderColor = 'var(--red)';
+            }
+        }
+    }
+
+    document.querySelectorAll('.choice-btn').forEach(btn => {
+        const span = btn.querySelector('span:not(.key-hint)') || btn;
+        if (span.innerText.toLowerCase().trim() === correctAnswer.toLowerCase().trim()) {
+            btn.style.background = 'var(--green)';
+            btn.style.color = '#11111b';
+            btn.style.borderColor = 'var(--green)';
+        }
+    });
+
     if (isCorrect) {
         currentCombo++;
+        score++;
+        if (clickedBtn) {
+            clickedBtn.style.background = 'var(--green)';
+            clickedBtn.style.color = '#11111b';
+        }
+        if (msgEl) {
+            msgEl.className = 'result success';
+            msgEl.innerText = currentCombo >= 2 ? `🔥 Правильно! (Combo x${currentCombo})` : '🔥 Правильно!';
+        }
     } else {
         currentCombo = 0;
+        if (clickedBtn) {
+            clickedBtn.style.background = 'var(--red)';
+            clickedBtn.style.color = '#11111b';
+        }
+        if (msgEl) {
+            msgEl.className = 'result error';
+            msgEl.innerText = `❌ Схибив! (Вірно: ${correctAnswer})`;
+        }
     }
 
     updateMemoryAlgorithm(currentObj, isCorrect, currentWordDuration);
@@ -1087,13 +1833,10 @@ function selectChoice(clickedBtn, selectedAnswer, correctAnswer) {
         isCorrect: isCorrect,
         timeMs: currentWordDuration
     });
-
-    if (isCorrect) { score++; msgEl.className = 'result success'; msgEl.innerText = currentCombo >= 2 ? `🔥 Правильно! (Combo x${currentCombo})` : '🔥 Правильно!'; }
-    else { if (clickedBtn) { clickedBtn.style.background = 'var(--red)'; clickedBtn.style.color = '#11111b'; } msgEl.className = 'result error'; msgEl.innerText = `❌ Схибив!`; }
 }
 
 function handleQuizSubmit() {
-    if (configMode === 'write') {
+    if (configMode === 'write' || configMode === 'context-write') {
         const inputEl = document.getElementById('user-input'); const msgEl = document.getElementById('result-msg'); const btnEl = document.getElementById('action-btn');
         const currentObj = questions[currentIndex];
         if (!isShowingAnswer) {
@@ -1221,7 +1964,7 @@ function updateMemoryAlgorithm(currentObj, isCorrect, timeSpentMs = 0) {
     if (item.history.length > 5) item.history.shift();
     if (!item.log) item.log = [];
 
-    const activeMode = configMode === 'choice' ? 'choice' : 'write';
+    const activeMode = (configMode === 'choice' || configMode === 'context-slot' || configMode === 'context-match') ? 'choice' : 'write';
     const activeLang = configTarget === 'en' ? 'en' : 'ua';
 
     item.log.push({
@@ -1248,6 +1991,7 @@ function updateMemoryAlgorithm(currentObj, isCorrect, timeSpentMs = 0) {
     item.stats.langs[activeLang].total++;
     if (isCorrect) item.stats.langs[activeLang].correct++;
 
+    recordDailyActivity(isCorrect, timeSpentMs);
     scheduleSaveMemoryStats();
 }
 
@@ -1266,11 +2010,62 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
+function stopQuizSession() {
+    stopLiveTimer();
+    isShowingAnswer = false;
+    currentIndex = 0;
+    score = 0;
+    currentCombo = 0;
+    sessionLogs = [];
+    if (timerTimeout) {
+        clearTimeout(timerTimeout);
+        timerTimeout = null;
+    }
+}
+
+function handleBackNavigation() {
+    if (currentActiveScreen === 'quiz-screen') {
+        stopQuizSession();
+        if (selectedModule) {
+            openSetup(selectedModule);
+        } else {
+            switchScreen('menu-screen');
+        }
+        return;
+    }
+
+    if (currentActiveScreen === 'setup-screen') {
+        switchScreen('menu-screen');
+        return;
+    }
+
+    if (currentActiveScreen === 'stats-screen' || currentActiveScreen === 'create-screen' || currentActiveScreen === 'result-screen') {
+        switchScreen('menu-screen');
+        return;
+    }
+
+    switchScreen('menu-screen');
+}
+
 // Обробка глобальних гарячих клавіш (Enter, Space, Esc, цифри вибору)
 document.addEventListener('keydown', function (e) {
     const quizScreen = document.getElementById('quiz-screen');
+    const changelogModal = document.getElementById('changelog-modal');
+
     if (e.key === 'Escape') {
-        switchScreen('menu-screen');
+        const calendarModal = document.getElementById('calendar-modal');
+        if (calendarModal && calendarModal.classList.contains('active')) {
+            e.preventDefault();
+            closeCalendarModal();
+            return;
+        }
+        if (changelogModal && changelogModal.classList.contains('active')) {
+            e.preventDefault();
+            closeChangelogModal();
+            return;
+        }
+        e.preventDefault();
+        handleBackNavigation();
         return;
     }
 
@@ -1297,7 +2092,7 @@ document.addEventListener('keydown', function (e) {
         return;
     }
 
-    if (configMode === 'choice' && !isShowingAnswer) {
+    if (['choice', 'context-slot', 'context-match'].includes(configMode) && !isShowingAnswer) {
         if (['1', '2', '3', '4'].includes(e.key)) {
             const choiceIndex = parseInt(e.key) - 1;
             const choiceBtns = document.querySelectorAll('.choice-btn');

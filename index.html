@@ -18,22 +18,26 @@
 
 <body>
 
-    <div class="version-tag">v6.6</div>
+    <div class="version-tag" id="app-version-tag" onclick="openChangelogModal()" title="Історія версій (Changelog)">v6.7.3</div>
 
     <div class="card" id="main-card">
         <!-- Шапка зі статистикою та кнопкою переходу до детальної аналітики -->
         <div id="stats-panel" class="stats-header">
-            <span class="streak-fire" id="stat-streak">0д </span>
-            <span style="color: var(--accent);" id="stat-total-words">🧠 0 вивчено</span>
-            <button class="btn-stats-details" id="nav-toggle-btn" onclick="handleNavToggle()"
-                title="Детальна статистика" aria-label="Детальна статистика">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
+            <button class="streak-badge-btn" id="stat-streak" onclick="openCalendarModal()" title="Відкрити календар активності" aria-label="Календар активності">
+                🔥 0 днів активності
             </button>
+            <span style="color: var(--accent);" id="stat-total-words">🧠 0 вивчено</span>
+            <div class="stats-header-actions" style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn-stats-details" id="nav-toggle-btn" onclick="handleNavToggle()"
+                    title="Детальна статистика" aria-label="Детальна статистика">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Головне меню зі списком модулів -->
@@ -47,37 +51,57 @@
         <div id="setup-screen" class="screen">
             <h2 id="setup-title">Налаштування тренування</h2>
             <div class="options-group">
-                <div style="font-weight: bold; margin-bottom: 12px; color: var(--accent);">1. Оберіть режим:</div>
+                <div style="font-weight: bold; margin-bottom: 12px; color: var(--accent);">1. Що тренуємо? (Матеріал):</div>
                 <div class="segmented-control">
                     <div class="segmented-item">
-                        <input type="radio" id="mode-write" name="quiz-mode" value="write"
-                            onchange="saveUserSettings()">
-                        <label for="mode-write" class="segmented-label">📝 Тест (Вписати)</label>
+                        <input type="radio" id="material-words" name="quiz-material" value="words" checked onchange="handleMaterialChange(); saveUserSettings();">
+                        <label for="material-words" class="segmented-label">🔤 Окремі слова</label>
                     </div>
                     <div class="segmented-item">
-                        <input type="radio" id="mode-choice" name="quiz-mode" value="choice"
-                            onchange="saveUserSettings()">
+                        <input type="radio" id="material-context" name="quiz-material" value="context" onchange="handleMaterialChange(); saveUserSettings();">
+                        <label for="material-context" class="segmented-label">📖 Слова в контексті</label>
+                    </div>
+                </div>
+
+                <div style="font-weight: bold; margin-bottom: 12px; color: var(--accent);">2. Формат відповіді:</div>
+                <div id="mode-control-words" class="segmented-control">
+                    <div class="segmented-item">
+                        <input type="radio" id="mode-choice" name="quiz-mode" value="choice" onchange="saveUserSettings()">
                         <label for="mode-choice" class="segmented-label">🕹️ Вибір (4 варіанти)</label>
                     </div>
-                </div>
-
-                <div style="font-weight: bold; margin-bottom: 12px; color: var(--accent);">2. Що показувати як
-                    запитання:</div>
-                <div class="segmented-control">
                     <div class="segmented-item">
-                        <input type="radio" id="lang-ua" name="quiz-lang" value="ua" onchange="saveUserSettings()">
-                        <label for="lang-ua" class="segmented-label">🇺🇦 Українське слово</label>
-                    </div>
-                    <div class="segmented-item">
-                        <input type="radio" id="lang-en" name="quiz-lang" value="en" onchange="saveUserSettings()">
-                        <label for="lang-en" class="segmented-label">🇬🇧 Англійське слово</label>
+                        <input type="radio" id="mode-write" name="quiz-mode" value="write" onchange="saveUserSettings()">
+                        <label for="mode-write" class="segmented-label">📝 Вписати переклад</label>
                     </div>
                 </div>
 
-                <div style="font-weight: bold; margin-bottom: 10px; color: var(--accent);">3. Кількість питань у сесії:
+                <div id="mode-control-context" class="segmented-control" style="display: none;">
+                    <div class="segmented-item">
+                        <input type="radio" id="mode-context-slot" name="quiz-mode" value="context-slot" onchange="saveUserSettings()">
+                        <label for="mode-context-slot" class="segmented-label">🕹️ Слот (4 варіанти)</label>
+                    </div>
+                    <div class="segmented-item">
+                        <input type="radio" id="mode-context-write" name="quiz-mode" value="context-write" onchange="saveUserSettings()">
+                        <label for="mode-context-write" class="segmented-label">✍️ Вписати в речення</label>
+                    </div>
+                    </div>
+
+                <div id="level-lang-group">
+                    <div style="font-weight: bold; margin-bottom: 12px; color: var(--accent);">3. Що показувати як запитання:</div>
+                    <div class="segmented-control">
+                        <div class="segmented-item">
+                            <input type="radio" id="lang-ua" name="quiz-lang" value="ua" onchange="saveUserSettings()">
+                            <label for="lang-ua" class="segmented-label">🇺🇦 Українське слово</label>
+                        </div>
+                        <div class="segmented-item">
+                            <input type="radio" id="lang-en" name="quiz-lang" value="en" onchange="saveUserSettings()">
+                            <label for="lang-en" class="segmented-label">🇬🇧 Англійське слово</label>
+                        </div>
+                    </div>
                 </div>
-                <select id="quiz-limit-select" class="styled-select" style="margin-bottom: 20px;"
-                    onchange="saveUserSettings()">
+
+                <div style="font-weight: bold; margin-bottom: 10px; color: var(--accent);">4. Кількість питань у сесії:</div>
+                <select id="quiz-limit-select" class="styled-select" style="margin-bottom: 20px;" onchange="saveUserSettings()">
                     <option value="5">5 питань (Швидка розминка)</option>
                     <option value="20">20 питань (Стандарт)</option>
                     <option value="40">40 питань</option>
@@ -87,29 +111,30 @@
                     <option value="max">Усі слова модуля (MAX)</option>
                 </select>
 
-                <div style="font-weight: bold; margin-bottom: 10px; color: var(--accent);">4. Опції часу та звуку:</div>
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
-                        <input type="checkbox" id="track-time-toggle" style="width:20px; height:20px;"
-                            onchange="saveUserSettings()" checked>
-                        <span>⏱️ «Тихий» аналіз часу (Рахує у фоні, не тисне під час тесту)</span>
-                    </label>
-                    <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
-                        <input type="checkbox" id="timer-mode-toggle" style="width:20px; height:20px;"
-                            onchange="saveUserSettings()">
-                        <span>⏳ Спринт-ліміт (Фоновий ліміт 7 сек на слово)</span>
-                    </label>
-                    <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
-                        <input type="checkbox" id="auto-audio-toggle" style="width:20px; height:20px;"
-                            onchange="saveUserSettings()">
-                        <span>🔊 Автоматично озвучувати англійські слова</span>
-                    </label>
-                    <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
-                        <input type="checkbox" id="hard-only-toggle" style="width:20px; height:20px;"
-                            onchange="saveUserSettings()">
-                        <span>🎯 Тільки складні слова (що потребують повторення)</span>
-                    </label>
-                </div>
+                <details class="setup-accordion">
+                    <summary class="setup-accordion-header">
+                        <span>⚙️ Додаткові налаштування (час, звук, фокус)</span>
+                        <span class="setup-accordion-arrow">▾</span>
+                    </summary>
+                    <div class="setup-accordion-body">
+                        <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" id="track-time-toggle" style="width:20px; height:20px;" onchange="saveUserSettings()" checked>
+                            <span>⏱️ «Тихий» аналіз часу (Рахує у фоні, не тисне під час тесту)</span>
+                        </label>
+                        <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" id="timer-mode-toggle" style="width:20px; height:20px;" onchange="saveUserSettings()">
+                            <span>⏳ Спринт-ліміт (Фоновий ліміт 7 сек на слово)</span>
+                        </label>
+                        <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" id="auto-audio-toggle" style="width:20px; height:20px;" onchange="saveUserSettings()">
+                            <span>🔊 Автоматично озвучувати англійські слова</span>
+                        </label>
+                        <label class="option-row" style="cursor:pointer; display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" id="hard-only-toggle" style="width:20px; height:20px;" onchange="saveUserSettings()">
+                            <span>🎯 Тільки складні слова (що потребують повторення)</span>
+                        </label>
+                    </div>
+                </details>
             </div>
             <button class="main-btn" onclick="generateQuiz()">Почати тренування 🔥</button>
             <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
@@ -164,11 +189,10 @@
             <h2>Детальна аналітика прогресу</h2>
 
             <div class="time-filter-bar">
-                <button class="time-filter-btn" data-time="today" onclick="setTimeFilter('today')">Сьогодні</button>
+                <button class="time-filter-btn active" data-time="today" onclick="setTimeFilter('today')">Сьогодні</button>
                 <button class="time-filter-btn" data-time="week" onclick="setTimeFilter('week')">7 днів</button>
                 <button class="time-filter-btn" data-time="month" onclick="setTimeFilter('month')">30 днів</button>
-                <button class="time-filter-btn active" data-time="all" onclick="setTimeFilter('all')">За весь
-                    час</button>
+                <button class="time-filter-btn" data-time="all" onclick="setTimeFilter('all')">За весь час</button>
             </div>
 
             <div class="mode-analytics-card">
@@ -213,7 +237,7 @@
             <div id="choice-block" class="choices-grid"></div>
             <button class="main-btn" id="action-btn" onclick="handleQuizSubmit()">Перевірити (Enter ↵)</button>
             <div class="result" id="result-msg"></div>
-            <button class="secondary-btn" onclick="switchScreen('menu-screen')">Перервати (Esc)</button>
+            <button class="secondary-btn" onclick="handleBackNavigation()">Перервати (Esc)</button>
         </div>
 
         <!-- Екран підсумків завершеної сесії тестування -->
@@ -261,6 +285,94 @@
     <input type="file" id="restore-json-input" accept=".json" style="display: none;" onchange="importBackupJSON(this)">
 
     <button id="scroll-top-btn" title="Наверх" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <!-- Модальне вікно історії версій (Changelog) -->
+    <div id="changelog-modal" class="modal-overlay" onclick="if(event.target===this) closeChangelogModal()">
+        <div class="modal-card changelog-modal-card">
+            <div class="modal-header">
+                <h3 style="color:var(--accent); display:flex; align-items:center; gap:8px;">
+                    <span>📋</span> Історія версій (Changelog)
+                </h3>
+                <button class="modal-close-btn" onclick="closeChangelogModal()" title="Закрити" aria-label="Закрити">&times;</button>
+            </div>
+            <div class="changelog-list" id="changelog-list"></div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно календаря активності (Activity Calendar) -->
+    <div id="calendar-modal" class="modal-overlay" onclick="if(event.target===this) closeCalendarModal()">
+        <div class="modal-card calendar-modal-card">
+            <div class="modal-header">
+                <h3 style="color:var(--accent); display:flex; align-items:center; gap:8px;">
+                    <span>📅</span> Календар активності
+                </h3>
+                <button class="modal-close-btn" onclick="closeCalendarModal()" title="Закрити" aria-label="Закрити">&times;</button>
+            </div>
+            <div class="calendar-content">
+                <!-- Навігація місяців -->
+                <div class="cal-nav-bar">
+                    <button class="cal-nav-btn" onclick="changeCalendarMonth(-1)" title="Попередній місяць" aria-label="Попередній місяць">‹</button>
+                    <div class="cal-month-title" id="cal-month-title">Вересень 2026</div>
+                    <button class="cal-nav-btn" onclick="changeCalendarMonth(1)" title="Наступний місяць" aria-label="Наступний місяць">›</button>
+                </div>
+
+                <!-- Сітка днів тижня (Пн - Нд) -->
+                <div class="cal-weekdays">
+                    <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Нд</span>
+                </div>
+
+                <!-- Сітка днів місяця -->
+                <div class="cal-grid" id="cal-days-grid"></div>
+
+                <!-- Легенда інтенсивності -->
+                <div class="cal-legend">
+                    <span class="cal-legend-label">Активність:</span>
+                    <div class="cal-legend-items">
+                        <span class="cal-legend-box lvl-0" title="0 карток"></span>
+                        <span class="cal-legend-text">0</span>
+                        <span class="cal-legend-box lvl-1" title="1-10 карток"></span>
+                        <span class="cal-legend-text">1-10</span>
+                        <span class="cal-legend-box lvl-2" title="11-20 карток"></span>
+                        <span class="cal-legend-text">11-20</span>
+                        <span class="cal-legend-box lvl-3" title=">20 карток"></span>
+                        <span class="cal-legend-text">20+</span>
+                    </div>
+                </div>
+
+                <!-- Підсумок статистики за місяць -->
+                <div class="cal-summary-cards">
+                    <div class="cal-summary-item">
+                        <div class="cal-summary-icon">🔥</div>
+                        <div class="cal-summary-info">
+                            <span class="cal-summary-val" id="cal-stat-streak">0 днів поспіль</span>
+                            <span class="cal-summary-lbl">Поточна серія</span>
+                        </div>
+                    </div>
+                    <div class="cal-summary-item">
+                        <div class="cal-summary-icon">📚</div>
+                        <div class="cal-summary-info">
+                            <span class="cal-summary-val" id="cal-stat-month-cards">0 карток</span>
+                            <span class="cal-summary-lbl">Пройдено за місяць</span>
+                        </div>
+                    </div>
+                    <div class="cal-summary-item">
+                        <div class="cal-summary-icon">⚡</div>
+                        <div class="cal-summary-info">
+                            <span class="cal-summary-val" id="cal-stat-best-day">0 карток</span>
+                            <span class="cal-summary-lbl" id="cal-stat-best-day-lbl">Рекорд за день (—)</span>
+                        </div>
+                    </div>
+                    <div class="cal-summary-item">
+                        <div class="cal-summary-icon">🎯</div>
+                        <div class="cal-summary-info">
+                            <span class="cal-summary-val" id="cal-stat-accuracy">0%</span>
+                            <span class="cal-summary-lbl">Правильних відповідей</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="scripts/main.js"></script>
 </body>
