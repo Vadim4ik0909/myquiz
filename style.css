@@ -50,16 +50,130 @@ p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; line-height: 1.
 .btn-stats-details { background: rgba(137, 180, 250, 0.15); color: var(--accent); border: 1px solid rgba(137, 180, 250, 0.3); width: 40px; height: 40px; padding: 0; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease; touch-action: manipulation; }
 .btn-stats-details:hover { background: var(--accent); color: #11111b; border-color: var(--accent); box-shadow: 0 0 12px rgba(137, 180, 250, 0.3); transform: translateY(-1px); }
 
-.module-list { margin: 25px 0; text-align: left; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+.module-filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0 10px 0;
+    justify-content: flex-start;
+}
+
+.module-filter-btn {
+    background: #1e1e2e;
+    border: 1px solid #45475a;
+    color: var(--subtext);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.module-filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(137, 180, 250, 0.08);
+}
+
+.module-filter-btn.active {
+    background: rgba(137, 180, 250, 0.18);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(137, 180, 250, 0.25);
+}
+
+.pin-module-btn {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    padding: 2px 6px;
+    cursor: pointer;
+    color: var(--subtext);
+    opacity: 0.55;
+    transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease, text-shadow 0.2s ease;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.pin-module-btn:hover {
+    opacity: 1;
+    transform: scale(1.15);
+    color: #f59e0b;
+}
+
+.pin-module-btn.pinned {
+    color: #f59e0b;
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.45);
+}
+
+.pin-module-btn.pinned:hover {
+    transform: scale(1.15);
+}
+
+.empty-filter-state {
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--subtext);
+    font-size: 14px;
+    background: rgba(30, 30, 46, 0.4);
+    border: 1px dashed #45475a;
+    border-radius: 14px;
+    margin: 10px 0;
+}
+
+.module-list { margin: 20px 0 25px 0; text-align: left; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
 .module-item { background: #313244; padding: 20px; border-radius: 14px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; transition: transform 0.15s ease, background 0.15s ease; border: 2px solid transparent; min-height: 150px; }
 .module-item:hover { background: #45475a; border-color: var(--accent); transform: translateY(-3px); }
 .module-top { display: flex; flex-direction: column; gap: 6px; width: 100%; }
 .module-name-click { font-size: 16px; cursor: pointer; line-height: 1.4; font-weight: bold; pointer-events: none; }
 
-.actions-block { display: flex; gap: 10px; margin-top: auto; justify-content: flex-end; }
-.action-btn-small { color: #11111b; min-width: 44px; min-height: 44px; padding: 0 12px; font-size: 16px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
-.edit-btn { background: var(--accent); }
-.delete-btn { background: var(--red); }
+.actions-block { display: flex; gap: 8px; margin-top: auto; justify-content: flex-end; }
+.action-btn-small {
+    background: transparent;
+    border: 1px solid transparent;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 6px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    user-select: none;
+    touch-action: manipulation;
+}
+.edit-btn {
+    color: rgba(255, 255, 255, 0.85);
+}
+.edit-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+.delete-btn {
+    color: var(--subtext);
+    opacity: 0.7;
+}
+.delete-btn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.25);
+    opacity: 1;
+    transform: translateY(-1px);
+}
 
 .progress-track { width: 100%; background: #1e1e2e; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
 .progress-bar { background: var(--green); height: 100%; width: 0%; transition: width 0.3s ease; }
@@ -70,6 +184,48 @@ p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; line-height: 1.
 .segmented-item input { position: absolute; opacity: 0; width: 0; height: 0; }
 .segmented-label { display: flex; align-items: center; justify-content: center; text-align: center; background: #1e1e2e; border: 2px solid #45475a; color: var(--subtext); padding: 12px; border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; height: 100%; }
 .segmented-item input:checked + .segmented-label { background: var(--surface-hover); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(137, 180, 250, 0.2); }
+
+.question-count-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.count-chip-btn {
+    flex: 1 1 calc(25% - 8px);
+    min-width: 48px;
+    padding: 10px 12px;
+    background: #1e1e2e;
+    border: 2px solid #45475a;
+    color: var(--text);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.count-chip-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--surface-hover);
+    transform: translateY(-1px);
+}
+
+.count-chip-btn:active {
+    transform: scale(0.96);
+}
+
+.count-chip-btn.active {
+    background: rgba(137, 180, 250, 0.18);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px rgba(137, 180, 250, 0.25);
+}
 
 select.styled-select { width: 100%; padding: 12px; font-size: 16px; border-radius: 10px; border: 2px solid #45475a; background: #1e1e2e; color: var(--text); outline: none; margin-top: 5px; cursor: pointer; }
 select.styled-select:focus { border-color: var(--accent); }
@@ -107,11 +263,60 @@ button.choice-btn .key-hint { font-size: 12px; opacity: 0.6; background: #1e1e2e
 .empty-state h3 { color: var(--text); margin-bottom: 8px; }
 
 .import-zone-sticky { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(30, 30, 46, 0.95); backdrop-filter: blur(8px); border-top: 1px solid #313244; padding: 12px 20px; display: flex; justify-content: center; gap: 12px; z-index: 100; flex-wrap: wrap; box-shadow: 0 -4px 16px rgba(0,0,0,0.4); }
-.import-zone-sticky .main-btn { margin: 0 !important; width: auto !important; padding: 10px 16px; font-size: 14px; }
-.btn-import { background: var(--orange) !important; color: #11111b !important; }
-.btn-backup { background: var(--purple) !important; color: #11111b !important; }
-.btn-restore { background: var(--accent) !important; color: #11111b !important; }
-.btn-reset { background: #585b70 !important; color: var(--text) !important; }
+.import-zone-sticky .main-btn {
+    margin: 0 !important;
+    width: auto !important;
+    padding: 9px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s ease;
+}
+.btn-import {
+    border: 1px solid rgba(250, 179, 135, 0.45) !important;
+    color: var(--orange) !important;
+}
+.btn-import:hover {
+    background: rgba(250, 179, 135, 0.16) !important;
+    border-color: var(--orange) !important;
+    box-shadow: 0 0 12px rgba(250, 179, 135, 0.25);
+    transform: translateY(-1px);
+}
+.btn-backup {
+    border: 1px solid rgba(203, 166, 247, 0.45) !important;
+    color: var(--purple) !important;
+}
+.btn-backup:hover {
+    background: rgba(203, 166, 247, 0.16) !important;
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 12px rgba(203, 166, 247, 0.25);
+    transform: translateY(-1px);
+}
+.btn-restore {
+    border: 1px solid rgba(137, 180, 250, 0.45) !important;
+    color: var(--accent) !important;
+}
+.btn-restore:hover {
+    background: rgba(137, 180, 250, 0.16) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 12px rgba(137, 180, 250, 0.25);
+    transform: translateY(-1px);
+}
+.btn-reset {
+    border: 1px solid rgba(166, 173, 200, 0.35) !important;
+    color: var(--subtext) !important;
+}
+.btn-reset:hover {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    color: #ef4444 !important;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+    transform: translateY(-1px);
+}
+.import-zone-sticky .main-btn:active {
+    transform: scale(0.97);
+}
 .mobile-fab-btn { display: none; }
 
 .mode-analytics-card { background: #313244; padding: 22px; border-radius: 14px; margin-bottom: 25px; text-align: left; border: 1px solid #45475a; }
@@ -936,6 +1141,337 @@ button.choice-btn.context-card.incorrect .blank {
 body.in-quiz .import-zone-sticky,
 body.in-quiz .mobile-fab-btn {
     display: none !important;
+}
+
+/* ===== Edit/Create Module Tabs & Excel Dropzone ===== */
+.edit-tabs-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.edit-tab-btn {
+    background: #1e1e2e;
+    border: 1px solid #45475a;
+    color: var(--subtext);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.edit-tab-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(137, 180, 250, 0.08);
+}
+
+.edit-tab-btn.active {
+    background: rgba(137, 180, 250, 0.18);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px rgba(137, 180, 250, 0.25);
+}
+
+.edit-tab-content {
+    display: none;
+}
+
+.edit-tab-content.active {
+    display: block;
+}
+
+.excel-column-hint {
+    background: rgba(30, 30, 46, 0.7);
+    border: 1px solid #45475a;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 12.5px;
+}
+
+.excel-column-hint .hint-title {
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.hint-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.hint-badges span {
+    background: #313244;
+    border: 1px solid rgba(137, 180, 250, 0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 11.5px;
+    color: var(--accent);
+}
+
+.excel-dropzone {
+    border: 2px dashed #45475a;
+    border-radius: 14px;
+    padding: 26px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(30, 30, 46, 0.4);
+    user-select: none;
+}
+
+.excel-dropzone:hover,
+.excel-dropzone.dragover {
+    border-color: var(--accent);
+    background: rgba(137, 180, 250, 0.08);
+    box-shadow: 0 0 14px rgba(137, 180, 250, 0.15);
+    transform: translateY(-1px);
+}
+
+.dropzone-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+}
+
+.dropzone-text {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.dropzone-sub {
+    font-size: 12px;
+    color: var(--subtext);
+}
+
+.create-module-wrapper {
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.excel-preview-container {
+    margin-top: 16px;
+    margin-bottom: 24px;
+    background: #1e1e2e;
+    border: 1px solid #45475a;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.excel-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.excel-preview-count {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.excel-preview-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.preview-action-btn {
+    background: #313244;
+    border: 1px solid #45475a;
+    color: var(--text);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.preview-action-btn:hover {
+    background: #45475a;
+    border-color: var(--accent);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.preview-action-btn.btn-add-row {
+    background: rgba(166, 227, 161, 0.12);
+    border-color: rgba(166, 227, 161, 0.35);
+    color: var(--green);
+}
+
+.preview-action-btn.btn-add-row:hover {
+    background: rgba(166, 227, 161, 0.25);
+    border-color: var(--green);
+    color: #a6e3a1;
+}
+
+.preview-action-btn.btn-reupload {
+    background: rgba(137, 180, 250, 0.12);
+    border-color: rgba(137, 180, 250, 0.35);
+    color: var(--accent);
+}
+
+.preview-action-btn.btn-reupload:hover {
+    background: rgba(137, 180, 250, 0.25);
+    border-color: var(--accent);
+    color: #89b4fa;
+}
+
+.excel-preview-clear {
+    background: transparent;
+    border: 1px solid rgba(243, 139, 168, 0.35);
+    color: var(--red);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.excel-preview-clear:hover {
+    background: rgba(243, 139, 168, 0.15);
+    border-color: var(--red);
+    transform: translateY(-1px);
+}
+
+.excel-preview-table-wrap {
+    overflow-x: auto;
+    max-height: 480px;
+    overflow-y: auto;
+    border-radius: 8px;
+    border: 1px solid #313244;
+}
+
+.excel-preview-table-wrap::-webkit-scrollbar,
+.excel-preview-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.excel-preview-table-wrap::-webkit-scrollbar-track,
+.excel-preview-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.excel-preview-table-wrap::-webkit-scrollbar-thumb,
+.excel-preview-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.excel-preview-table-wrap::-webkit-scrollbar-thumb:hover,
+.excel-preview-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.excel-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+    table-layout: auto;
+}
+
+.excel-preview-table th {
+    background: #252538;
+    padding: 10px 12px;
+    color: var(--subtext);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-bottom: 1px solid #45475a;
+    white-space: nowrap;
+}
+
+.excel-preview-table th:nth-child(1),
+.excel-preview-table td:nth-child(1),
+.excel-preview-table th.col-idx,
+.excel-preview-table td.col-idx {
+    width: 58px;
+    min-width: 58px;
+    max-width: 65px;
+    text-align: center;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    padding: 8px 4px;
+    user-select: none;
+}
+
+.excel-preview-table th:nth-child(2),
+.excel-preview-table td:nth-child(2) {
+    width: 18%;
+    min-width: 130px;
+}
+
+.excel-preview-table th:nth-child(3),
+.excel-preview-table td:nth-child(3) {
+    width: 20%;
+    min-width: 140px;
+}
+
+.excel-preview-table th:nth-child(4),
+.excel-preview-table td:nth-child(4) {
+    width: 31%;
+    min-width: 200px;
+}
+
+.excel-preview-table th:nth-child(5),
+.excel-preview-table td:nth-child(5) {
+    width: 31%;
+    min-width: 200px;
+}
+
+.excel-preview-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #313244;
+    color: var(--text);
+    word-break: break-word;
+    line-height: 1.45;
+    vertical-align: top;
+    transition: background 0.15s ease;
+}
+
+.excel-preview-table td[contenteditable="true"] {
+    cursor: text;
+    border-radius: 4px;
+    outline: 1px solid transparent;
+}
+
+.excel-preview-table td[contenteditable="true"]:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.excel-preview-table td[contenteditable="true"]:focus {
+    background: rgba(137, 180, 250, 0.1);
+    outline: 1px solid var(--accent, #89b4fa);
+    box-shadow: 0 0 8px rgba(137, 180, 250, 0.25);
+}
+
+.excel-preview-table tr:hover td {
+    background: rgba(137, 180, 250, 0.04);
 }
 
 

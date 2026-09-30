@@ -1,5 +1,74 @@
-const APP_VERSION = "v6.7.3";
+const APP_VERSION = "v6.8.5";
 const VERSION_HISTORY = [
+    {
+        version: "v6.8.5",
+        date: "2026-09-30",
+        changes: [
+            "Виправлено пошук та пагінацію у таблиці «Словник юніта»: фільтрація тепер застосовується до всього масиву карток (по слову, перекладу та контексту) перед накладанням ліміту сторінки"
+        ]
+    },
+    {
+        version: "v6.8.4",
+        date: "2026-09-30",
+        changes: [
+            "Автоматичне завантаження 4-колонкових даних модуля у вкладку «Таблиця» при редагуванні",
+            "Автоактивація вкладки таблиці для модулів із контекстом та приховування початкової дропзони",
+            "Компактна панель дій над таблицею (кнопки додавання рядка, заміни файлу та лічильник слів)",
+            "Повний захист контекстних речень від стирання при редагуванні та збереженні"
+        ]
+    },
+    {
+        version: "v6.8.3",
+        date: "2026-09-30",
+        changes: [
+            "Виправлено перенесення номерів рядків у прев'ю-таблиці імпорту: встановлено фіксовану ширину 58px та сувору заборону white-space: nowrap"
+        ]
+    },
+    {
+        version: "v6.8.2",
+        date: "2026-09-30",
+        changes: [
+            "Розширено контейнер редактора модулів до 1150px без горизонтального скролу",
+            "Повноцінний скрол та відображення всіх імпортованих рядків таблиці прев'ю",
+            "Додано можливість швидкого інлайн-редагування слів, перекладу та контексту (contenteditable)"
+        ]
+    },
+    {
+        version: "v6.8.0",
+        date: "2026-09-30",
+        changes: [
+            "Додано підтримку імпорту Excel (.xlsx, .xls) та CSV з 4 колонками (Слово, Переклад, Контекст, Переклад контексту)",
+            "Впроваджено вкладки та Drag-and-Drop дропзону в редакторі створення/редагування модулів",
+            "Інтерактивна таблиця попереднього перегляду імпортованих слів та контекстних речень",
+            "Умовна доступність контекстних режимів квізу (деактивація режимів для модулів без контексту)"
+        ]
+    },
+    {
+        version: "v6.7.6",
+        date: "2026-09-30",
+        changes: [
+            "Візуальний рефакторинг кнопок карток: замінено суцільні яскраві плашки редагування/видалення на легкі прозорі іконки зі стриманим hover-ефектом",
+            "Модернізація нижньої панелі дій (Bottom Bar): переведено кнопки імпорту, бекапів та очищення в стильний контурний outline/stroke режим"
+        ]
+    },
+    {
+        version: "v6.7.5",
+        date: "2026-09-30",
+        changes: [
+            "Додано інтерактивну зірочку (★) на картки юнітів для закріплення у списку",
+            "Закріплені картки автоматично закріплюються нагорі списку",
+            "Додано панель статусних фільтрів модулів: «Всі», «★ Обрані», «В процесі», «Нові», «Засвоєні»",
+            "Збереження закріплених модулів у LocalStorage та резервних копіях"
+        ]
+    },
+    {
+        version: "v6.7.4",
+        date: "2026-09-30",
+        changes: [
+            "Усунено спойлер в автоозвучці (TTS) для контекстних режимів: цільове слово маскується до перевірки відповіді",
+            "Замінено випадаючий список кількості питань на швидкі сегментовані кнопки-чіпи (5, 20, 40, 60, 100, 150, Всі)"
+        ]
+    },
     {
         version: "v6.7.3",
         date: "2026-09-30",
@@ -81,6 +150,11 @@ let ALL_DATA = Object.assign({}, DEFAULT_MODULES, SAVED_USER_DATA);
 let MEMORY_STATS = JSON.parse(localStorage.getItem('my_quiz_mem_stats')) || {};
 let STREAK_DATA = JSON.parse(localStorage.getItem('my_quiz_streak')) || { count: 0, lastDate: "" };
 let ACTIVITY_DATA = JSON.parse(localStorage.getItem('myquiz_activity')) || {};
+let PINNED_MODULES = JSON.parse(localStorage.getItem('my_quiz_pinned_modules')) || [];
+let CUSTOM_CONTEXT_DATA = JSON.parse(localStorage.getItem('my_quiz_custom_context')) || {};
+let currentModuleFilter = 'all';
+let currentEditTab = 'text';
+let excelParsedData = [];
 let calendarViewDate = new Date();
 
 function getLocalDateKey(dateObj = new Date()) {
@@ -348,12 +422,30 @@ function handleNavToggle() {
     }
 }
 
+let selectedQuizLimit = '20';
+
+function setQuizLimit(limitVal) {
+    selectedQuizLimit = String(limitVal);
+    document.querySelectorAll('.count-chip-btn').forEach(btn => {
+        if (btn.getAttribute('data-limit') === selectedQuizLimit) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    saveUserSettings();
+}
+
+function getSelectedQuizLimit() {
+    return selectedQuizLimit || '20';
+}
+
 // Збереження параметрів користувача у LocalStorage
 function saveUserSettings() {
     const materialVal = document.querySelector('input[name="quiz-material"]:checked')?.value || 'words';
     const modeVal = document.querySelector('input[name="quiz-mode"]:checked')?.value || 'choice';
     const langVal = document.querySelector('input[name="quiz-lang"]:checked')?.value || 'ua';
-    const limitVal = document.getElementById('quiz-limit-select')?.value || '20';
+    const limitVal = getSelectedQuizLimit();
     const audioVal = document.getElementById('auto-audio-toggle')?.checked ?? false;
     const trackTimeVal = document.getElementById('track-time-toggle')?.checked ?? true;
     const timerModeVal = document.getElementById('timer-mode-toggle')?.checked ?? false;
@@ -383,7 +475,7 @@ function loadUserSettings() {
         if (modeChoice) modeChoice.checked = true;
         const langEn = document.getElementById('lang-en');
         if (langEn) langEn.checked = true;
-        document.getElementById('quiz-limit-select').value = '20';
+        setQuizLimit('20');
         document.getElementById('auto-audio-toggle').checked = false;
         document.getElementById('track-time-toggle').checked = true;
         document.getElementById('timer-mode-toggle').checked = false;
@@ -408,8 +500,9 @@ function loadUserSettings() {
         if (langRadio) langRadio.checked = true;
     }
     if (saved.limit) {
-        const selectEl = document.getElementById('quiz-limit-select');
-        if (selectEl) selectEl.value = saved.limit;
+        setQuizLimit(saved.limit);
+    } else {
+        setQuizLimit('20');
     }
     if (saved.audio !== undefined) document.getElementById('auto-audio-toggle').checked = saved.audio;
     if (saved.trackTime !== undefined) document.getElementById('track-time-toggle').checked = saved.trackTime;
@@ -552,12 +645,14 @@ function handleBulkImport(input) {
 // Експорт резервної копії (Бэкап у форматі JSON)
 function exportBackupJSON() {
     const backupData = {
-        version: "6.7.0",
+        version: "6.8.0",
         date: new Date().toISOString(),
         modules: SAVED_USER_DATA,
         stats: MEMORY_STATS,
         streak: STREAK_DATA,
         activity: ACTIVITY_DATA,
+        pinned: PINNED_MODULES,
+        customContext: CUSTOM_CONTEXT_DATA,
         settings: JSON.parse(localStorage.getItem('my_quiz_settings')) || {}
     };
     const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -594,6 +689,14 @@ function importBackupJSON(input) {
                 ACTIVITY_DATA = data.activity;
                 localStorage.setItem('myquiz_activity', JSON.stringify(ACTIVITY_DATA));
             }
+            if (data.pinned && Array.isArray(data.pinned)) {
+                PINNED_MODULES = data.pinned;
+                localStorage.setItem('my_quiz_pinned_modules', JSON.stringify(PINNED_MODULES));
+            }
+            if (data.customContext) {
+                CUSTOM_CONTEXT_DATA = data.customContext;
+                localStorage.setItem('my_quiz_custom_context', JSON.stringify(CUSTOM_CONTEXT_DATA));
+            }
             if (data.settings) {
                 localStorage.setItem('my_quiz_settings', JSON.stringify(data.settings));
                 loadUserSettings();
@@ -611,7 +714,7 @@ function importBackupJSON(input) {
 function clearAllData() {
     if (confirm('Повністю очистити додаток та видалити прогрес?')) {
         localStorage.clear();
-        SAVED_USER_DATA = {}; ALL_DATA = Object.assign({}, DEFAULT_MODULES); MEMORY_STATS = {}; STREAK_DATA = { count: 0, lastDate: "" }; ACTIVITY_DATA = {};
+        SAVED_USER_DATA = {}; ALL_DATA = Object.assign({}, DEFAULT_MODULES); MEMORY_STATS = {}; STREAK_DATA = { count: 0, lastDate: "" }; ACTIVITY_DATA = {}; PINNED_MODULES = []; CUSTOM_CONTEXT_DATA = {};
         isMenuRendered = false;
         loadUserSettings();
         renderMenu(); updateStreakAndGlobalStats();
@@ -654,19 +757,34 @@ function calculateModuleProgress(name) {
     return getModuleDetailedStats(name);
 }
 
+function setModuleFilter(filterKey) {
+    currentModuleFilter = filterKey;
+    document.querySelectorAll('.module-filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-filter') === filterKey);
+    });
+    renderMenu();
+}
+
+function togglePinModule(name) {
+    const index = PINNED_MODULES.indexOf(name);
+    if (index === -1) {
+        PINNED_MODULES.push(name);
+    } else {
+        PINNED_MODULES.splice(index, 1);
+    }
+    localStorage.setItem('my_quiz_pinned_modules', JSON.stringify(PINNED_MODULES));
+    renderMenu();
+}
+
 // Рендеринг списку модулів на головному екрані
 function renderMenu() {
     const container = document.getElementById('modules-container');
     if (!container) return;
     container.innerHTML = '';
 
-    const sortedKeys = Object.keys(ALL_DATA).sort((a, b) => {
-        let numA = parseInt(a.match(/\d+/)?.[0]) || 999;
-        let numB = parseInt(b.match(/\d+/)?.[0]) || 999;
-        return numA - numB;
-    });
+    const allKeys = Object.keys(ALL_DATA);
 
-    if (sortedKeys.length === 0) {
+    if (allKeys.length === 0) {
         container.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1;">
                 <div class="empty-state-icon">📦</div>
@@ -679,38 +797,82 @@ function renderMenu() {
         return;
     }
 
+    // Фільтрація модулів відповідно до обраного чіпа
+    let filteredKeys = allKeys.filter(name => {
+        const stats = calculateModuleProgress(name);
+        const isPinned = PINNED_MODULES.includes(name);
+
+        switch (currentModuleFilter) {
+            case 'favorite':
+                return isPinned;
+            case 'in_progress':
+                return stats.progressPct > 0 && stats.progressPct < 100;
+            case 'new':
+                return stats.progressPct === 0;
+            case 'completed':
+                return stats.progressPct >= 100;
+            case 'all':
+            default:
+                return true;
+        }
+    });
+
+    // Сортування: закріплені (pinned) завжди першими, далі за номером юніта
+    filteredKeys.sort((a, b) => {
+        const isPinnedA = PINNED_MODULES.includes(a);
+        const isPinnedB = PINNED_MODULES.includes(b);
+        if (isPinnedA !== isPinnedB) {
+            return isPinnedB ? 1 : -1;
+        }
+        let numA = parseInt(a.match(/\d+/)?.[0]) || 999;
+        let numB = parseInt(b.match(/\d+/)?.[0]) || 999;
+        return numA - numB;
+    });
+
     const fragment = document.createDocumentFragment();
 
-    sortedKeys.forEach(name => {
-        const stats = calculateModuleProgress(name);
-        const item = document.createElement('div');
-        item.className = 'module-item';
-        item.setAttribute('data-name', name);
+    if (filteredKeys.length === 0) {
+        const emptyFilter = document.createElement('div');
+        emptyFilter.className = 'empty-filter-state';
+        emptyFilter.style.gridColumn = '1 / -1';
+        emptyFilter.textContent = 'Немає модулів у цій категорії';
+        fragment.appendChild(emptyFilter);
+    } else {
+        filteredKeys.forEach(name => {
+            const stats = calculateModuleProgress(name);
+            const isPinned = PINNED_MODULES.includes(name);
+            const item = document.createElement('div');
+            item.className = 'module-item';
+            item.setAttribute('data-name', name);
 
-        item.innerHTML = `
-            <div class="module-top" data-action="open">
-                <div class="module-name-click" style="display:flex; align-items:flex-start; gap:8px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:3px; color:var(--accent);"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    <div>
-                        <strong>${name}</strong>
-                        <div style="font-size:13px; color:var(--subtext); margin-top:3px;">${getPlural(stats.total, ['картка', 'картки', 'карток'])}</div>
+            item.innerHTML = `
+                <div class="module-top" data-action="open">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%; gap:8px;">
+                        <div class="module-name-click" style="display:flex; align-items:flex-start; gap:8px; flex:1;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:3px; color:var(--accent);"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            <div>
+                                <strong>${name}</strong>
+                                <div style="font-size:13px; color:var(--subtext); margin-top:3px;">${getPlural(stats.total, ['картка', 'картки', 'карток'])}</div>
+                            </div>
+                        </div>
+                        <button type="button" class="pin-module-btn ${isPinned ? 'pinned' : ''}" data-action="pin" title="${isPinned ? 'Відкріпити модуль' : 'Закріпити модуль'}" aria-label="${isPinned ? 'Відкріпити модуль' : 'Закріпити модуль'}">${isPinned ? '★' : '☆'}</button>
                     </div>
                 </div>
-            </div>
-            <div data-action="open">
-                <div style="font-size: 11px; color: var(--subtext); display:flex; justify-content:space-between; margin-bottom:4px;">
-                    <span>Заучено (${stats.learned}/${stats.total}):</span>
-                    <span style="font-weight:bold; color:var(--green);">${stats.displayPct}</span>
+                <div data-action="open">
+                    <div style="font-size: 11px; color: var(--subtext); display:flex; justify-content:space-between; margin-bottom:4px;">
+                        <span>Заучено (${stats.learned}/${stats.total}):</span>
+                        <span style="font-weight:bold; color:var(--green);">${stats.displayPct}</span>
+                    </div>
+                    <div class="progress-track"><div class="progress-bar" style="width: ${Math.max(stats.progressPct, stats.learned > 0 ? 2 : 0)}%"></div></div>
                 </div>
-                <div class="progress-track"><div class="progress-bar" style="width: ${Math.max(stats.progressPct, stats.learned > 0 ? 2 : 0)}%"></div></div>
-            </div>
-            <div class="actions-block">
-                <button class="action-btn-small edit-btn" data-action="edit" title="Редагувати" aria-label="Редагувати"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>
-                <button class="action-btn-small delete-btn" data-action="delete" title="Видалити" aria-label="Видалити"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-            </div>
-        `;
-        fragment.appendChild(item);
-    });
+                <div class="actions-block">
+                    <button class="action-btn-small edit-btn" data-action="edit" title="Редагувати" aria-label="Редагувати"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>
+                    <button class="action-btn-small delete-btn" data-action="delete" title="Видалити" aria-label="Видалити"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+            `;
+            fragment.appendChild(item);
+        });
+    }
 
     const addCard = document.createElement('div');
     addCard.className = 'module-item-add';
@@ -735,6 +897,9 @@ document.getElementById('modules-container').addEventListener('click', function 
 
     if (action === 'create') {
         openCreateScreen();
+    } else if (action === 'pin' && name) {
+        e.stopPropagation();
+        togglePinModule(name);
     } else if (action === 'open' && name) {
         openSetup(name);
     } else if (action === 'edit' && name) {
@@ -976,11 +1141,299 @@ function renderDetailedStats() {
     container.appendChild(fragment);
 }
 
+function switchEditTab(tabName) {
+    currentEditTab = tabName;
+    document.querySelectorAll('.edit-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+    });
+    const tabText = document.getElementById('tab-content-text');
+    const tabTable = document.getElementById('tab-content-table');
+    if (tabText) tabText.classList.toggle('active', tabName === 'text');
+    if (tabTable) tabTable.classList.toggle('active', tabName === 'table');
+
+    if (tabName === 'table') {
+        const textVal = document.getElementById('new-module-words')?.value.trim() || '';
+        if ((!excelParsedData || excelParsedData.length === 0) && textVal) {
+            excelParsedData = [];
+            textVal.split('\n').forEach(line => {
+                let parts = line.split(' - ');
+                if (parts.length < 2) parts = line.split(' — ');
+                if (parts.length < 2) parts = line.split(' – ');
+                if (parts.length >= 2) {
+                    const en = parts[0].trim();
+                    const ua = parts[1].trim();
+                    const rawCtx = getContextForWord(en);
+                    const parsedCtx = parseContextString(rawCtx);
+                    excelParsedData.push({
+                        word: en,
+                        translation: ua,
+                        context: parsedCtx ? parsedCtx.enSentence : '',
+                        contextTranslation: parsedCtx ? parsedCtx.uaTranslation : ''
+                    });
+                }
+            });
+            if (excelParsedData.length > 0) {
+                renderExcelPreview(excelParsedData);
+            }
+        } else if (excelParsedData && excelParsedData.length > 0) {
+            renderExcelPreview(excelParsedData);
+        }
+    } else if (tabName === 'text') {
+        if (excelParsedData && excelParsedData.length > 0) {
+            const validItems = excelParsedData.filter(i => i.word && i.translation);
+            if (validItems.length > 0) {
+                const wordsText = validItems.map(i => `${i.word} - ${i.translation}`).join('\n');
+                const textarea = document.getElementById('new-module-words');
+                if (textarea) textarea.value = wordsText;
+            }
+        }
+    }
+}
+
+function parseCSVToRows(text) {
+    const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
+    if (lines.length === 0) return [];
+    const firstLine = lines[0];
+    let delimiter = ',';
+    if (firstLine.includes('\t')) delimiter = '\t';
+    else if (firstLine.includes(';')) delimiter = ';';
+    else if (firstLine.includes(',')) delimiter = ',';
+
+    return lines.map(line => {
+        const result = [];
+        let curr = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            if (char === '"' || char === "'") {
+                inQuotes = !inQuotes;
+            } else if (char === delimiter && !inQuotes) {
+                result.push(curr.trim().replace(/^["']|["']$/g, ''));
+                curr = '';
+            } else {
+                curr += char;
+            }
+        }
+        result.push(curr.trim().replace(/^["']|["']$/g, ''));
+        return result;
+    });
+}
+
+function processImportedRows(rawRows) {
+    if (!rawRows || rawRows.length === 0) {
+        alert('Файл порожній');
+        return;
+    }
+
+    let rows = rawRows.filter(r => Array.isArray(r) && r.some(cell => String(cell).trim().length > 0));
+    if (rows.length === 0) {
+        alert('Не знайдено рядків для імпорту');
+        return;
+    }
+
+    const firstRowStr = rows[0].map(c => String(c).toLowerCase().trim()).join(' ');
+    if (firstRowStr.includes('word') || firstRowStr.includes('слово') || firstRowStr.includes('english') || firstRowStr.includes('term') || firstRowStr.includes('translation') || firstRowStr.includes('переклад')) {
+        rows = rows.slice(1);
+    }
+
+    excelParsedData = rows.map(r => {
+        return {
+            word: String(r[0] || '').trim(),
+            translation: String(r[1] || '').trim(),
+            context: String(r[2] || '').trim(),
+            contextTranslation: String(r[3] || '').trim()
+        };
+    }).filter(item => item.word && item.translation);
+
+    if (excelParsedData.length === 0) {
+        alert('⚠️ Не знайдено коректних пар слів. Перевірте наявність 1-ї та 2-ї колонок (English, Переклад).');
+        return;
+    }
+
+    renderExcelPreview(excelParsedData);
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function setupExcelPreviewEditing() {
+    const tbody = document.getElementById('excel-preview-tbody');
+    if (!tbody || tbody.dataset.bound) return;
+    tbody.dataset.bound = 'true';
+
+    const updateValue = (e) => {
+        const cell = e.target.closest('[contenteditable="true"]');
+        if (!cell) return;
+        const index = parseInt(cell.getAttribute('data-index'), 10);
+        const field = cell.getAttribute('data-field');
+        if (!isNaN(index) && field && excelParsedData[index]) {
+            excelParsedData[index][field] = cell.innerText.trim();
+        }
+    };
+
+    tbody.addEventListener('input', updateValue);
+    tbody.addEventListener('blur', updateValue, true);
+}
+
+function renderExcelPreview(data) {
+    const uploadWrapper = document.getElementById('excel-upload-zone-wrapper');
+    const container = document.getElementById('excel-preview-container');
+    const countEl = document.getElementById('excel-preview-count');
+    const tbody = document.getElementById('excel-preview-tbody');
+    if (!container || !tbody) return;
+
+    if (data && data.length > 0) {
+        if (uploadWrapper) uploadWrapper.style.display = 'none';
+        container.style.display = 'block';
+        if (countEl) {
+            countEl.innerText = `У модулі ${getPlural(data.length, ['слово', 'слова', 'слів'])}`;
+        }
+    } else {
+        if (uploadWrapper) uploadWrapper.style.display = 'block';
+        container.style.display = 'none';
+        tbody.innerHTML = '';
+        return;
+    }
+
+    tbody.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    data.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="col-idx" style="color:var(--subtext); font-family:monospace; text-align:center; white-space:nowrap !important; width:58px; min-width:58px; max-width:65px;">${idx + 1}</td>
+            <td contenteditable="true" data-field="word" data-index="${idx}" title="Клікніть для редагування"><strong>${escapeHtml(item.word)}</strong></td>
+            <td contenteditable="true" data-field="translation" data-index="${idx}" title="Клікніть для редагування">${escapeHtml(item.translation)}</td>
+            <td contenteditable="true" data-field="context" data-index="${idx}" style="color:var(--text);" title="Клікніть для редагування">${escapeHtml(item.context || '')}</td>
+            <td contenteditable="true" data-field="contextTranslation" data-index="${idx}" style="color:var(--subtext);" title="Клікніть для редагування">${escapeHtml(item.contextTranslation || '')}</td>
+        `;
+        fragment.appendChild(tr);
+    });
+
+    tbody.appendChild(fragment);
+    setupExcelPreviewEditing();
+}
+
+function addNewTableRow() {
+    if (!excelParsedData) excelParsedData = [];
+    excelParsedData.push({
+        word: '',
+        translation: '',
+        context: '',
+        contextTranslation: ''
+    });
+    renderExcelPreview(excelParsedData);
+
+    const tbody = document.getElementById('excel-preview-tbody');
+    if (tbody && tbody.lastElementChild) {
+        const firstEditableCell = tbody.lastElementChild.querySelector('td[contenteditable="true"]');
+        if (firstEditableCell) {
+            firstEditableCell.focus();
+            firstEditableCell.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+}
+
+function clearExcelImport() {
+    excelParsedData = [];
+    const fileInput = document.getElementById('excel-file-input');
+    if (fileInput) fileInput.value = '';
+    const uploadWrapper = document.getElementById('excel-upload-zone-wrapper');
+    if (uploadWrapper) uploadWrapper.style.display = 'block';
+    const container = document.getElementById('excel-preview-container');
+    if (container) container.style.display = 'none';
+    const tbody = document.getElementById('excel-preview-tbody');
+    if (tbody) tbody.innerHTML = '';
+}
+
+function loadExcelOrCsvFile(file) {
+    const fileName = file.name.toLowerCase();
+    if (fileName.endsWith('.csv')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const text = e.target.result;
+                const rows = parseCSVToRows(text);
+                processImportedRows(rows);
+            } catch (err) {
+                alert('Помилка при обробці CSV: ' + err.message);
+            }
+        };
+        reader.readAsText(file, 'utf-8');
+    } else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                if (typeof XLSX === 'undefined') {
+                    alert('Бібліотека читання Excel ще завантажується. Зачекайте секунду.');
+                    return;
+                }
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+                processImportedRows(rawRows);
+            } catch (err) {
+                alert('Помилка при читанні Excel: ' + err.message);
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    } else {
+        alert('Непідтримуваний формат файлу. Будь ласка, оберіть файл .xlsx, .xls або .csv');
+    }
+}
+
+function handleExcelFileUpload(event) {
+    const file = event.target?.files?.[0];
+    if (!file) return;
+    loadExcelOrCsvFile(file);
+}
+
+function setupExcelDropzone() {
+    const dropzone = document.getElementById('excel-drop-zone');
+    if (!dropzone || dropzone.dataset.bound) return;
+    dropzone.dataset.bound = 'true';
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('dragover');
+        }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('dragover');
+        }, false);
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files && files.length > 0) {
+            loadExcelOrCsvFile(files[0]);
+        }
+    }, false);
+}
+
 function openCreateScreen() {
     editingModuleOriginalName = '';
     document.getElementById('create-screen-title').innerText = '✨ Новий модуль';
     document.getElementById('new-module-name').value = '';
     document.getElementById('new-module-words').value = '';
+    clearExcelImport();
+    switchEditTab('text');
+    setupExcelDropzone();
     switchScreen('create-screen');
 }
 
@@ -988,10 +1441,50 @@ function openEditScreen(name) {
     editingModuleOriginalName = name;
     document.getElementById('create-screen-title').innerText = '✏️ Редагування модуля';
     document.getElementById('new-module-name').value = name;
+
+    const modulePairs = Object.entries(ALL_DATA[name] || {});
     let wordsText = '';
-    Object.entries(ALL_DATA[name]).forEach(([en, ua]) => { wordsText += `${en} - ${ua}\n`; });
+    excelParsedData = [];
+
+    modulePairs.forEach(([en, ua]) => {
+        wordsText += `${en} - ${ua}\n`;
+        const rawCtx = getContextForWord(en);
+        const parsedCtx = parseContextString(rawCtx);
+        excelParsedData.push({
+            word: en,
+            translation: ua,
+            context: parsedCtx ? parsedCtx.enSentence : '',
+            contextTranslation: parsedCtx ? parsedCtx.uaTranslation : ''
+        });
+    });
+
     document.getElementById('new-module-words').value = wordsText.trim();
+
+    const hasCtx = excelParsedData.some(item => Boolean(item.context && item.context.trim()));
+
+    if (excelParsedData.length > 0) {
+        renderExcelPreview(excelParsedData);
+    } else {
+        clearExcelImport();
+    }
+
+    if (hasCtx) {
+        switchEditTab('table');
+    } else {
+        switchEditTab('text');
+    }
+
+    setupExcelDropzone();
     switchScreen('create-screen');
+}
+
+function hasModuleContext(moduleId) {
+    if (!moduleId || !ALL_DATA[moduleId]) return false;
+    const pairs = Object.entries(ALL_DATA[moduleId]);
+    return pairs.some(([en]) => {
+        const rawCtx = getContextForWord(en);
+        return Boolean(rawCtx && rawCtx.trim());
+    });
 }
 
 function countUnitContextWords(name) {
@@ -1006,6 +1499,7 @@ function countUnitContextWords(name) {
 }
 
 function checkUnitContextAvailability(name) {
+    const hasCtx = hasModuleContext(name);
     const contextCount = countUnitContextWords(name);
     const contextRadio = document.getElementById('material-context');
     const wordsRadio = document.getElementById('material-words');
@@ -1013,7 +1507,7 @@ function checkUnitContextAvailability(name) {
     const matchModeRadio = document.getElementById('mode-context-match');
     const labelMatchMode = document.querySelector('label[for="mode-context-match"]');
 
-    if (contextCount < 4) {
+    if (!hasCtx || contextCount === 0) {
         if (contextRadio) {
             contextRadio.disabled = true;
             if (contextRadio.checked && wordsRadio) {
@@ -1023,15 +1517,15 @@ function checkUnitContextAvailability(name) {
         if (labelContext) {
             labelContext.style.opacity = '0.5';
             labelContext.style.cursor = 'not-allowed';
-            labelContext.title = 'Недоступно: недостатньо контекстних речень у цьому модулі';
-            labelContext.innerText = '📖 Слова в контексті (недоступно)';
+            labelContext.title = 'Немає контексту: у цьому модулі відсутні контекстні речення';
+            labelContext.innerText = '📖 Слова в контексті (немає контексту)';
         }
         if (matchModeRadio) {
             matchModeRadio.disabled = true;
         }
         if (labelMatchMode) {
             labelMatchMode.style.opacity = '0.5';
-            labelMatchMode.title = 'Недостатньо контекстних речень';
+            labelMatchMode.title = 'Немає контексту';
         }
         handleMaterialChange();
     } else {
@@ -1045,11 +1539,11 @@ function checkUnitContextAvailability(name) {
             labelContext.innerText = '📖 Слова в контексті';
         }
         if (matchModeRadio) {
-            matchModeRadio.disabled = false;
+            matchModeRadio.disabled = contextCount < 4;
         }
         if (labelMatchMode) {
-            labelMatchMode.style.opacity = '1';
-            labelMatchMode.title = '';
+            labelMatchMode.style.opacity = contextCount < 4 ? '0.5' : '1';
+            labelMatchMode.title = contextCount < 4 ? 'Потрібно мінімум 4 контекстних речення' : '';
         }
     }
 }
@@ -1057,8 +1551,10 @@ function checkUnitContextAvailability(name) {
 function openSetup(name) {
     selectedModule = name;
     document.getElementById('setup-title').innerText = `Тренажер: ${name}`;
+    const searchInput = document.getElementById('unit-table-search');
+    if (searchInput) searchInput.value = '';
     checkUnitContextAvailability(name);
-    renderUnitWordsTable(name);
+    renderUnitWordsTable(name, '');
     switchScreen('setup-screen');
 }
 
@@ -1076,42 +1572,28 @@ function setUnitPageSize(moduleName, size) {
 function changeUnitPageSize(val) {
     if (!selectedModule) return;
     setUnitPageSize(selectedModule, val);
-    renderUnitWordsTable(selectedModule);
+    const searchInput = document.getElementById('unit-table-search');
+    const query = searchInput ? searchInput.value : '';
+    renderUnitWordsTable(selectedModule, query);
 }
 
 function filterUnitWordsTable(query) {
-    const q = (query || '').toLowerCase().trim();
-    const rows = document.querySelectorAll('#unit-table-body tr');
-    let visibleCount = 0;
-    rows.forEach(tr => {
-        const text = tr.innerText.toLowerCase();
-        const matches = !q || text.includes(q);
-        tr.style.display = matches ? '' : 'none';
-        if (matches) visibleCount++;
-    });
-
-    const counterEl = document.getElementById('unit-table-counter');
-    if (counterEl) {
-        const totalWords = Object.keys(ALL_DATA[selectedModule] || {}).length;
-        if (q) {
-            counterEl.innerText = `Знайдено ${visibleCount} з ${totalWords}`;
-        } else {
-            const pageSize = getUnitPageSize(selectedModule);
-            const displayed = pageSize === 'all' ? totalWords : Math.min(parseInt(pageSize), totalWords);
-            counterEl.innerText = `${displayed} / ${totalWords}`;
-        }
-    }
+    if (!selectedModule) return;
+    renderUnitWordsTable(selectedModule, query);
 }
 
-function renderUnitWordsTable(moduleName) {
+function renderUnitWordsTable(moduleName, query = '') {
     const searchInput = document.getElementById('unit-table-search');
-    if (searchInput) searchInput.value = '';
+    if (searchInput && typeof query === 'string' && searchInput.value !== query) {
+        searchInput.value = query;
+    }
 
     const pageSize = getUnitPageSize(moduleName);
     const selectEl = document.getElementById('unit-page-size-select');
     if (selectEl) selectEl.value = pageSize;
 
     const tbody = document.getElementById('unit-table-body');
+    const counterEl = document.getElementById('unit-table-counter');
     if (!tbody) return;
     tbody.innerHTML = '';
 
@@ -1121,23 +1603,46 @@ function renderUnitWordsTable(moduleName) {
 
     if (totalCount === 0) {
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--subtext);">Модуль порожній</td></tr>`;
-        const counterEl = document.getElementById('unit-table-counter');
         if (counterEl) counterEl.innerText = '0 / 0';
         return;
     }
 
-    let pairsToRender = allPairs;
+    const cleanQuery = (query || '').trim().toLowerCase();
+
+    // 1. Спочатку фільтруємо весь масив карток модуля
+    const filteredPairs = allPairs.filter(([en, ua]) => {
+        if (!cleanQuery) return true;
+        const rawCtx = getContextForWord(en) || '';
+        return (
+            en.toLowerCase().includes(cleanQuery) ||
+            ua.toLowerCase().includes(cleanQuery) ||
+            rawCtx.toLowerCase().includes(cleanQuery)
+        );
+    });
+
+    // 2. Оновлюємо лічильник результатів
+    if (counterEl) {
+        if (cleanQuery) {
+            counterEl.innerText = `Знайдено ${filteredPairs.length} з ${totalCount}`;
+        } else {
+            const limit = pageSize === 'all' ? totalCount : Math.min(parseInt(pageSize) || 25, totalCount);
+            counterEl.innerText = `${limit} / ${totalCount}`;
+        }
+    }
+
+    if (filteredPairs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--subtext);">Нічого не знайдено за запитом «${escapeHtml(query)}»</td></tr>`;
+        return;
+    }
+
+    // 3. Застосовуємо пагінацію до відфільтрованих результатів
+    let pairsToRender = filteredPairs;
     if (pageSize !== 'all') {
         const limit = parseInt(pageSize) || 25;
-        pairsToRender = allPairs.slice(0, limit);
+        pairsToRender = filteredPairs.slice(0, limit);
     }
 
-    const counterEl = document.getElementById('unit-table-counter');
-    if (counterEl) {
-        counterEl.innerText = `${pairsToRender.length} / ${totalCount}`;
-    }
-
-    const hasContext = typeof CONTEXT_DATA !== 'undefined';
+    // 4. Рендеримо видимі рядки
     const fragment = document.createDocumentFragment();
     pairsToRender.forEach(([en, ua]) => {
         const statKey = `${moduleName}_${en}`;
@@ -1150,14 +1655,14 @@ function renderUnitWordsTable(moduleName) {
             statusBadge = '<span style="color:#8a6e3a;">🔄 В процесі</span>';
         }
 
-        const ctxRaw = hasContext ? (CONTEXT_DATA[en] || '') : '';
+        const ctxRaw = getContextForWord(en);
         let ctxHtml = '';
         if (ctxRaw) {
             const match = ctxRaw.match(/^(.+?)\s*(\([^)]+\))\s*$/);
             if (match) {
-                ctxHtml = `${match[1]} <em>${match[2]}</em>`;
+                ctxHtml = `${escapeHtml(match[1])} <em>${escapeHtml(match[2])}</em>`;
             } else {
-                ctxHtml = ctxRaw;
+                ctxHtml = escapeHtml(ctxRaw);
             }
         } else {
             ctxHtml = '<span style="color:#3a3b4e;">—</span>';
@@ -1165,8 +1670,8 @@ function renderUnitWordsTable(moduleName) {
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><strong>${en}</strong></td>
-            <td>${ua}</td>
+            <td><strong>${escapeHtml(en)}</strong></td>
+            <td>${escapeHtml(ua)}</td>
             <td>${ctxHtml}</td>
             <td>${statusBadge}</td>
         `;
@@ -1177,18 +1682,78 @@ function renderUnitWordsTable(moduleName) {
 }
 
 function saveModule() {
-    const name = document.getElementById('new-module-name').value.trim();
-    const text = document.getElementById('new-module-words').value.trim();
-    if (!name || !text) return;
-    const parsedWords = {};
-    text.split('\n').forEach(line => {
-        let parts = line.split(' - ');
-        if (parts.length >= 2) parsedWords[parts[0].trim()] = parts[1].trim();
-    });
-    if (editingModuleOriginalName && editingModuleOriginalName !== name) {
-        delete ALL_DATA[editingModuleOriginalName]; delete SAVED_USER_DATA[editingModuleOriginalName];
+    const nameInput = document.getElementById('new-module-name');
+    const name = nameInput ? nameInput.value.trim() : '';
+    if (!name) {
+        alert('Введіть назву модуля');
+        return;
     }
-    ALL_DATA[name] = parsedWords; SAVED_USER_DATA[name] = parsedWords;
+
+    const parsedWords = {};
+
+    if (currentEditTab === 'table') {
+        if (!excelParsedData || excelParsedData.length === 0) {
+            alert('Завантажте файл Excel або CSV із словами чи додайте рядки');
+            return;
+        }
+        excelParsedData.forEach(item => {
+            const word = item.word ? item.word.trim() : '';
+            const trans = item.translation ? item.translation.trim() : '';
+            if (word && trans) {
+                parsedWords[word] = trans;
+                if (item.context && item.context.trim()) {
+                    const ctxEn = item.context.trim();
+                    const ctxUa = item.contextTranslation ? item.contextTranslation.trim() : '';
+                    const ctxString = ctxUa ? `${ctxEn} (${ctxUa})` : ctxEn;
+                    CUSTOM_CONTEXT_DATA[word] = ctxString;
+                    CUSTOM_CONTEXT_DATA[word.toLowerCase()] = ctxString;
+                }
+            }
+        });
+        localStorage.setItem('my_quiz_custom_context', JSON.stringify(CUSTOM_CONTEXT_DATA));
+    } else {
+        const text = document.getElementById('new-module-words').value.trim();
+        if (!text) {
+            alert('Введіть хоча б одну пару слів');
+            return;
+        }
+        text.split('\n').forEach(line => {
+            let parts = line.split(' - ');
+            if (parts.length < 2) parts = line.split(' — ');
+            if (parts.length < 2) parts = line.split(' – ');
+            if (parts.length >= 2) {
+                const en = parts[0].trim();
+                const ua = parts[1].trim();
+                parsedWords[en] = ua;
+
+                // Запобігання втраті контексту для збережених слів
+                if (excelParsedData && excelParsedData.length > 0) {
+                    const matchItem = excelParsedData.find(item => item.word && item.word.toLowerCase() === en.toLowerCase());
+                    if (matchItem && matchItem.context && matchItem.context.trim()) {
+                        const ctxEn = matchItem.context.trim();
+                        const ctxUa = matchItem.contextTranslation ? matchItem.contextTranslation.trim() : '';
+                        const ctxString = ctxUa ? `${ctxEn} (${ctxUa})` : ctxEn;
+                        CUSTOM_CONTEXT_DATA[en] = ctxString;
+                        CUSTOM_CONTEXT_DATA[en.toLowerCase()] = ctxString;
+                    }
+                }
+            }
+        });
+        localStorage.setItem('my_quiz_custom_context', JSON.stringify(CUSTOM_CONTEXT_DATA));
+    }
+
+    if (Object.keys(parsedWords).length === 0) {
+        alert('Не вдалося розпізнати жодного слова. Перевірте правильність заповнення.');
+        return;
+    }
+
+    if (editingModuleOriginalName && editingModuleOriginalName !== name) {
+        delete ALL_DATA[editingModuleOriginalName];
+        delete SAVED_USER_DATA[editingModuleOriginalName];
+    }
+
+    ALL_DATA[name] = parsedWords;
+    SAVED_USER_DATA[name] = parsedWords;
     localStorage.setItem('my_quiz_modules', JSON.stringify(SAVED_USER_DATA));
     isMenuRendered = false;
     switchScreen('menu-screen');
@@ -1235,8 +1800,8 @@ function cleanTextForTTS(text) {
         .replace(/\([^)]*\)/g, '')
         .replace(/^[a-zA-Z\s]+:\s*/, '')
         .replace(/[\/\;]/g, ', ')
-        .replace(/\[\s*\.{3}\s*\]/g, '')
-        .replace(/\[\s*[a-zA-Z_]+\s*\]/g, '')
+        .replace(/\[\s*\.{3}\s*\]/g, '...')
+        .replace(/\[\s*[a-zA-Z_]+\s*\]/g, '...')
         .trim();
 }
 
@@ -1252,14 +1817,37 @@ function speakText(text, lang = 'en-US') {
     }
 }
 
+function getMaskedContextSentenceForTTS(enWord, maskWith = '...') {
+    const rawCtx = getContextForWord(enWord);
+    const parsed = parseContextString(rawCtx);
+    const sentence = parsed ? parsed.enSentence : (rawCtx || enWord);
+    if (!sentence || !enWord) return sentence;
+
+    const escapedEn = enWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedEn}\\b`, 'gi');
+    if (regex.test(sentence)) {
+        return sentence.replace(regex, maskWith);
+    }
+    const subRegex = new RegExp(escapedEn, 'gi');
+    if (subRegex.test(sentence)) {
+        return sentence.replace(subRegex, maskWith);
+    }
+    return sentence;
+}
+
 function speakCurrentWord() {
     if (currentIndex < questions.length) {
         const currentObj = questions[currentIndex];
         if (configMode.startsWith('context-')) {
-            const rawCtx = getContextForWord(currentObj.en);
-            const parsed = parseContextString(rawCtx);
-            const sentenceToSpeak = parsed ? parsed.enSentence : currentObj.en;
-            speakText(sentenceToSpeak || currentObj.en, 'en-US');
+            if (isShowingAnswer) {
+                const rawCtx = getContextForWord(currentObj.en);
+                const parsed = parseContextString(rawCtx);
+                const sentenceToSpeak = parsed ? parsed.enSentence : currentObj.en;
+                speakText(sentenceToSpeak || currentObj.en, 'en-US');
+            } else {
+                const maskedSentence = getMaskedContextSentenceForTTS(currentObj.en, '...');
+                speakText(maskedSentence || '...', 'en-US');
+            }
         } else {
             speakText(currentObj.en, 'en-US');
         }
@@ -1325,7 +1913,7 @@ function generateQuiz() {
     } else {
         configTarget = 'en';
     }
-    const limitVal = document.getElementById('quiz-limit-select').value;
+    const limitVal = getSelectedQuizLimit();
     const isHardOnly = document.getElementById('hard-only-toggle')?.checked ?? false;
 
     let originalPairs = Object.entries(ALL_DATA[selectedModule]);
@@ -1417,14 +2005,20 @@ function toggleTranslationHint(btn) {
 }
 
 function getContextForWord(enWord) {
-    if (!enWord || typeof CONTEXT_DATA === 'undefined') return '';
-    if (CONTEXT_DATA[enWord]) return CONTEXT_DATA[enWord];
+    if (!enWord) return '';
     const lower = enWord.toLowerCase();
-    if (CONTEXT_DATA[lower]) return CONTEXT_DATA[lower];
-    const keys = Object.keys(CONTEXT_DATA);
-    for (let k of keys) {
-        if (k.toLowerCase() === lower || k.toLowerCase().includes(lower)) {
-            return CONTEXT_DATA[k];
+    if (typeof CUSTOM_CONTEXT_DATA !== 'undefined' && CUSTOM_CONTEXT_DATA) {
+        if (CUSTOM_CONTEXT_DATA[enWord]) return CUSTOM_CONTEXT_DATA[enWord];
+        if (CUSTOM_CONTEXT_DATA[lower]) return CUSTOM_CONTEXT_DATA[lower];
+    }
+    if (typeof CONTEXT_DATA !== 'undefined' && CONTEXT_DATA) {
+        if (CONTEXT_DATA[enWord]) return CONTEXT_DATA[enWord];
+        if (CONTEXT_DATA[lower]) return CONTEXT_DATA[lower];
+        const keys = Object.keys(CONTEXT_DATA);
+        for (let k of keys) {
+            if (k.toLowerCase() === lower || k.toLowerCase().includes(lower)) {
+                return CONTEXT_DATA[k];
+            }
         }
     }
     return '';
@@ -2105,6 +2699,7 @@ document.addEventListener('keydown', function (e) {
 
 window.onload = function () {
     loadUserSettings();
+    setupExcelDropzone();
     switchScreen('menu-screen');
 };
 

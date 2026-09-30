@@ -11,14 +11,15 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Підключення зовнішніх баз даних та контексту -->
+    <!-- Підключення зовнішніх баз даних, бібліотеки XLSX та контексту -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.mini.min.js"></script>
     <script src="database.js"></script>
     <script src="context_data.js"></script>
 </head>
 
 <body>
 
-    <div class="version-tag" id="app-version-tag" onclick="openChangelogModal()" title="Історія версій (Changelog)">v6.7.3</div>
+    <div class="version-tag" id="app-version-tag" onclick="openChangelogModal()" title="Історія версій (Changelog)">v6.8.5</div>
 
     <div class="card" id="main-card">
         <!-- Шапка зі статистикою та кнопкою переходу до детальної аналітики -->
@@ -44,6 +45,13 @@
         <div id="menu-screen" class="screen active">
             <h2>Твої модулі знань</h2>
             <p>Завантажуй файли як є — додаток сам розпізнає номер юніта та назве його за підручником!</p>
+            <div class="module-filter-group" id="module-filter-group">
+                <button type="button" class="module-filter-btn active" data-filter="all" onclick="setModuleFilter('all')">Всі</button>
+                <button type="button" class="module-filter-btn" data-filter="favorite" onclick="setModuleFilter('favorite')">★ Обрані</button>
+                <button type="button" class="module-filter-btn" data-filter="in_progress" onclick="setModuleFilter('in_progress')">В процесі</button>
+                <button type="button" class="module-filter-btn" data-filter="new" onclick="setModuleFilter('new')">Нові</button>
+                <button type="button" class="module-filter-btn" data-filter="completed" onclick="setModuleFilter('completed')">Засвоєні</button>
+            </div>
             <div class="module-list" id="modules-container"></div>
         </div>
 
@@ -101,15 +109,15 @@
                 </div>
 
                 <div style="font-weight: bold; margin-bottom: 10px; color: var(--accent);">4. Кількість питань у сесії:</div>
-                <select id="quiz-limit-select" class="styled-select" style="margin-bottom: 20px;" onchange="saveUserSettings()">
-                    <option value="5">5 питань (Швидка розминка)</option>
-                    <option value="20">20 питань (Стандарт)</option>
-                    <option value="40">40 питань</option>
-                    <option value="60">60 питань</option>
-                    <option value="100">100 питань</option>
-                    <option value="150">150 питань</option>
-                    <option value="max">Усі слова модуля (MAX)</option>
-                </select>
+                <div class="question-count-group" id="quiz-limit-chips">
+                    <button type="button" class="count-chip-btn" data-limit="5" onclick="setQuizLimit('5')">5</button>
+                    <button type="button" class="count-chip-btn active" data-limit="20" onclick="setQuizLimit('20')">20</button>
+                    <button type="button" class="count-chip-btn" data-limit="40" onclick="setQuizLimit('40')">40</button>
+                    <button type="button" class="count-chip-btn" data-limit="60" onclick="setQuizLimit('60')">60</button>
+                    <button type="button" class="count-chip-btn" data-limit="100" onclick="setQuizLimit('100')">100</button>
+                    <button type="button" class="count-chip-btn" data-limit="150" onclick="setQuizLimit('150')">150</button>
+                    <button type="button" class="count-chip-btn" data-limit="max" onclick="setQuizLimit('max')">Всі</button>
+                </div>
 
                 <details class="setup-accordion">
                     <summary class="setup-accordion-header">
@@ -206,12 +214,75 @@
         <!-- Екран створення або редагування власного модуля -->
         <div id="create-screen" class="screen">
             <h2 id="create-screen-title">Новий модуль</h2>
-            <div style="max-width: 500px; margin: 0 auto;">
-                <input type="text" id="new-module-name" placeholder="Назва модуля">
-                <textarea id="new-module-words" placeholder="слово - переклад"
-                    oninput="autoExpandTextarea(this)"></textarea>
-                <button class="main-btn" onclick="saveModule()">Зберегти модуль</button>
-                <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
+            <div class="create-module-wrapper">
+                <input type="text" id="new-module-name" placeholder="Назва модуля (наприклад: Unit 7 — Travel)" style="margin-bottom: 16px;">
+                
+                <!-- Вкладки введення -->
+                <div class="edit-tabs-nav">
+                    <button type="button" class="edit-tab-btn active" data-tab="text" onclick="switchEditTab('text')">📝 Текст (Слово – Переклад)</button>
+                    <button type="button" class="edit-tab-btn" data-tab="table" onclick="switchEditTab('table')">📊 Таблиця (Excel / CSV з контекстом)</button>
+                </div>
+
+                <!-- Вкладка 1: Текст -->
+                <div id="tab-content-text" class="edit-tab-content active">
+                    <p style="font-size: 13px; color: var(--subtext); margin-bottom: 8px;">
+                        Вводьте кожне слово з нового рядка через тире: <code>apple - яблуко</code>
+                    </p>
+                    <textarea id="new-module-words" placeholder="apple - яблуко&#10;book - книга"
+                        oninput="autoExpandTextarea(this)" style="min-height: 180px;"></textarea>
+                </div>
+
+                <!-- Вкладка 2: Excel / CSV -->
+                <div id="tab-content-table" class="edit-tab-content">
+                    <div id="excel-upload-zone-wrapper">
+                        <div class="excel-column-hint">
+                            <div class="hint-title">💡 Структура колонок у файлі:</div>
+                            <div class="hint-badges">
+                                <span>Колонка 1: English</span>
+                                <span>Колонка 2: Українська</span>
+                                <span>Колонка 3: Контекст (En)</span>
+                                <span>Колонка 4: Переклад контексту (Ua)</span>
+                            </div>
+                        </div>
+
+                        <div id="excel-drop-zone" class="excel-dropzone" onclick="document.getElementById('excel-file-input').click()">
+                            <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" style="display: none;" onchange="handleExcelFileUpload(event)">
+                            <div class="dropzone-icon">📊</div>
+                            <div class="dropzone-text"><strong>Натисніть для вибору</strong> або перетягніть файл сюди</div>
+                            <div class="dropzone-sub">Підтримуються формати: .xlsx, .xls, .csv</div>
+                        </div>
+                    </div>
+
+                    <div id="excel-preview-container" class="excel-preview-container" style="display: none;">
+                        <div class="excel-preview-header">
+                            <span id="excel-preview-count" class="excel-preview-count">Знайдено 0 слів</span>
+                            <div class="excel-preview-actions">
+                                <button type="button" class="preview-action-btn btn-add-row" onclick="addNewTableRow()">➕ Додати рядок</button>
+                                <button type="button" class="preview-action-btn btn-reupload" onclick="document.getElementById('excel-file-input').click()">📥 Завантажити інший файл Excel/CSV</button>
+                                <button type="button" class="excel-preview-clear" onclick="clearExcelImport()">✕ Очистити список</button>
+                            </div>
+                        </div>
+                        <div class="excel-preview-table-wrap">
+                            <table class="excel-preview-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-idx">#</th>
+                                        <th>English (Слово)</th>
+                                        <th>Українська</th>
+                                        <th>Контекст (En)</th>
+                                        <th>Переклад контексту (Ua)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="excel-preview-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="main-btn" onclick="saveModule()">Зберегти модуль</button>
+                    <button class="secondary-btn" onclick="switchScreen('menu-screen')">Назад до меню</button>
+                </div>
             </div>
         </div>
 
