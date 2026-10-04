@@ -19,7 +19,7 @@
 
 <body>
 
-    <div class="version-tag" id="app-version-tag" onclick="openChangelogModal()" title="Історія версій (Changelog)">v6.8.5</div>
+    <div class="version-tag" id="app-version-tag" onclick="openChangelogModal()" title="Історія версій (Changelog)">v6.9.2</div>
 
     <div class="card" id="main-card">
         <!-- Шапка зі статистикою та кнопкою переходу до детальної аналітики -->
@@ -288,7 +288,12 @@
 
         <!-- Основний екран тестування (картка слів, ввід або варіанти) -->
         <div id="quiz-screen" class="screen">
-            <div id="quiz-progress" style="color:var(--subtext); margin-bottom:15px; font-size:14px;"></div>
+            <div class="quiz-header-bar">
+                <div id="quiz-progress" class="quiz-progress-text"></div>
+                <button type="button" class="btn-finish-early" id="btn-finish-early" onclick="confirmFinishQuizEarly()" title="Достроково завершити тест і переглянути поточні результати">
+                    🏁 Завершити тест
+                </button>
+            </div>
 
             <div class="word-card">
                 <div class="word" id="target-word">...</div>

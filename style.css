@@ -186,27 +186,33 @@ p { color: var(--subtext); margin-bottom: 20px; font-size: 14px; line-height: 1.
 .segmented-item input:checked + .segmented-label { background: var(--surface-hover); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(137, 180, 250, 0.2); }
 
 .question-count-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .count-chip-btn {
-    flex: 1 1 calc(25% - 8px);
-    min-width: 48px;
-    padding: 10px 12px;
+    width: 100%;
+    min-width: 0;
+    padding: 9px 2px;
     background: #1e1e2e;
     border: 2px solid #45475a;
     color: var(--text);
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
     transition: all 0.2s ease;
     user-select: none;
     touch-action: manipulation;
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .count-chip-btn:hover {
@@ -240,6 +246,49 @@ textarea { height: auto; min-height: 150px; max-height: 380px; resize: none; fon
 button, input, label, select, textarea { touch-action: manipulation; }
 button.main-btn { width: 100%; max-width: 400px; padding: 14px; font-size: 16px; font-weight: bold; background: var(--accent); color: #11111b; border: none; border-radius: 10px; cursor: pointer; margin: 10px auto 0 auto; display: block; touch-action: manipulation; user-select: none; }
 button.secondary-btn { background: transparent; color: var(--subtext); border: 2px solid #313244; width: 100%; max-width: 400px; padding: 12px; font-size: 14px; border-radius: 10px; cursor: pointer; margin: 10px auto 0 auto; display: block; touch-action: manipulation; user-select: none; }
+
+.quiz-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto 15px auto;
+    padding: 0 4px;
+    gap: 12px;
+}
+.quiz-progress-text {
+    color: var(--subtext);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    flex: 1;
+}
+.btn-finish-early {
+    background: rgba(243, 139, 168, 0.12);
+    color: var(--red);
+    border: 1px solid rgba(243, 139, 168, 0.35);
+    padding: 6px 13px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    user-select: none;
+    touch-action: manipulation;
+}
+.btn-finish-early:hover {
+    background: rgba(243, 139, 168, 0.24);
+    border-color: var(--red);
+    box-shadow: 0 0 12px rgba(243, 139, 168, 0.3);
+    transform: translateY(-1px);
+}
+.btn-finish-early:active {
+    transform: translateY(0);
+}
 
 .word-card { background: #313244; border: 2px solid #45475a; border-radius: 16px; padding: 30px 20px; margin: 20px auto; max-width: 600px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; gap: 15px; position: relative; }
 .word { font-size: 26px; font-weight: bold; color: var(--accent); word-break: break-word; }
@@ -391,6 +440,7 @@ button.choice-btn .key-hint { font-size: 12px; opacity: 0.6; background: #1e1e2e
 
 .summary-column-box.success-border { border-top: 4px solid var(--green); }
 .summary-column-box.error-border { border-top: 4px solid var(--red); }
+.summary-column-box.skipped-border { border-top: 4px solid var(--subtext); }
 
 .summary-col-header {
     font-size: 15px;
@@ -405,6 +455,7 @@ button.choice-btn .key-hint { font-size: 12px; opacity: 0.6; background: #1e1e2e
 .word-time-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 6px; background: #252538; gap: 10px; }
 .word-time-row.correct { border-left: 3px solid var(--green); }
 .word-time-row.incorrect { border-left: 3px solid var(--red); }
+.word-time-row.skipped { border-left: 3px solid var(--subtext); opacity: 0.9; }
 .word-time-val { font-weight: bold; font-family: monospace; color: var(--subtext); white-space: nowrap; }
 
 @media (max-width: 650px) {
@@ -1062,6 +1113,25 @@ button.choice-btn.context-card.incorrect .blank {
         padding: 10px 12px;
         font-size: 14px;
         margin-bottom: 15px;
+    }
+
+    .quiz-header-bar {
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    .btn-finish-early {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .question-count-group {
+        gap: 4px;
+        margin-bottom: 15px;
+    }
+    .count-chip-btn {
+        padding: 7px 1px;
+        font-size: 12px;
+        border-radius: 8px;
     }
 
     .word-card {

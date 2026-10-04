@@ -1,6 +1,6 @@
 # AGENTS.md — AI Assistant Instructions & Safety Rules
 
-Перед будь-яким редагуванням коду аналізуй [`Design.md`](file:///Users/user/Desktop/my-quiz-local/Design.md) та [`Project.md`](file:///Users/user/Desktop/my-quiz-local/Project.md).
+Перед будь-яким редагуванням коду аналізуй [`Design.md`](file:///Users/Диск Д/06 Проекти/my-quiz-local/Design.md) та [`Project.md`](file:///Users/Диск Д/06 Проекти/my-quiz-local/Project.md).
 
 ## 🔒 Правила економії токенів та безпеки (Token Saving & Integrity)
 
@@ -19,9 +19,9 @@
    - Не ламати алгоритми `isFuzzyMatch` (підтримка роздільників `/`, `;`, `,`, `:`, `()` та порівняння Левенштейна) та `updateMemoryAlgorithm`.
 
 4. **Модульна структура:**
-   - HTML розмітка: [`index.html`](file:///Users/user/Desktop/my-quiz-local/index.html)
-   - CSS стилі: [`style.css`](file:///Users/user/Desktop/my-quiz-local/style.css)
-   - JS логіка: [`scripts/main.js`](file:///Users/user/Desktop/my-quiz-local/scripts/main.js)
+   - HTML розмітка: [`index.html`](file:///Users/Диск Д/06 Проекти/my-quiz-local/index.html)
+   - CSS стилі: [`style.css`](file:///Users/Диск Д/06 Проекти/my-quiz-local/style.css)
+   - JS логіка: [`scripts/main.js`](file:///Users/Диск Д/06 Проекти/my-quiz-local/scripts/main.js)
 
 5. **Режим роботи з Git:**
    - Працювати виключно локально. Не робити комміти чи `git push` без прямого запиту від Вадима (слово «пуш»).

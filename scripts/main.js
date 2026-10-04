@@ -1,5 +1,29 @@
-const APP_VERSION = "v6.8.5";
+const APP_VERSION = "v6.9.2";
 const VERSION_HISTORY = [
+    {
+        version: "v6.9.2",
+        date: "2026-10-04",
+        changes: [
+            "Компактне вирівнювання кнопок вибору кількості питань (5, 20, 40, 60, 100, 150, Всі) в один спільний горизонтальний рядок з адаптивними відступами"
+        ]
+    },
+    {
+        version: "v6.9.1",
+        date: "2026-10-04",
+        changes: [
+            "Оптимізовано екран результатів тесту: прибрано окрему колонку пропущених слів, залишено чіткий фокус на вірних відповідях та помилках",
+            "Оновлено кнопку опрацювання помилок: повторне тестування фокусується виключно на невірно виконаних завданнях"
+        ]
+    },
+    {
+        version: "v6.9.0",
+        date: "2026-10-04",
+        changes: [
+            "Додано можливість дострокового завершення тесту з підтвердженням кількості відповідей",
+            "Миттєве відображення результатів та аналітики для пройденої частини тесту",
+            "Коректний облік та відображення пропущених слів у підсумках тестування без помилок виконання"
+        ]
+    },
     {
         version: "v6.8.5",
         date: "2026-09-30",
@@ -1977,12 +2001,12 @@ function generateQuiz() {
 }
 
 function startMistakesOnlyQuiz() {
-    const errorLogs = sessionLogs.filter(item => !item.isCorrect);
+    const errorLogs = sessionLogs.filter(item => !item.isCorrect && !item.isSkipped);
     if (errorLogs.length === 0) return;
 
     questions = errorLogs.map(log => ({
-        en: log.question === log.answer ? log.question : (log.answer.match(/[a-zA-Z]/) ? log.answer : log.question),
-        ua: log.question === log.answer ? log.answer : (log.answer.match(/[a-zA-Z]/) ? log.question : log.answer),
+        en: log.question === log.answer ? log.question : ((log.answer && /[a-zA-Z]/.test(log.answer)) ? log.answer : log.question),
+        ua: log.question === log.answer ? log.answer : ((log.answer && /[a-zA-Z]/.test(log.answer)) ? log.question : log.answer),
         question: log.question,
         answer: log.answer
     }));
@@ -2116,25 +2140,28 @@ function showQuestion() {
 }
 
 function renderSessionSummary() {
-    let totalSessionMs = sessionLogs.reduce((acc, curr) => acc + curr.timeMs, 0);
+    let totalSessionMs = sessionLogs.reduce((acc, curr) => acc + (curr.timeMs || 0), 0);
     let totalSec = Math.round(totalSessionMs / 1000);
-    let avgSec = sessionLogs.length > 0 ? (totalSec / sessionLogs.length).toFixed(1) : '0';
+    const answeredLogs = sessionLogs.filter(item => !item.isSkipped);
+    let avgSec = answeredLogs.length > 0 ? (totalSec / answeredLogs.length).toFixed(1) : '0';
 
     const successLogs = sessionLogs.filter(item => item.isCorrect);
-    const errorLogs = sessionLogs.filter(item => !item.isCorrect);
+    const errorLogs = sessionLogs.filter(item => !item.isCorrect && !item.isSkipped);
+    const skippedLogs = sessionLogs.filter(item => item.isSkipped);
     const errorCount = errorLogs.length;
+    const skippedCount = skippedLogs.length;
 
     const successRowsHtml = successLogs.length > 0 ? successLogs.map(log => `
         <div class="word-time-row correct">
             <span>✅ <strong>${log.question}</strong> → ${log.answer}</span>
-            <span class="word-time-val">${(log.timeMs / 1000).toFixed(1)}s</span>
+            <span class="word-time-val">${((log.timeMs || 0) / 1000).toFixed(1)}s</span>
         </div>
     `).join('') : '<div style="color:var(--subtext); font-size:13px; padding:10px;">Немає вірних відповідей</div>';
 
     const errorRowsHtml = errorLogs.length > 0 ? errorLogs.map(log => `
         <div class="word-time-row incorrect">
             <span>❌ <strong>${log.question}</strong> → <span style="color:var(--red);">${log.userAnswer || 'Помилка'}</span> (Вірно: ${log.answer})</span>
-            <span class="word-time-val">${(log.timeMs / 1000).toFixed(1)}s</span>
+            <span class="word-time-val">${((log.timeMs || 0) / 1000).toFixed(1)}s</span>
         </div>
     `).join('') : '<div style="color:var(--subtext); font-size:13px; padding:10px;">Чудово! Жодної помилки! 🎉</div>';
 
@@ -2150,15 +2177,20 @@ function renderSessionSummary() {
                 </div>
                 <div class="summary-stat-card">
                     <div class="summary-stat-val" style="color:var(--red);">${errorCount}</div>
-                    <div class="summary-stat-lbl">Кількість помилок</div>
+                    <div class="summary-stat-lbl">Помилок</div>
                 </div>
+                ${skippedCount > 0 ? `
+                <div class="summary-stat-card">
+                    <div class="summary-stat-val" style="color:var(--subtext);">${skippedCount}</div>
+                    <div class="summary-stat-lbl">Пропущено</div>
+                </div>` : ''}
                 <div class="summary-stat-card">
                     <div class="summary-stat-val">${formatTime(totalSec)}</div>
                     <div class="summary-stat-lbl">Загальний час</div>
                 </div>
                 <div class="summary-stat-card">
                     <div class="summary-stat-val">${avgSec}s</div>
-                    <div class="summary-stat-lbl">Сер. час / слово</div>
+                    <div class="summary-stat-lbl">Сер. час / відповідь</div>
                 </div>
             </div>
 
@@ -2603,6 +2635,56 @@ window.addEventListener('beforeunload', () => {
         localStorage.setItem('my_quiz_mem_stats', JSON.stringify(MEMORY_STATS));
     }
 });
+
+function confirmFinishQuizEarly() {
+    if (currentActiveScreen !== 'quiz-screen') return;
+    const answeredCount = sessionLogs.filter(item => !item.isSkipped).length;
+    const totalCount = questions.length;
+    const promptMsg = answeredCount === 0
+        ? `Ви ще не відповіли на жодне питання (всього у тесті: ${totalCount}).\nЗавершити тест достроково та подивитися результати?`
+        : `Ви відповіли на ${answeredCount} з ${totalCount} питань.\nЗавершити тест достроково та подивитися результати?`;
+
+    if (confirm(promptMsg)) {
+        finishQuizEarly();
+    }
+}
+
+function finishQuizEarly() {
+    stopLiveTimer();
+    if (timerTimeout) {
+        clearTimeout(timerTimeout);
+        timerTimeout = null;
+    }
+    isShowingAnswer = false;
+
+    // Заповнюємо невідповідані питання як пропущені для коректного підсумку сесії
+    while (sessionLogs.length < questions.length) {
+        const q = questions[sessionLogs.length];
+        if (!q) break;
+        sessionLogs.push({
+            question: q.question || '',
+            answer: q.answer || '',
+            userAnswer: 'Пропущено',
+            isCorrect: false,
+            isSkipped: true,
+            timeMs: 0
+        });
+    }
+
+    currentIndex = questions.length;
+
+    const answeredCount = sessionLogs.filter(item => !item.isSkipped).length;
+    if (answeredCount > 0) {
+        const todayStr = new Date().toDateString();
+        if (STREAK_DATA.lastDate !== todayStr) {
+            STREAK_DATA.count += 1;
+            STREAK_DATA.lastDate = todayStr;
+            localStorage.setItem('my_quiz_streak', JSON.stringify(STREAK_DATA));
+        }
+    }
+
+    renderSessionSummary();
+}
 
 function stopQuizSession() {
     stopLiveTimer();
