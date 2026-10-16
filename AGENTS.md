@@ -27,5 +27,15 @@
    - Працювати виключно локально. Не робити комміти чи `git push` без прямого запиту від Вадима (слово «пуш»).
 
 6. **Правило версіонування (Version Control Policy & Changelog):**
-   - При кожній новій фічі чи виправленні багу оновлювати `APP_VERSION` (SemVer) у `scripts/main.js`, додавати запис на початок `VERSION_HISTORY`, оновлювати бейдж `#app-version-tag` у `index.html` і повідомляти у відповіді рядок: «Нова версія: vX.X.X (зміни: ...)».
+   - При кожній новій фічі чи виправленні багу оновлювати `APP_VERSION` (SemVer) у `scripts/main.js`, додавати запис на початок `VERSION_HISTORY` із обов'язковим структуруванням за категоріями:
+     - `✨ Нові фічі та покращення`
+     - `🐛 Виправлені баги`
+   - Оновлювати бейдж `#app-version-tag` у `index.html` і повідомляти у відповіді рядок: «Нова версія: vX.X.X (зміни: ...)».
+
+7. **Обов'язкові стандарти та скіли (Workspace Skills):**
+   - [`frontend-clean-architect`](file:///.agents/skills/frontend-clean-architect/SKILL.md) — запобігання роздуванню CSS/JS, відсутність скролбарів, плавні GPU-анімації без важких DOM-елементів.
+   - [`version-changelog-manager`](file:///.agents/skills/version-changelog-manager/SKILL.md) — суворий облік SemVer на базі `v6.9.2`, категоризація релізів.
+   - [`ui-ux-design-system`](file:///.agents/skills/ui-ux-design-system/SKILL.md) — дотримання темної палітри Catppuccin, гармонійної геометрії, без важких тіней та блокуючих оверлеїв.
+   - [`code-refactor-cleaner`](file:///.agents/skills/code-refactor-cleaner/SKILL.md) — регулярне очищення мертвого коду, застарілих селекторів, запобігання витокам пам'яті в слухачах.
+
 

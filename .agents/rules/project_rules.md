@@ -10,3 +10,9 @@
 
 3. **Обмеження:**
    Не змінюй існуючі працюючі механізми (стрік, збереження статистики, підтримка 15 модулів), створюй лише чіткі, анімовані та зручні UI рішення.
+
+4. **Обов'язкові стандарти та скіли (Workspace Skills):**
+   - [`frontend-clean-architect`](file:///Users/Диск%20Д/06%20Проекти/my-quiz-local/.agents/skills/frontend-clean-architect/SKILL.md): захист від роздування CSS/JS, повна відсутність скролбарів, плавні GPU-анімації без важких DOM-елементів та дублювання подій.
+   - [`version-changelog-manager`](file:///Users/Диск%20Д/06%20Проекти/my-quiz-local/.agents/skills/version-changelog-manager/SKILL.md): суворе SemVer версіонування (на базі `v6.9.2`), обов'язкова категоризація на «✨ Нові фічі та покращення» і «🐛 Виправлені баги», автоматичне оновлення бейджів та історії версій.
+   - [`ui-ux-design-system`](file:///Users/Диск%20Д/06%20Проекти/my-quiz-local/.agents/skills/ui-ux-design-system/SKILL.md): дотримання темної палітри Catppuccin, гармонійної геометрії, м'яких мікроанімацій без важких тіней та блокуючих оверлеїв.
+   - [`code-refactor-cleaner`](file:///Users/Диск%20Д/06%20Проекти/my-quiz-local/.agents/skills/code-refactor-cleaner/SKILL.md): регулярне очищення мертвого коду, застарілих селекторів, запобігання витокам пам'яті в слухачах та таймерах.

@@ -1,162 +1,413 @@
-const APP_VERSION = "v6.9.2";
+const APP_VERSION = "v7.0.7";
 const VERSION_HISTORY = [
+    {
+        version: "v7.0.7",
+        date: "2026-10-16",
+        changes: [
+            "Нові фічі та покращення: Рефакторинг футера: службові інструменти збереження, відновлення та імпорту винесено в окреме естетичне модальне вікно «Керування даними» (Settings Sheet)",
+            "Нові фічі та покращення: Очищено робочий простір екрана від зайвих кнопок, покращено ергономіку на мобільних пристроях",
+            "Виправлені баги: Ліквідовано горизонтальне перевантаження футера та накладання службових кнопок на Home Bar iOS"
+        ]
+    },
+    {
+        version: "v7.0.6",
+        date: "2026-10-16",
+        changes: [
+            "Нові фічі та покращення: Впроваджено повноцінну адаптацію Mobile-First: підтримка Safe Area Insets (Dynamic Island/Home Indicator), трансформація словника в Card View на екранах <640px, збільшення тач-зон до 44px+",
+            "Виправлені баги: Усунено здавлювання тексту в мобільних таблицях слів, оптимізовано розташування плаваючих кнопок"
+        ]
+    },
+    {
+        version: "v7.0.5",
+        date: "2026-10-16",
+        changes: [
+            "Нові фічі та покращення: Оптимізовано UX хедера квізу: кнопки дій переведено в нейтральний мінімалістичний стиль для максимальної концентрації на матеріалі",
+            "Виправлені баги: Усунено відволікаюче миготіння та пульсацію кнопки «Остання помилка» при хибних відповідях",
+            "Виправлені баги: Знято агресивний колірний акцент із кнопки дострокового завершення тесту"
+        ]
+    },
+    {
+        version: "v7.0.4",
+        date: "2026-10-16",
+        changes: [
+            "Нові фічі та покращення: Впроваджено функцію безпечного читання safeJsonParse(key, fallbackValue) із захистом від null та збоїв JSON",
+            "Нові фічі та покращення: Ізольовано синтез мовлення Web Speech API: примусове скасування попередньої черги speechSynthesis.cancel() перед новим викликом та обгортання у try/catch",
+            "Нові фічі та покращення: Реалізовано захист від мульти-кліків на кнопках варіантів відповідей (selectChoice та selectContextMatchChoice): миттєва деактивація через disabled = true та pointer-events: none",
+            "Виправлені баги: Забезпечено повний клінап активних фонових таймерів сесії (stopLiveTimer(), timerTimeout, saveMemoryStatsTimer) та скасування відтворення мовлення при навігації назад чи достроковому виході",
+            "Виправлені баги: Виправлено санітизацію текстового контенту у картках та підсумках сесії через escapeHtml() для уникнення поломки DOM-розмітки",
+            "Виправлені баги: Усунено дублювання функції генератора варіантів відповідей generateChoices() у кодовій базі"
+        ]
+    },
+    {
+        version: "v7.0.3",
+        date: "2026-10-16",
+        changes: [
+            "Нові фічі та покращення: Інтегровано ненав'язливий Developer-індикатор перезавантаження сторінки та скидання кешу (Hard Refresh Badge)",
+            "Нові фічі та покращення: Додано глобальний слухач клавіатури на сполучення клавіш Command/Ctrl + Shift + R, Command/Ctrl + R та F5 / Ctrl + F5",
+            "Нові фічі та покращення: Впроваджено автоматичну перевірку типу навігації через Performance Navigation Timing API",
+            "Виправлені баги: Оптимізовано обробку сесійного стану (sessionStorage) при переході між екранами",
+            "Виправлені баги: Забезпечено надійну ізоляцію бейджа через pointer-events: none !important; без блокування кнопок інтерфейсу"
+        ]
+    },
+    {
+        version: "v7.0.2",
+        date: "2026-10-16",
+        changes: [
+            "Нові фічі та покращення: Повністю ліквідовано всі нативні браузерні виклики window.confirm() (дострокове завершення тесту, видалення модуля, очищення даних)",
+            "Нові фічі та покращення: Впроваджено кастомний вбудований модальний діалог Catppuccin Mocha (#confirm-modal) із Promise API та підтримкою клавіш Enter / Escape",
+            "Нові фічі та покращення: Додано автофокус та автоматичне перенесення курсора в першу колонку (English) при натисканні «➕ Додати рядок» у таблиці слів",
+            "Нові фічі та покращення: Реалізовано збереження останнього обраного ліміту слів (5, 20, 40, 60, 100, 150, Всі) та налаштувань тренажера у LocalStorage (my_quiz_settings)",
+            "Нові фічі та покращення: Інлайн-анімація кнопки копіювання: миттєва заміна іконки на зелену галочку ✓ на 1.2 сек",
+            "Виправлені баги: Винесено Toast-повідомлення у верхній шар із pointer-events: none !important;, що усунуло перекриття кнопок заголовка «Остання помилка» та «Завершити тест»",
+            "Виправлені баги: Впроваджено суворий Zero-Scrollbar Enforcement для таблиць модуля, прев'ю імпорту та аналітичних списків слів"
+        ]
+    },
+    {
+        version: "v7.0.1",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Виправлено позиціонування та вертикальну лінію меню навігації в шапці Changelog",
+            "Нові фічі та покращення: Оптимізовано внутрішні відступи та геометрію модального вікна історії версій",
+            "Виправлені баги: Усунено наїжджання та зміщення елементів хедера модального вікна відносно табів фільтрації"
+        ]
+    },
+    {
+        version: "v7.0.0",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Повний редизайн модального вікна Changelog до версії X з оновленою візуальною ієрархією",
+            "Нові фічі та покращення: Впроваджено контрастні чіпи категорій та покращену типографіку карток релізів",
+            "Виправлені баги: Повністю ліквідовано візуальний шум та розрізнені теги всередині тексту оновлень"
+        ]
+    },
+    {
+        version: "v6.9.9",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Повне очищення історії версій від емоджі у заголовках та категоріях",
+            "Нові фічі та покращення: Впроваджено строгі та професійні назви розділів: «Нові фічі та покращення» і «Виправлені баги»",
+            "Нові фічі та покращення: Полірування табів-фільтрів Changelog",
+            "Виправлені баги: Усунено візуальний шум у модальному вікні історії версій",
+            "Виправлені баги: Оптимізовано стилі бейджів категорій та закріплено стабільні межі картки"
+        ]
+    },
+    {
+        version: "v6.9.8",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Фіксація сталих меж та стабільного читабельного шрифту на картці завдання (Quiz Word Card)",
+            "Нові фічі та покращення: Структуризація історії версій Changelog за двома напрямками",
+            "Виправлені баги: Відключено динамічне зменшення («стрибки») розміру шрифту слова залежно від довжини",
+            "Виправлені баги: Надійно розведено розташування кнопки швидкого копіювання та іконки динаміка"
+        ]
+    },
+    {
+        version: "v6.9.7",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Адаптовано розміри шрифтів для довгих слів та покращено загальну ергономіку плашки завдання",
+            "Виправлені баги: Повернено канонічний дизайн стандартної круглої кнопки-динаміка (outline)",
+            "Виправлені баги: Усунено накладання кнопки швидкого копіювання на аудіокнопку"
+        ]
+    },
+    {
+        version: "v6.9.5",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Реалізовано зручні горизонтальні таби-фільтри в Changelog («Усі зміни», «Нові фічі», «Виправлені баги»)",
+            "Нові фічі та покращення: Інтегровано іконку-кнопку швидкого копіювання тексту завдання у буфер обміну",
+            "Виправлені баги: Оптимізовано UI-розмітку модального вікна історії версій",
+            "Виправлені баги: Запобігання небажаним скролбарам та забезпечення стабільної фільтрації карток релізів"
+        ]
+    },
+    {
+        version: "v6.9.4",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Інтерактивні чіпи категорій для швидкої навігації списком оновлень у модальному вікні Changelog",
+            "Виправлені баги: Оптимізовано фільтрацію та плавний рендеринг карток історії версій",
+            "Виправлені баги: Повністю усунено внутрішні скролбари блоків релізів"
+        ]
+    },
+    {
+        version: "v6.9.3",
+        date: "2026-10-13",
+        changes: [
+            "Нові фічі та покращення: Висувна бічна панель (Side Drawer Split View) для швидкого перегляду останньої помилки без перекриття інтерфейсу",
+            "Нові фічі та покращення: Блок детального порівняння відповідей користувача та правильного варіанту із кнопками швидкого повторення та вимови",
+            "Виправлені баги: Усунено блокуючі модальні попапи при помилках",
+            "Виправлені баги: Забезпечено надійне збереження індексу й даних останньої помилки між картками"
+        ]
+    },
     {
         version: "v6.9.2",
         date: "2026-10-04",
         changes: [
-            "Компактне вирівнювання кнопок вибору кількості питань (5, 20, 40, 60, 100, 150, Всі) в один спільний горизонтальний рядок з адаптивними відступами"
+            "Нові фічі та покращення: Компактне вирівнювання кнопок вибору кількості питань (5, 20, 40, 60, 100, 150, Всі) в один спільний горизонтальний рядок з адаптивними відступами",
+            "Виправлені баги: Усунено небажані переноси та розриви рядків кнопок на середніх екранах"
         ]
     },
     {
         version: "v6.9.1",
         date: "2026-10-04",
         changes: [
-            "Оптимізовано екран результатів тесту: прибрано окрему колонку пропущених слів, залишено чіткий фокус на вірних відповідях та помилках",
-            "Оновлено кнопку опрацювання помилок: повторне тестування фокусується виключно на невірно виконаних завданнях"
+            "Нові фічі та покращення: Оптимізовано екран результатів тесту: прибрано окрему колонку пропущених слів, залишено чіткий фокус на вірних відповідях та помилках",
+            "Нові фічі та покращення: Оновлено кнопку опрацювання помилок: повторне тестування фокусується виключно на невірно виконаних завданнях",
+            "Виправлені баги: Усунено надлишкову колонку пропущених слів та скориговано логіку повторного запуску помилкових карток"
         ]
     },
     {
         version: "v6.9.0",
         date: "2026-10-04",
         changes: [
-            "Додано можливість дострокового завершення тесту з підтвердженням кількості відповідей",
-            "Миттєве відображення результатів та аналітики для пройденої частини тесту",
-            "Коректний облік та відображення пропущених слів у підсумках тестування без помилок виконання"
+            "Нові фічі та покращення: Додано можливість дострокового завершення тесту з підтвердженням кількості відповідей",
+            "Нові фічі та покращення: Миттєве відображення результатів та аналітики для пройденої частини тесту",
+            "Виправлені баги: Коректний облік та відображення пропущених слів у підсумках тестування без помилок виконання",
+            "Виправлені баги: Запобігання збоям розрахунку відсотка успішності при неповному проходженні тесту"
         ]
     },
     {
         version: "v6.8.5",
         date: "2026-09-30",
         changes: [
-            "Виправлено пошук та пагінацію у таблиці «Словник юніта»: фільтрація тепер застосовується до всього масиву карток (по слову, перекладу та контексту) перед накладанням ліміту сторінки"
+            "Нові фічі та покращення: Наскрізний пошук у словнику юніта одночасно за словом, перекладом та контекстом",
+            "Виправлені баги: Виправлено пошук та пагінацію у таблиці «Словник юніта»: фільтрація тепер застосовується до всього масиву карток (по слову, перекладу та контексту) перед накладанням ліміту сторінки"
         ]
     },
     {
         version: "v6.8.4",
         date: "2026-09-30",
         changes: [
-            "Автоматичне завантаження 4-колонкових даних модуля у вкладку «Таблиця» при редагуванні",
-            "Автоактивація вкладки таблиці для модулів із контекстом та приховування початкової дропзони",
-            "Компактна панель дій над таблицею (кнопки додавання рядка, заміни файлу та лічильник слів)",
-            "Повний захист контекстних речень від стирання при редагуванні та збереженні"
+            "Нові фічі та покращення: Автоматичне завантаження 4-колонкових даних модуля у вкладку «Таблиця» при редагуванні",
+            "Нові фічі та покращення: Автоактивація вкладки таблиці для модулів із контекстом та приховування початкової дропзони",
+            "Нові фічі та покращення: Компактна панель дій над таблицею (кнопки додавання рядка, заміни файлу та лічильник слів)",
+            "Виправлені баги: Повний захист контекстних речень від стирання при редагуванні та збереженні"
         ]
     },
     {
         version: "v6.8.3",
         date: "2026-09-30",
         changes: [
-            "Виправлено перенесення номерів рядків у прев'ю-таблиці імпорту: встановлено фіксовану ширину 58px та сувору заборону white-space: nowrap"
+            "Нові фічі та покращення: Оптимізовано геометрію колонок таблиці попереднього перегляду імпорту",
+            "Виправлені баги: Виправлено перенесення номерів рядків у прев'ю-таблиці імпорту: встановлено фіксовану ширину 58px та сувору заборону white-space: nowrap"
         ]
     },
     {
         version: "v6.8.2",
         date: "2026-09-30",
         changes: [
-            "Розширено контейнер редактора модулів до 1150px без горизонтального скролу",
-            "Повноцінний скрол та відображення всіх імпортованих рядків таблиці прев'ю",
-            "Додано можливість швидкого інлайн-редагування слів, перекладу та контексту (contenteditable)"
+            "Нові фічі та покращення: Розширено контейнер редактора модулів до 1150px без горизонтального скролу",
+            "Нові фічі та покращення: Повноцінний скрол та відображення всіх імпортованих рядків таблиці прев'ю",
+            "Нові фічі та покращення: Додано можливість швидкого інлайн-редагування слів, перекладу та контексту (contenteditable)",
+            "Виправлені баги: Усунено горизонтальний скрол та виправлено відображення великих імпортованих таблиць"
         ]
     },
     {
         version: "v6.8.0",
         date: "2026-09-30",
         changes: [
-            "Додано підтримку імпорту Excel (.xlsx, .xls) та CSV з 4 колонками (Слово, Переклад, Контекст, Переклад контексту)",
-            "Впроваджено вкладки та Drag-and-Drop дропзону в редакторі створення/редагування модулів",
-            "Інтерактивна таблиця попереднього перегляду імпортованих слів та контекстних речень",
-            "Умовна доступність контекстних режимів квізу (деактивація режимів для модулів без контексту)"
+            "Нові фічі та покращення: Додано підтримку імпорту Excel (.xlsx, .xls) та CSV з 4 колонками (Слово, Переклад, Контекст, Переклад контексту)",
+            "Нові фічі та покращення: Впроваджено вкладки та Drag-and-Drop дропзону в редакторі створення/редагування модулів",
+            "Нові фічі та покращення: Інтерактивна таблиця попереднього перегляду імпортованих слів та контекстних речень",
+            "Виправлені баги: Умовна доступність контекстних режимів квізу (деактивація режимів для модулів без контексту)"
         ]
     },
     {
         version: "v6.7.6",
         date: "2026-09-30",
         changes: [
-            "Візуальний рефакторинг кнопок карток: замінено суцільні яскраві плашки редагування/видалення на легкі прозорі іконки зі стриманим hover-ефектом",
-            "Модернізація нижньої панелі дій (Bottom Bar): переведено кнопки імпорту, бекапів та очищення в стильний контурний outline/stroke режим"
+            "Нові фічі та покращення: Візуальний рефакторинг кнопок карток: замінено суцільні яскраві плашки редагування/видалення на легкі прозорі іконки зі стриманим hover-ефектом",
+            "Нові фічі та покращення: Модернізація нижньої панелі дій (Bottom Bar): переведено кнопки імпорту, бекапів та очищення в стильний контурний outline/stroke режим",
+            "Виправлені баги: Усунено візуальне перевантаження інтерфейсу важкими яскравими кнопками дій"
         ]
     },
     {
         version: "v6.7.5",
         date: "2026-09-30",
         changes: [
-            "Додано інтерактивну зірочку (★) на картки юнітів для закріплення у списку",
-            "Закріплені картки автоматично закріплюються нагорі списку",
-            "Додано панель статусних фільтрів модулів: «Всі», «★ Обрані», «В процесі», «Нові», «Засвоєні»",
-            "Збереження закріплених модулів у LocalStorage та резервних копіях"
+            "Нові фічі та покращення: Додано інтерактивну зірочку (★) на картки юнітів для закріплення у списку",
+            "Нові фічі та покращення: Закріплені картки автоматично закріплюються нагорі списку",
+            "Нові фічі та покращення: Додано панель статусних фільтрів модулів: «Всі», «★ Обрані», «В процесі», «Нові», «Засвоєні»",
+            "Виправлені баги: Збереження закріплених модулів у LocalStorage та резервних копіях"
         ]
     },
     {
         version: "v6.7.4",
         date: "2026-09-30",
         changes: [
-            "Усунено спойлер в автоозвучці (TTS) для контекстних режимів: цільове слово маскується до перевірки відповіді",
-            "Замінено випадаючий список кількості питань на швидкі сегментовані кнопки-чіпи (5, 20, 40, 60, 100, 150, Всі)"
+            "Нові фічі та покращення: Замінено випадаючий список кількості питань на швидкі сегментовані кнопки-чіпи (5, 20, 40, 60, 100, 150, Всі)",
+            "Виправлені баги: Усунено спойлер в автоозвучці (TTS) для контекстних режимів: цільове слово маскується до перевірки відповіді"
         ]
     },
     {
         version: "v6.7.3",
         date: "2026-09-30",
         changes: [
-            "Дефолтний фільтр аналітики прогресу встановлено на «Сьогодні» для миттєвого перегляду денних результатів"
+            "Нові фічі та покращення: Дефолтний фільтр аналітики прогресу встановлено на «Сьогодні» для миттєвого перегляду денних результатів",
+            "Виправлені баги: Усунено зайвий запит повного списку при відкритті детальної аналітики"
         ]
     },
     {
         version: "v6.7.2",
         date: "2026-09-30",
         changes: [
-            "Виправлено локалізацію: прибрано шаблон картка(ок) у дашборді модулів",
-            "Впроваджено універсальну функцію плюралізації getPlural() для числівників (картки, дні, слова)"
+            "Нові фічі та покращення: Впроваджено універсальну функцію плюралізації getPlural() для числівників (картки, дні, слова)",
+            "Виправлені баги: Виправлено локалізацію: прибрано шаблон картка(ок) у дашборді модулів"
         ]
     },
     {
         version: "v6.7.1",
         date: "2026-09-30",
         changes: [
-            "Рефакторинг хедера: об'єднано стрік і кнопку календаря в інтерактивний чіп-бейдж",
-            "Оптимізовано модальне вікно календаря: усунено внутрішній скролбар, компактна сітка",
-            "Покращено копірайтинг та структуру карток метрик активності (серія, місячний обсяг, рекорд дня, якість)"
+            "Нові фічі та покращення: Рефакторинг хедера: об'єднано стрік і кнопку календаря в інтерактивний чіп-бейдж",
+            "Нові фічі та покращення: Покращено копірайтинг та структуру карток метрик активності (серія, місячний обсяг, рекорд дня, якість)",
+            "Виправлені баги: Оптимізовано модальне вікно календаря: усунено внутрішній скролбар, компактна сітка"
         ]
     },
     {
         version: "v6.7.0",
         date: "2026-09-30",
         changes: [
-            "Додано інтерактивний Календар активності з Duolingo/GitHub Heatmap (навігація місяців, стрік, продуктивність)",
-            "Збереження щоденної активності у LocalStorage (myquiz_activity)",
-            "Покращено мобільний UX (<480px): зручні тач-кнопки (min 48px), компактні відступи, захист від горизонтального скролу",
-            "Оптимізовано фокус тренування (приховування панелі керування під час тесту)",
-            "Оновлено дизайн шапки зі швидким доступом до календаря"
+            "Нові фічі та покращення: Додано інтерактивний Календар активності з Duolingo/GitHub Heatmap (навігація місяців, стрік, продуктивність)",
+            "Нові фічі та покращення: Збереження щоденної активності у LocalStorage (myquiz_activity)",
+            "Нові фічі та покращення: Покращено мобільний UX (<480px): зручні тач-кнопки (min 48px), компактні відступи",
+            "Нові фічі та покращення: Оновлено дизайн шапки зі швидким доступом до календаря",
+            "Виправлені баги: Оптимізовано фокус тренування (приховування панелі керування під час тесту)",
+            "Виправлені баги: Усунено горизонтальний скрол на мобільних пристроях"
         ]
     },
     {
         version: "v6.6.0",
         date: "2026-09-30",
         changes: [
-            "Базова версія перед впровадженням політики версіонування",
-            "Виправлено рендер карток зі словами в контексті (парсинг HTML-тегів)",
-            "Покращено синтез мовлення (TTS) для контекстних речень",
-            "Додано інтерактивну модалку історії версій (Changelog)"
+            "Нові фічі та покращення: Базова версія перед впровадженням політики версіонування",
+            "Нові фічі та покращення: Покращено синтез мовлення (TTS) для контекстних речень",
+            "Нові фічі та покращення: Додано інтерактивну модалку історії версій (Changelog)",
+            "Виправлені баги: Виправлено рендер карток зі словами в контексті (парсинг HTML-тегів)"
         ]
     }
 ];
 
-function openChangelogModal() {
-    const modal = document.getElementById('changelog-modal');
-    if (!modal) return;
+let currentChangelogFilter = 'all';
+
+function getChangeCategory(changeText) {
+    const text = String(changeText || '').trim();
+    if (/^(?:виправлені баги|виправлено|усунено|фікс|помил)/i.test(text.replace(/^[^\wа-яіїєґ]+/i, '').trim())) {
+        return 'bugs';
+    }
+    if (/^(?:нові фічі|додано|впроваджено|реалізовано|інтегровано|розширено|оновлено|покращено|компактне|автоматичне|автоактивація|візуальний|модернізація|рефакторинг|дефолтний|базова|фіксація|повне)/i.test(text.replace(/^[^\wа-яіїєґ]+/i, '').trim())) {
+        return 'features';
+    }
+    if (/виправлено|усунено|помилк|баг/i.test(text)) {
+        return 'bugs';
+    }
+    return 'features';
+}
+
+function cleanChangeText(text) {
+    return String(text || '')
+        .replace(/^[^\wа-яіїєґ]+/iu, '')
+        .replace(/^(?:Нові фічі та покращення|Нові фічі)[\s:]*/i, '')
+        .replace(/^(?:Виправлені баги|Виправлено)[\s:]*/i, '')
+        .replace(/^[^\wа-яіїєґ]+/iu, '')
+        .trim();
+}
+
+function filterChangelog(filterType) {
+    currentChangelogFilter = filterType;
+    const filterBtns = document.querySelectorAll('.changelog-filter-btn');
+    filterBtns.forEach(btn => {
+        if (btn.getAttribute('data-filter') === filterType) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    renderChangelog();
+}
+
+function renderChangelog() {
     const listEl = document.getElementById('changelog-list');
-    if (listEl) {
-        listEl.innerHTML = VERSION_HISTORY.map(item => `
+    if (!listEl) return;
+
+    const filteredVersions = [];
+
+    VERSION_HISTORY.forEach(item => {
+        const featureChanges = item.changes.filter(ch => getChangeCategory(ch) === 'features');
+        const bugChanges = item.changes.filter(ch => getChangeCategory(ch) === 'bugs');
+
+        let showFeatures = false;
+        let showBugs = false;
+
+        if (currentChangelogFilter === 'all') {
+            showFeatures = featureChanges.length > 0;
+            showBugs = bugChanges.length > 0;
+        } else if (currentChangelogFilter === 'features') {
+            showFeatures = featureChanges.length > 0;
+        } else if (currentChangelogFilter === 'bugs') {
+            showBugs = bugChanges.length > 0;
+        }
+
+        if (showFeatures || showBugs) {
+            filteredVersions.push({
+                version: item.version,
+                date: item.date,
+                features: showFeatures ? featureChanges : [],
+                bugs: showBugs ? bugChanges : []
+            });
+        }
+    });
+
+    if (filteredVersions.length === 0) {
+        listEl.innerHTML = `
+            <div class="changelog-empty-notice">
+                <div>Не знайдено оновлень у цій категорії.</div>
+            </div>
+        `;
+        return;
+    }
+
+    listEl.innerHTML = filteredVersions.map(item => {
+        let sectionsHtml = '';
+
+        if (item.features.length > 0) {
+            sectionsHtml += `
+                <div class="changelog-category-section">
+                    <span class="changelog-category-chip chip-feature">Нові фічі та покращення</span>
+                    <ul class="changelog-changes">
+                        ${item.features.map(ch => `<li>${cleanChangeText(ch)}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        if (item.bugs.length > 0) {
+            sectionsHtml += `
+                <div class="changelog-category-section">
+                    <span class="changelog-category-chip chip-bug">Виправлені баги</span>
+                    <ul class="changelog-changes">
+                        ${item.bugs.map(ch => `<li>${cleanChangeText(ch)}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        return `
             <div class="changelog-item">
                 <div class="changelog-header">
                     <span class="changelog-version">${item.version}</span>
                     <span class="changelog-date">${item.date}</span>
                 </div>
-                <ul class="changelog-changes">
-                    ${item.changes.map(ch => `<li>${ch}</li>`).join('')}
-                </ul>
+                ${sectionsHtml}
             </div>
-        `).join('');
-    }
+        `;
+    }).join('');
+}
+
+function openChangelogModal() {
+    const modal = document.getElementById('changelog-modal');
+    if (!modal) return;
+    filterChangelog(currentChangelogFilter);
     modal.classList.add('active');
 }
 
@@ -165,17 +416,39 @@ function closeChangelogModal() {
     if (modal) modal.classList.remove('active');
 }
 
+// Безпечний парсинг LocalStorage із дефолтними значеннями (Code Hardening)
+function safeJsonParse(key, fallbackValue) {
+    try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : fallbackValue;
+    } catch (e) {
+        console.warn(`Помилка читання ключа ${key}:`, e);
+        return fallbackValue;
+    }
+}
+
+// Універсальна санітизація текстового контенту
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 // Ініціалізація та завантаження локальних даних користувача
 if (typeof DEFAULT_MODULES === 'undefined') window.DEFAULT_MODULES = {};
 
-let SAVED_USER_DATA = JSON.parse(localStorage.getItem('my_quiz_modules')) || {};
+let SAVED_USER_DATA = safeJsonParse('my_quiz_modules', {});
 let ALL_DATA = Object.assign({}, DEFAULT_MODULES, SAVED_USER_DATA);
 
-let MEMORY_STATS = JSON.parse(localStorage.getItem('my_quiz_mem_stats')) || {};
-let STREAK_DATA = JSON.parse(localStorage.getItem('my_quiz_streak')) || { count: 0, lastDate: "" };
-let ACTIVITY_DATA = JSON.parse(localStorage.getItem('myquiz_activity')) || {};
-let PINNED_MODULES = JSON.parse(localStorage.getItem('my_quiz_pinned_modules')) || [];
-let CUSTOM_CONTEXT_DATA = JSON.parse(localStorage.getItem('my_quiz_custom_context')) || {};
+let MEMORY_STATS = safeJsonParse('my_quiz_mem_stats', {});
+let STREAK_DATA = safeJsonParse('my_quiz_streak', { count: 0, lastDate: "" });
+let ACTIVITY_DATA = safeJsonParse('myquiz_activity', {});
+let PINNED_MODULES = safeJsonParse('my_quiz_pinned_modules', []);
+let CUSTOM_CONTEXT_DATA = safeJsonParse('my_quiz_custom_context', {});
 let currentModuleFilter = 'all';
 let currentEditTab = 'text';
 let excelParsedData = [];
@@ -394,6 +667,292 @@ let sessionLogs = [];
 let timerTimeout = null;
 let currentCombo = 0;
 
+let lastMistakeData = null;
+let lastMistakeIndex = null;
+
+let customConfirmResolver = null;
+
+function showCustomConfirm({
+    title = 'Підтвердження дії',
+    message = '',
+    confirmText = 'Продовжити',
+    cancelText = 'Скасувати',
+    icon = '⚠️',
+    isDestructive = false
+} = {}) {
+    return new Promise(resolve => {
+        customConfirmResolver = resolve;
+        const modal = document.getElementById('confirm-modal');
+        const titleEl = document.getElementById('confirm-modal-title');
+        const msgEl = document.getElementById('confirm-modal-message');
+        const iconEl = document.getElementById('confirm-modal-icon');
+        const proceedBtn = document.getElementById('confirm-btn-proceed');
+        const cancelBtn = document.getElementById('confirm-btn-cancel');
+
+        if (titleEl) titleEl.innerText = title;
+        if (msgEl) msgEl.innerText = message;
+        if (iconEl) iconEl.innerText = icon;
+        if (proceedBtn) {
+            proceedBtn.innerText = confirmText;
+            if (isDestructive) {
+                proceedBtn.classList.add('destructive');
+            } else {
+                proceedBtn.classList.remove('destructive');
+            }
+        }
+        if (cancelBtn) cancelBtn.innerText = cancelText;
+
+        if (modal) {
+            modal.classList.add('active');
+            setTimeout(() => {
+                if (proceedBtn) proceedBtn.focus();
+            }, 40);
+        }
+    });
+}
+
+function resolveCustomConfirm(result) {
+    const modal = document.getElementById('confirm-modal');
+    if (modal) modal.classList.remove('active');
+    if (customConfirmResolver) {
+        const resolver = customConfirmResolver;
+        customConfirmResolver = null;
+        resolver(Boolean(result));
+    }
+}
+
+function showToastNotice(message, icon = 'ℹ️') {
+    let toast = document.getElementById('quiz-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'quiz-toast';
+        toast.className = 'quiz-toast';
+        document.body.appendChild(toast);
+    }
+    toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${escapeHtml(message)}</span>`;
+    toast.classList.add('show');
+    if (window._toastTimer) clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2400);
+}
+
+function copyTextToClipboard(text, btnEl, successMsg = 'Скопійовано в буфер! 📋') {
+    if (!text) return;
+    const cleanText = text.trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cleanText).then(() => {
+            handleCopySuccess(btnEl, successMsg);
+        }).catch(() => {
+            fallbackCopyText(cleanText, btnEl, successMsg);
+        });
+    } else {
+        fallbackCopyText(cleanText, btnEl, successMsg);
+    }
+}
+
+function fallbackCopyText(text, btnEl, successMsg) {
+    try {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        handleCopySuccess(btnEl, successMsg);
+    } catch (e) {
+        showToastNotice('Не вдалося скопіювати', '⚠️');
+    }
+}
+
+function handleCopySuccess(btnEl, successMsg) {
+    if (btnEl) {
+        btnEl.classList.add('copied');
+        const defaultIcon = btnEl.querySelector('.default-icon');
+        const checkIcon = btnEl.querySelector('.check-icon');
+        if (defaultIcon && checkIcon) {
+            defaultIcon.style.display = 'none';
+            checkIcon.style.display = 'block';
+        }
+        setTimeout(() => {
+            btnEl.classList.remove('copied');
+            if (defaultIcon && checkIcon) {
+                defaultIcon.style.display = 'block';
+                checkIcon.style.display = 'none';
+            }
+        }, 1200);
+    }
+    showToastNotice(successMsg, '✅');
+}
+
+function copyCurrentWordCardText(btnEl) {
+    if (!questions || !questions[currentIndex]) return;
+    const currentObj = questions[currentIndex];
+    let textToCopy = '';
+
+    if (configMode && configMode.startsWith('context-') && currentObj.enSentence) {
+        textToCopy = currentObj.enSentence;
+    } else {
+        const wordEl = document.getElementById('target-word');
+        if (wordEl) {
+            textToCopy = wordEl.innerText.trim();
+        } else {
+            textToCopy = currentObj.question || '';
+        }
+    }
+
+    const snippet = textToCopy.length > 25 ? textToCopy.slice(0, 25) + '...' : textToCopy;
+    copyTextToClipboard(textToCopy, btnEl, `Скопійовано: "${snippet}"`);
+}
+
+function updateLastMistakeBtnVisibility() {
+    const btn = document.getElementById('btn-last-mistake');
+    if (!btn) return;
+    if (currentActiveScreen === 'quiz-screen') {
+        btn.style.display = 'inline-flex';
+        if (lastMistakeData) {
+            btn.classList.remove('disabled');
+            btn.removeAttribute('disabled');
+            btn.title = 'Переглянути останню помилку (↩)';
+        } else {
+            btn.classList.add('disabled');
+            btn.title = 'Помилок поки немає 🟢';
+        }
+    } else {
+        btn.style.display = 'none';
+    }
+}
+
+function isLastMistakeDrawerOpen() {
+    const container = document.getElementById('quiz-split-container');
+    return Boolean(container && container.classList.contains('drawer-open'));
+}
+
+function openLastMistakeDrawer() {
+    if (!lastMistakeData) {
+        showToastNotice('Помилок у поточному тесті поки немає 🟢', '✨');
+        return;
+    }
+    renderLastMistakeDrawerContent();
+    const container = document.getElementById('quiz-split-container');
+    if (container) container.classList.add('drawer-open');
+    const drawer = document.getElementById('last-mistake-drawer');
+    if (drawer) drawer.classList.add('active');
+}
+
+function closeLastMistakeDrawer() {
+    const container = document.getElementById('quiz-split-container');
+    if (container) container.classList.remove('drawer-open');
+    const drawer = document.getElementById('last-mistake-drawer');
+    if (drawer) drawer.classList.remove('active');
+}
+
+function toggleLastMistakeDrawer() {
+    if (isLastMistakeDrawerOpen()) {
+        closeLastMistakeDrawer();
+    } else {
+        openLastMistakeDrawer();
+    }
+}
+
+function recordLastMistake(data) {
+    lastMistakeData = data;
+    lastMistakeIndex = data.index;
+    updateLastMistakeBtnVisibility();
+    if (isLastMistakeDrawerOpen()) {
+        renderLastMistakeDrawerContent();
+    }
+}
+
+function renderLastMistakeDrawerContent() {
+    const bodyEl = document.getElementById('last-mistake-drawer-body');
+    if (!bodyEl || !lastMistakeData) return;
+
+    const enWord = lastMistakeData.en || lastMistakeData.question || '';
+    const uaWord = lastMistakeData.ua || (lastMistakeData.question === enWord ? lastMistakeData.answer : lastMistakeData.question);
+    const rawCtx = getContextForWord(enWord);
+    const parsedCtx = parseContextString(rawCtx);
+
+    bodyEl.innerHTML = `
+        <div class="mistake-word-box">
+            <div class="mistake-word-header">
+                <span class="mistake-word-title">${escapeHtml(lastMistakeData.question)}</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button type="button" class="btn-copy-card-mini" onclick="copyTextToClipboard('${escapeHtml(lastMistakeData.question).replace(/'/g, "\\'")}', this, 'Слово скопійовано!')" title="Скопіювати слово" aria-label="Скопіювати слово">
+                        <svg class="copy-icon default-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <svg class="copy-icon check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn-audio btn-audio-small" onclick="speakText('${escapeHtml(enWord).replace(/'/g, "\\'")}', 'en-US')" title="Озвучити слово">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            ${uaWord && uaWord !== lastMistakeData.question ? `<div class="mistake-word-trans">${escapeHtml(uaWord)}</div>` : ''}
+        </div>
+
+        <div class="mistake-comparison-box">
+            <div class="mistake-ans-item user-wrong">
+                <div class="ans-label">❌ Твоя відповідь:</div>
+                <div class="ans-val error">${escapeHtml(lastMistakeData.userAnswer || 'Порожня відповідь')}</div>
+            </div>
+            <div class="mistake-ans-item correct-ans">
+                <div class="ans-label">✅ Правильно:</div>
+                <div class="ans-val success">${escapeHtml(lastMistakeData.answer)}</div>
+            </div>
+        </div>
+
+        ${parsedCtx && parsedCtx.enSentence ? `
+            <div class="mistake-context-card">
+                <div class="mistake-ctx-header">
+                    <span class="ctx-tag">📖 Приклад у контексті:</span>
+                    <button type="button" class="btn-audio-sentence" onclick="speakText('${escapeHtml(parsedCtx.enSentence).replace(/'/g, "\\'")}', 'en-US')" title="Озвучити все речення">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        </svg>
+                        <span>Озвучити</span>
+                    </button>
+                </div>
+                <div class="mistake-ctx-en">${escapeHtml(parsedCtx.enSentence)}</div>
+                ${parsedCtx.uaTranslation ? `<div class="mistake-ctx-ua">${escapeHtml(parsedCtx.uaTranslation)}</div>` : ''}
+            </div>
+        ` : ''}
+
+        <div class="drawer-actions">
+            <button type="button" class="main-btn btn-revisit" onclick="revisitLastMistake()">
+                🔄 Повторити це слово
+            </button>
+            <button type="button" class="secondary-btn btn-continue" onclick="closeLastMistakeDrawer()">
+                Продовжити тест (Enter)
+            </button>
+        </div>
+    `;
+}
+
+function revisitLastMistake() {
+    if (!lastMistakeData) return;
+    const targetIdx = lastMistakeData.index;
+    if (typeof targetIdx !== 'number' || targetIdx < 0 || targetIdx >= questions.length) return;
+    closeLastMistakeDrawer();
+    stopLiveTimer();
+    currentIndex = targetIdx;
+    isShowingAnswer = false;
+    showQuestion();
+    showToastNotice(`Повернулися до запитання #${currentIndex + 1}`, '🔄');
+}
+
 // Словник відповідності номерів юнітів їхнім офіційним назвам згідно з підручником
 const BOOK_TITLES = {
     "1": "Unit 1: People and communities",
@@ -448,7 +1007,7 @@ function handleNavToggle() {
 
 let selectedQuizLimit = '20';
 
-function setQuizLimit(limitVal) {
+function setQuizLimit(limitVal, shouldSave = true) {
     selectedQuizLimit = String(limitVal);
     document.querySelectorAll('.count-chip-btn').forEach(btn => {
         if (btn.getAttribute('data-limit') === selectedQuizLimit) {
@@ -457,7 +1016,9 @@ function setQuizLimit(limitVal) {
             btn.classList.remove('active');
         }
     });
-    saveUserSettings();
+    if (shouldSave) {
+        saveUserSettings();
+    }
 }
 
 function getSelectedQuizLimit() {
@@ -490,7 +1051,7 @@ function saveUserSettings() {
 
 // Завантаження збережених налаштувань
 function loadUserSettings() {
-    const saved = JSON.parse(localStorage.getItem('my_quiz_settings'));
+    const saved = safeJsonParse('my_quiz_settings', null);
     if (!saved) {
         const matWords = document.getElementById('material-words');
         if (matWords) matWords.checked = true;
@@ -524,9 +1085,9 @@ function loadUserSettings() {
         if (langRadio) langRadio.checked = true;
     }
     if (saved.limit) {
-        setQuizLimit(saved.limit);
+        setQuizLimit(saved.limit, false);
     } else {
-        setQuizLimit('20');
+        setQuizLimit('20', false);
     }
     if (saved.audio !== undefined) document.getElementById('auto-audio-toggle').checked = saved.audio;
     if (saved.trackTime !== undefined) document.getElementById('track-time-toggle').checked = saved.trackTime;
@@ -563,9 +1124,24 @@ function handleMaterialChange() {
     }
 }
 
+function openDataManagementModal() {
+    const modal = document.getElementById('data-management-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeDataManagementModal() {
+    const modal = document.getElementById('data-management-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
 function toggleMobileMenu() {
-    const bar = document.getElementById('sticky-bar');
-    bar.classList.toggle('mobile-open');
+    openDataManagementModal();
 }
 
 function stopLiveTimer() {
@@ -677,7 +1253,7 @@ function exportBackupJSON() {
         activity: ACTIVITY_DATA,
         pinned: PINNED_MODULES,
         customContext: CUSTOM_CONTEXT_DATA,
-        settings: JSON.parse(localStorage.getItem('my_quiz_settings')) || {}
+        settings: safeJsonParse('my_quiz_settings', {})
     };
     const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -735,8 +1311,17 @@ function importBackupJSON(input) {
     reader.readAsText(file);
 }
 
-function clearAllData() {
-    if (confirm('Повністю очистити додаток та видалити прогрес?')) {
+async function clearAllData() {
+    const confirmed = await showCustomConfirm({
+        title: 'Очистити всі дані?',
+        message: 'Повністю очистити додаток та видалити весь прогрес і статистику?',
+        confirmText: 'Очистити все',
+        cancelText: 'Скасувати',
+        icon: '⚠️',
+        isDestructive: true
+    });
+
+    if (confirmed) {
         localStorage.clear();
         SAVED_USER_DATA = {}; ALL_DATA = Object.assign({}, DEFAULT_MODULES); MEMORY_STATS = {}; STREAK_DATA = { count: 0, lastDate: "" }; ACTIVITY_DATA = {}; PINNED_MODULES = []; CUSTOM_CONTEXT_DATA = {};
         isMenuRendered = false;
@@ -1277,16 +1862,6 @@ function processImportedRows(rawRows) {
     renderExcelPreview(excelParsedData);
 }
 
-function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
 function setupExcelPreviewEditing() {
     const tbody = document.getElementById('excel-preview-tbody');
     if (!tbody || tbody.dataset.bound) return;
@@ -1356,9 +1931,19 @@ function addNewTableRow() {
 
     const tbody = document.getElementById('excel-preview-tbody');
     if (tbody && tbody.lastElementChild) {
-        const firstEditableCell = tbody.lastElementChild.querySelector('td[contenteditable="true"]');
+        const firstEditableCell = tbody.lastElementChild.querySelector('td[data-field="word"]') || tbody.lastElementChild.querySelector('td[contenteditable="true"]');
         if (firstEditableCell) {
             firstEditableCell.focus();
+            try {
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(firstEditableCell);
+                range.collapse(false);
+                if (sel) {
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            } catch (err) {}
             firstEditableCell.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }
@@ -1577,18 +2162,19 @@ function openSetup(name) {
     document.getElementById('setup-title').innerText = `Тренажер: ${name}`;
     const searchInput = document.getElementById('unit-table-search');
     if (searchInput) searchInput.value = '';
+    loadUserSettings();
     checkUnitContextAvailability(name);
     renderUnitWordsTable(name, '');
     switchScreen('setup-screen');
 }
 
 function getUnitPageSize(moduleName) {
-    const saved = JSON.parse(localStorage.getItem('my_quiz_unit_pagesize')) || {};
+    const saved = safeJsonParse('my_quiz_unit_pagesize', {});
     return saved[moduleName] || '25';
 }
 
 function setUnitPageSize(moduleName, size) {
-    const saved = JSON.parse(localStorage.getItem('my_quiz_unit_pagesize')) || {};
+    const saved = safeJsonParse('my_quiz_unit_pagesize', {});
     saved[moduleName] = size;
     localStorage.setItem('my_quiz_unit_pagesize', JSON.stringify(saved));
 }
@@ -1626,7 +2212,7 @@ function renderUnitWordsTable(moduleName, query = '') {
     const totalCount = allPairs.length;
 
     if (totalCount === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--subtext);">Модуль порожній</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="unit-table-empty-msg">Модуль порожній</td></tr>`;
         if (counterEl) counterEl.innerText = '0 / 0';
         return;
     }
@@ -1655,7 +2241,7 @@ function renderUnitWordsTable(moduleName, query = '') {
     }
 
     if (filteredPairs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--subtext);">Нічого не знайдено за запитом «${escapeHtml(query)}»</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="unit-table-empty-msg">Нічого не знайдено за запитом «${escapeHtml(query)}»</td></tr>`;
         return;
     }
 
@@ -1672,11 +2258,11 @@ function renderUnitWordsTable(moduleName, query = '') {
         const statKey = `${moduleName}_${en}`;
         const m = MEMORY_STATS[statKey];
 
-        let statusBadge = '<span style="color:#4a4b5e;">— не вчено</span>';
+        let statusBadge = '<span class="unit-status-chip status-unlearned">— не вчено</span>';
         if (m && m.score <= 0 && m.history?.length > 0 && m.history[m.history.length - 1] === true) {
-            statusBadge = '<span style="color:#4f9e5a;">✅ Заучено</span>';
+            statusBadge = '<span class="unit-status-chip status-learned">✅ Заучено</span>';
         } else if (m && m.history?.length > 0) {
-            statusBadge = '<span style="color:#8a6e3a;">🔄 В процесі</span>';
+            statusBadge = '<span class="unit-status-chip status-in-progress">🔄 В процесі</span>';
         }
 
         const ctxRaw = getContextForWord(en);
@@ -1689,15 +2275,26 @@ function renderUnitWordsTable(moduleName, query = '') {
                 ctxHtml = escapeHtml(ctxRaw);
             }
         } else {
-            ctxHtml = '<span style="color:#3a3b4e;">—</span>';
+            ctxHtml = '<span style="color:#6e738d;">—</span>';
         }
 
         const tr = document.createElement('tr');
+        tr.className = 'unit-word-row';
         tr.innerHTML = `
-            <td><strong>${escapeHtml(en)}</strong></td>
-            <td>${escapeHtml(ua)}</td>
-            <td>${ctxHtml}</td>
-            <td>${statusBadge}</td>
+            <td class="col-en">
+                <div class="unit-word-en-cell">
+                    <strong class="unit-word-en-title">${escapeHtml(en)}</strong>
+                    <button type="button" class="btn-unit-audio" onclick="speakText('${escapeHtml(en).replace(/'/g, "\\'")}', 'en-US')" title="Озвучити слово" aria-label="Озвучити ${escapeHtml(en)}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        </svg>
+                    </button>
+                </div>
+            </td>
+            <td class="col-ua"><div class="unit-word-ua-cell">${escapeHtml(ua)}</div></td>
+            <td class="col-ctx"><div class="unit-word-ctx-cell">${ctxHtml}</div></td>
+            <td class="col-status"><div class="unit-word-status-cell">${statusBadge}</div></td>
         `;
         fragment.appendChild(tr);
     });
@@ -1783,8 +2380,17 @@ function saveModule() {
     switchScreen('menu-screen');
 }
 
-function deleteModule(name) {
-    if (confirm(`Видалити "${name}"?`)) {
+async function deleteModule(name) {
+    const confirmed = await showCustomConfirm({
+        title: 'Видалити модуль?',
+        message: `Ви дійсно бажаєте видалити модуль «${name}»?`,
+        confirmText: 'Видалити',
+        cancelText: 'Скасувати',
+        icon: '🗑️',
+        isDestructive: true
+    });
+
+    if (confirmed) {
         delete ALL_DATA[name]; delete SAVED_USER_DATA[name];
         localStorage.setItem('my_quiz_modules', JSON.stringify(SAVED_USER_DATA));
         isMenuRendered = false;
@@ -1831,13 +2437,18 @@ function cleanTextForTTS(text) {
 
 // Синтез мовлення (Web Speech API) для вимоги англійських слів
 function speakText(text, lang = 'en-US') {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const cleaned = cleanTextForTTS(text);
-        const utterance = new SpeechSynthesisUtterance(cleaned || text);
-        utterance.lang = lang;
-        utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
+    if (!text || typeof window === 'undefined') return;
+    try {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const cleaned = cleanTextForTTS(text);
+            const utterance = new SpeechSynthesisUtterance(cleaned || text);
+            utterance.lang = lang;
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    } catch (e) {
+        console.warn('Помилка відтворення мовлення SpeechSynthesis:', e);
     }
 }
 
@@ -1860,62 +2471,66 @@ function getMaskedContextSentenceForTTS(enWord, maskWith = '...') {
 }
 
 function speakCurrentWord() {
-    if (currentIndex < questions.length) {
-        const currentObj = questions[currentIndex];
-        if (configMode.startsWith('context-')) {
-            if (isShowingAnswer) {
-                const rawCtx = getContextForWord(currentObj.en);
-                const parsed = parseContextString(rawCtx);
-                const sentenceToSpeak = parsed ? parsed.enSentence : currentObj.en;
-                speakText(sentenceToSpeak || currentObj.en, 'en-US');
+    try {
+        if (currentIndex < questions.length) {
+            const currentObj = questions[currentIndex];
+            if (configMode.startsWith('context-')) {
+                if (isShowingAnswer) {
+                    const rawCtx = getContextForWord(currentObj.en);
+                    const parsed = parseContextString(rawCtx);
+                    const sentenceToSpeak = parsed ? parsed.enSentence : currentObj.en;
+                    speakText(sentenceToSpeak || currentObj.en, 'en-US');
+                } else {
+                    const maskedSentence = getMaskedContextSentenceForTTS(currentObj.en, '...');
+                    speakText(maskedSentence || '...', 'en-US');
+                }
             } else {
-                const maskedSentence = getMaskedContextSentenceForTTS(currentObj.en, '...');
-                speakText(maskedSentence || '...', 'en-US');
+                speakText(currentObj.en, 'en-US');
             }
-        } else {
-            speakText(currentObj.en, 'en-US');
         }
+    } catch (e) {
+        console.warn('Помилка в speakCurrentWord:', e);
     }
 }
 
 function formatContextPrompt(item, mode) {
-    const en = item.en;
+    const en = item.en || '';
     const hasContext = typeof CONTEXT_DATA !== 'undefined';
     const rawCtx = hasContext ? (CONTEXT_DATA[en] || CONTEXT_DATA[en.toLowerCase()] || '') : '';
     if (!rawCtx) {
-        return item.question || item.ua || item.en;
+        return escapeHtml(item.question || item.ua || item.en);
     }
 
     const parsed = parseContextString(rawCtx);
     const sentence = parsed ? parsed.enSentence : rawCtx;
     const translation = parsed ? parsed.uaTranslation : '';
 
-    const escapedEn = en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`\\b${escapedEn}\\b`, 'gi');
+    let maskedSentence = escapeHtml(sentence);
+    const safeEscapedEn = escapeHtml(en).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const safeRegex = new RegExp(`\\b${safeEscapedEn}\\b`, 'gi');
 
-    let maskedSentence = sentence;
-    if (regex.test(sentence)) {
+    if (safeRegex.test(maskedSentence)) {
         if (mode === 'context-write') {
-            const hint = en.charAt(0) + '_'.repeat(Math.max(1, en.length - 1));
-            maskedSentence = sentence.replace(regex, `<span class="blank">[ ${hint} ]</span>`);
+            const hint = escapeHtml(en.charAt(0)) + '_'.repeat(Math.max(1, en.length - 1));
+            maskedSentence = maskedSentence.replace(safeRegex, `<span class="blank">[ ${hint} ]</span>`);
         } else {
-            maskedSentence = sentence.replace(regex, `<span class="blank">[ ... ]</span>`);
+            maskedSentence = maskedSentence.replace(safeRegex, `<span class="blank">[ ... ]</span>`);
         }
     } else {
-        const subRegex = new RegExp(escapedEn, 'gi');
-        if (subRegex.test(sentence)) {
+        const subRegex = new RegExp(safeEscapedEn, 'gi');
+        if (subRegex.test(maskedSentence)) {
             if (mode === 'context-write') {
-                const hint = en.charAt(0) + '_'.repeat(Math.max(1, en.length - 1));
-                maskedSentence = sentence.replace(subRegex, `<span class="blank">[ ${hint} ]</span>`);
+                const hint = escapeHtml(en.charAt(0)) + '_'.repeat(Math.max(1, en.length - 1));
+                maskedSentence = maskedSentence.replace(subRegex, `<span class="blank">[ ${hint} ]</span>`);
             } else {
-                maskedSentence = sentence.replace(subRegex, `<span class="blank">[ ... ]</span>`);
+                maskedSentence = maskedSentence.replace(subRegex, `<span class="blank">[ ... ]</span>`);
             }
         } else {
             if (mode === 'context-write') {
-                const hint = en.charAt(0) + '_'.repeat(Math.max(1, en.length - 1));
-                maskedSentence = sentence + ` <span class="blank">[ ${hint} ]</span>`;
+                const hint = escapeHtml(en.charAt(0)) + '_'.repeat(Math.max(1, en.length - 1));
+                maskedSentence = maskedSentence + ` <span class="blank">[ ${hint} ]</span>`;
             } else {
-                maskedSentence = sentence + ` <span class="blank">[ ... ]</span>`;
+                maskedSentence = maskedSentence + ` <span class="blank">[ ... ]</span>`;
             }
         }
     }
@@ -1923,7 +2538,7 @@ function formatContextPrompt(item, mode) {
     return `
         <div class="context-prompt-wrap">
             <div class="context-prompt-sentence">${maskedSentence}</div>
-            ${translation ? `<div class="context-prompt-sub">(${translation})</div>` : ''}
+            ${translation ? `<div class="context-prompt-sub">(${escapeHtml(translation)})</div>` : ''}
         </div>
     `;
 }
@@ -1997,6 +2612,7 @@ function generateQuiz() {
     questions = questions.slice(0, Math.min(targetLimit, originalPairs.length));
 
     currentIndex = 0; score = 0; currentCombo = 0; sessionLogs = [];
+    lastMistakeData = null; lastMistakeIndex = null; updateLastMistakeBtnVisibility(); closeLastMistakeDrawer();
     switchScreen('quiz-screen'); showQuestion();
 }
 
@@ -2012,6 +2628,7 @@ function startMistakesOnlyQuiz() {
     }));
 
     currentIndex = 0; score = 0; currentCombo = 0; sessionLogs = [];
+    lastMistakeData = null; lastMistakeIndex = null; updateLastMistakeBtnVisibility(); closeLastMistakeDrawer();
     switchScreen('quiz-screen'); showQuestion();
 }
 
@@ -2088,17 +2705,34 @@ function getMaskedContext(enWord, rawCtx) {
     };
 }
 
+function setActionBtnLabel(state, isVisible = true) {
+    const btnEl = document.getElementById('action-btn');
+    if (!btnEl) return;
+    btnEl.style.display = isVisible ? 'block' : 'none';
+    if (state === 'check') {
+        btnEl.innerHTML = `<span class="desktop-only-inline">Перевірити (Enter ↵)</span><span class="mobile-only-inline">Перевірити</span>`;
+        btnEl.classList.remove('btn-quiz-continue');
+    } else if (state === 'next') {
+        btnEl.innerHTML = `<span class="desktop-only-inline">Далі (Enter ↵)</span><span class="mobile-only-inline">Продовжити →</span>`;
+        btnEl.classList.add('btn-quiz-continue');
+    }
+}
+
 function showQuestion() {
     const inputEl = document.getElementById('user-input'); const msgEl = document.getElementById('result-msg');
-    const btnEl = document.getElementById('action-btn'); const writeBlock = document.getElementById('write-block'); const choiceBlock = document.getElementById('choice-block');
+    const writeBlock = document.getElementById('write-block'); const choiceBlock = document.getElementById('choice-block');
     isShowingAnswer = false; if (msgEl) msgEl.innerText = '';
     const isWriteType = configMode === 'write' || configMode === 'context-write';
-    if (btnEl) { btnEl.innerText = 'Перевірити (Enter ↵)'; btnEl.style.display = isWriteType ? 'block' : 'none'; }
+    setActionBtnLabel('check', isWriteType);
 
     if (currentIndex < questions.length) {
         const currentObj = questions[currentIndex];
         const comboBadgeHtml = currentCombo >= 2 ? `<span class="combo-badge">⚡ ${currentCombo}x COMBO!</span>` : '';
         document.getElementById('quiz-progress').innerHTML = `Картка ${currentIndex + 1} з ${questions.length} | Рахунок: ${score} ${comboBadgeHtml}`;
+        updateLastMistakeBtnVisibility();
+        if (isLastMistakeDrawerOpen()) {
+            renderLastMistakeDrawerContent();
+        }
 
         const wordEl = document.getElementById('target-word');
         if (configMode.startsWith('context-')) {
@@ -2153,14 +2787,14 @@ function renderSessionSummary() {
 
     const successRowsHtml = successLogs.length > 0 ? successLogs.map(log => `
         <div class="word-time-row correct">
-            <span>✅ <strong>${log.question}</strong> → ${log.answer}</span>
+            <span>✅ <strong>${escapeHtml(log.question)}</strong> → ${escapeHtml(log.answer)}</span>
             <span class="word-time-val">${((log.timeMs || 0) / 1000).toFixed(1)}s</span>
         </div>
     `).join('') : '<div style="color:var(--subtext); font-size:13px; padding:10px;">Немає вірних відповідей</div>';
 
     const errorRowsHtml = errorLogs.length > 0 ? errorLogs.map(log => `
         <div class="word-time-row incorrect">
-            <span>❌ <strong>${log.question}</strong> → <span style="color:var(--red);">${log.userAnswer || 'Помилка'}</span> (Вірно: ${log.answer})</span>
+            <span>❌ <strong>${escapeHtml(log.question)}</strong> → <span style="color:var(--red);">${escapeHtml(log.userAnswer || 'Помилка')}</span> (Вірно: ${escapeHtml(log.answer)})</span>
             <span class="word-time-val">${((log.timeMs || 0) / 1000).toFixed(1)}s</span>
         </div>
     `).join('') : '<div style="color:var(--subtext); font-size:13px; padding:10px;">Чудово! Жодної помилки! 🎉</div>';
@@ -2313,12 +2947,15 @@ function generateStandardChoices(currentObj) {
 function selectContextMatchChoice(clickedBtn, selectedOpt, allOptions) {
     if (isShowingAnswer) return;
     isShowingAnswer = true;
+    document.querySelectorAll('.choice-btn').forEach(btn => {
+        btn.disabled = true;
+        btn.style.pointerEvents = 'none';
+    });
     stopLiveTimer();
     currentWordDuration = Date.now() - wordStartTime;
 
     const msgEl = document.getElementById('result-msg');
-    const btnEl = document.getElementById('action-btn');
-    if (btnEl) btnEl.style.display = 'none';
+    setActionBtnLabel('check', false);
 
     const currentObj = questions[currentIndex];
     const isCorrect = selectedOpt.isCorrect;
@@ -2352,6 +2989,14 @@ function selectContextMatchChoice(clickedBtn, selectedOpt, allOptions) {
             msgEl.className = 'result error';
             msgEl.innerText = `❌ Схибив!`;
         }
+        recordLastMistake({
+            question: currentObj.question,
+            answer: currentObj.answer,
+            userAnswer: selectedOpt.enFull || selectedOpt.enMasked || 'Невірний вибір',
+            en: currentObj.en || (configTarget === 'en' ? currentObj.question : currentObj.answer),
+            ua: currentObj.ua || (configTarget === 'en' ? currentObj.answer : currentObj.question),
+            index: currentIndex
+        });
     }
 
     updateMemoryAlgorithm(currentObj, isCorrect, currentWordDuration);
@@ -2370,33 +3015,18 @@ function selectContextMatchChoice(clickedBtn, selectedOpt, allOptions) {
     }, 900);
 }
 
-function generateChoices(currentObj) {
-    const choiceBlock = document.getElementById('choice-block'); choiceBlock.innerHTML = '';
-    const isContextMode = configMode.startsWith('context-');
-    let allAnswersPool = Object.entries(ALL_DATA[selectedModule]).map(pair => {
-        if (isContextMode) return pair[0];
-        return configTarget === 'ua' ? pair[0] : pair[1];
-    });
-    let pool = allAnswersPool.filter(ans => ans.toLowerCase() !== currentObj.answer.toLowerCase()).sort(() => Math.random() - 0.5);
-    let finalChoices = [currentObj.answer, pool[0], pool[1], pool[2]].filter(Boolean).sort(() => Math.random() - 0.5);
-    currentChoices = finalChoices;
-
-    finalChoices.forEach((choice, idx) => {
-        const btn = document.createElement('button'); btn.className = 'choice-btn';
-        btn.innerHTML = `<span>${choice}</span><span class="key-hint">${idx + 1}</span>`;
-        btn.onclick = () => selectChoice(btn, choice, currentObj.answer); choiceBlock.appendChild(btn);
-    });
-}
-
 function selectChoice(clickedBtn, selectedAnswer, correctAnswer) {
     if (isShowingAnswer) return;
     isShowingAnswer = true;
+    document.querySelectorAll('.choice-btn').forEach(btn => {
+        btn.disabled = true;
+        btn.style.pointerEvents = 'none';
+    });
     stopLiveTimer();
     currentWordDuration = Date.now() - wordStartTime;
 
     const msgEl = document.getElementById('result-msg');
-    const btnEl = document.getElementById('action-btn');
-    if (btnEl) { btnEl.style.display = 'block'; btnEl.innerText = 'Далі (Enter ↵)'; }
+    setActionBtnLabel('next', true);
 
     const isCorrect = isFuzzyMatch(selectedAnswer, correctAnswer);
     const currentObj = questions[currentIndex];
@@ -2448,6 +3078,14 @@ function selectChoice(clickedBtn, selectedAnswer, correctAnswer) {
             msgEl.className = 'result error';
             msgEl.innerText = `❌ Схибив! (Вірно: ${correctAnswer})`;
         }
+        recordLastMistake({
+            question: currentObj.question,
+            answer: correctAnswer,
+            userAnswer: selectedAnswer,
+            en: currentObj.en || (configTarget === 'en' ? currentObj.question : currentObj.answer),
+            ua: currentObj.ua || (configTarget === 'en' ? currentObj.answer : currentObj.question),
+            index: currentIndex
+        });
     }
 
     updateMemoryAlgorithm(currentObj, isCorrect, currentWordDuration);
@@ -2477,6 +3115,14 @@ function handleQuizSubmit() {
                 currentCombo++;
             } else {
                 currentCombo = 0;
+                recordLastMistake({
+                    question: currentObj.question,
+                    answer: currentObj.answer,
+                    userAnswer: userAns || 'Порожня відповідь',
+                    en: currentObj.en || (configTarget === 'en' ? currentObj.question : currentObj.answer),
+                    ua: currentObj.ua || (configTarget === 'en' ? currentObj.answer : currentObj.question),
+                    index: currentIndex
+                });
             }
 
             updateMemoryAlgorithm(currentObj, isCorrect, currentWordDuration);
@@ -2491,7 +3137,7 @@ function handleQuizSubmit() {
 
             if (isCorrect) { score++; msgEl.className = 'result success'; msgEl.innerText = currentCombo >= 2 ? `🔥 Точно в ціль! (Combo x${currentCombo})` : '🔥 Точно в ціль!'; }
             else { msgEl.className = 'result error'; msgEl.innerText = `❌ Правильно: ${currentObj.answer}`; }
-            btnEl.innerText = 'Далі (Enter ↵)';
+            setActionBtnLabel('next', true);
         } else { currentIndex++; showQuestion(); }
     } else {
         if (isShowingAnswer) { currentIndex++; showQuestion(); }
@@ -2636,7 +3282,7 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
-function confirmFinishQuizEarly() {
+async function confirmFinishQuizEarly() {
     if (currentActiveScreen !== 'quiz-screen') return;
     const answeredCount = sessionLogs.filter(item => !item.isSkipped).length;
     const totalCount = questions.length;
@@ -2644,7 +3290,16 @@ function confirmFinishQuizEarly() {
         ? `Ви ще не відповіли на жодне питання (всього у тесті: ${totalCount}).\nЗавершити тест достроково та подивитися результати?`
         : `Ви відповіли на ${answeredCount} з ${totalCount} питань.\nЗавершити тест достроково та подивитися результати?`;
 
-    if (confirm(promptMsg)) {
+    const confirmed = await showCustomConfirm({
+        title: 'Завершити тест достроково?',
+        message: promptMsg,
+        confirmText: 'Завершити тест',
+        cancelText: 'Продовжити тестування',
+        icon: '🏁',
+        isDestructive: false
+    });
+
+    if (confirmed) {
         finishQuizEarly();
     }
 }
@@ -2693,9 +3348,23 @@ function stopQuizSession() {
     score = 0;
     currentCombo = 0;
     sessionLogs = [];
+    lastMistakeData = null;
+    lastMistakeIndex = null;
+    closeLastMistakeDrawer();
+    updateLastMistakeBtnVisibility();
     if (timerTimeout) {
         clearTimeout(timerTimeout);
         timerTimeout = null;
+    }
+    if (saveMemoryStatsTimer) {
+        clearTimeout(saveMemoryStatsTimer);
+        saveMemoryStatsTimer = null;
+        localStorage.setItem('my_quiz_mem_stats', JSON.stringify(MEMORY_STATS));
+    }
+    if ('speechSynthesis' in window) {
+        try {
+            window.speechSynthesis.cancel();
+        } catch (e) {}
     }
 }
 
@@ -2727,8 +3396,34 @@ function handleBackNavigation() {
 document.addEventListener('keydown', function (e) {
     const quizScreen = document.getElementById('quiz-screen');
     const changelogModal = document.getElementById('changelog-modal');
+    const confirmModal = document.getElementById('confirm-modal');
+
+    // Керування активним діалогом підтвердження
+    if (confirmModal && confirmModal.classList.contains('active')) {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            resolveCustomConfirm(false);
+            return;
+        }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            resolveCustomConfirm(true);
+            return;
+        }
+    }
 
     if (e.key === 'Escape') {
+        if (isLastMistakeDrawerOpen()) {
+            e.preventDefault();
+            closeLastMistakeDrawer();
+            return;
+        }
+        const dataModal = document.getElementById('data-management-modal');
+        if (dataModal && dataModal.classList.contains('active')) {
+            e.preventDefault();
+            closeDataManagementModal();
+            return;
+        }
         const calendarModal = document.getElementById('calendar-modal');
         if (calendarModal && calendarModal.classList.contains('active')) {
             e.preventDefault();
@@ -2740,6 +3435,13 @@ document.addEventListener('keydown', function (e) {
             closeChangelogModal();
             return;
         }
+        if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.isContentEditable)) {
+            if (document.activeElement.id === 'unit-table-search' || document.activeElement.isContentEditable) {
+                document.activeElement.blur();
+                e.preventDefault();
+                return;
+            }
+        }
         e.preventDefault();
         handleBackNavigation();
         return;
@@ -2747,7 +3449,7 @@ document.addEventListener('keydown', function (e) {
 
     if (!quizScreen.classList.contains('active')) return;
 
-    const isInputActive = (document.activeElement?.tagName === 'INPUT' && !document.activeElement?.disabled) || document.activeElement?.tagName === 'TEXTAREA';
+    const isInputActive = (document.activeElement?.tagName === 'INPUT' && !document.activeElement?.disabled) || document.activeElement?.tagName === 'TEXTAREA' || document.activeElement?.isContentEditable;
 
     if ((e.key === 'r' || e.key === 'R') && !isInputActive) {
         e.preventDefault();
@@ -2755,22 +3457,37 @@ document.addEventListener('keydown', function (e) {
         return;
     }
 
-    if ((e.key === ' ' || e.key === 'Spacebar') && isShowingAnswer && document.activeElement?.tagName !== 'TEXTAREA') {
+    if ((e.key === ' ' || e.key === 'Spacebar' || e.code === 'Space') && !isInputActive) {
         e.preventDefault();
-        currentIndex++;
-        showQuestion();
+        if (isShowingAnswer) {
+            currentIndex++;
+            showQuestion();
+        } else {
+            speakCurrentWord();
+        }
         return;
     }
 
     if (e.key === 'Enter') {
         e.preventDefault();
+        if (isLastMistakeDrawerOpen()) {
+            closeLastMistakeDrawer();
+            return;
+        }
         handleQuizSubmit();
         return;
     }
 
-    if (['choice', 'context-slot', 'context-match'].includes(configMode) && !isShowingAnswer) {
+    if (['choice', 'context-slot', 'context-match'].includes(configMode) && !isShowingAnswer && !isInputActive) {
+        let choiceIndex = -1;
         if (['1', '2', '3', '4'].includes(e.key)) {
-            const choiceIndex = parseInt(e.key) - 1;
+            choiceIndex = parseInt(e.key, 10) - 1;
+        } else if (e.code && e.code.startsWith('Numpad')) {
+            const num = parseInt(e.code.replace('Numpad', ''), 10);
+            if (num >= 1 && num <= 4) choiceIndex = num - 1;
+        }
+        if (choiceIndex >= 0) {
+            e.preventDefault();
             const choiceBtns = document.querySelectorAll('.choice-btn');
             if (choiceBtns[choiceIndex]) {
                 choiceBtns[choiceIndex].click();
@@ -2779,10 +3496,91 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+// Закриття висувної панелі помилки при кліку зовні
+document.addEventListener('click', function (e) {
+    const drawer = document.getElementById('last-mistake-drawer');
+    const toggleBtn = document.getElementById('btn-last-mistake');
+    if (!drawer || !drawer.classList.contains('active')) return;
+    if (!drawer.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
+        closeLastMistakeDrawer();
+    }
+});
+
+// Детекція гарячих клавіш перезавантаження (Soft/Hard Reload) для швидких браузерів (Zen, Chrome, Safari)
+window.addEventListener('keydown', function (e) {
+    const isR = e.key === 'r' || e.key === 'R' || e.code === 'KeyR';
+    const isCmdOrCtrl = e.metaKey || e.ctrlKey;
+    const isF5 = e.key === 'F5' || e.code === 'F5';
+
+    if ((isCmdOrCtrl && isR) || isF5) {
+        try {
+            if (e.shiftKey || (isF5 && e.ctrlKey)) {
+                sessionStorage.setItem('dev_reload_flag', 'hard');
+            } else {
+                sessionStorage.setItem('dev_reload_flag', 'soft');
+            }
+        } catch (err) {}
+    }
+}, true);
+
+function showDevReloadBadge(reloadType) {
+    let badge = document.getElementById('dev-reload-badge');
+    if (!badge) {
+        badge = document.createElement('div');
+        badge.id = 'dev-reload-badge';
+        badge.className = 'dev-reload-badge';
+        document.body.appendChild(badge);
+    }
+
+    if (reloadType === 'hard') {
+        badge.className = 'dev-reload-badge hard';
+        badge.innerHTML = `⚡ Кеш скинуто • ${APP_VERSION}`;
+    } else {
+        badge.className = 'dev-reload-badge';
+        badge.innerHTML = `🔄 Сторінку оновлено`;
+    }
+
+    // Примусовий reflow для плавної появи
+    void badge.offsetWidth;
+    badge.classList.add('show');
+
+    setTimeout(() => {
+        badge.classList.remove('show');
+        setTimeout(() => {
+            if (badge.parentNode) {
+                badge.parentNode.removeChild(badge);
+            }
+        }, 300);
+    }, 1800);
+}
+
+function checkDevReloadNotice() {
+    try {
+        let reloadType = sessionStorage.getItem('dev_reload_flag');
+        if (!reloadType) {
+            const navEntries = performance.getEntriesByType('navigation');
+            const isNavReload = navEntries.length > 0 && navEntries[0].type === 'reload';
+            if (isNavReload) {
+                reloadType = 'soft';
+            }
+        }
+
+        if (reloadType) {
+            sessionStorage.removeItem('dev_reload_flag');
+            setTimeout(() => {
+                showDevReloadBadge(reloadType);
+            }, 120);
+        }
+    } catch (e) {
+        // Safe fallback in restricted environments
+    }
+}
+
 window.onload = function () {
     loadUserSettings();
     setupExcelDropzone();
     switchScreen('menu-screen');
+    checkDevReloadNotice();
 };
 
 (function () {
